@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Commentaires{% endblock %}
+
+{% block body %}
+    <section class="bg-dark py-5">
+        <div class="container px-4 px-lg-5 my-5">
+            <div class="text-center text-white">
+                <h1 class="display-4 fw-bolder">Commentaires de l'article</h1>
+                <p class="lead fw-normal text-white-50 mb-0">Ce que vous pensez.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-5">
+        {% if commentaires is empty %}
+            <p class="text-center">Aucun commentaire pour cet article</p>
+        {% else %}
+            <table class="table table-hover" id="dataTable">
+                <thead>
+                    <tr>
+                        <th scope="col">Utilisateur</th>
+                        <th scope="col">Commentaire</th>
+                        <th scope="col">Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for commentaire in commentaires %}
+                        <tr>
+                            <td>{{ commentaire.utilisateur.pseudo }}</td>
+                            <td>{{ commentaire.commentaire|nl2br }}</td>
+                            <td>{{ commentaire.dateCommentaire|date('d/m/Y H:i') }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+
+        {% if app.user %}
+            {{ form_start(form) }}
+                <div class="form-group mb-3">
+                    {{ form_label(form.commentaire) }}
+                    {{ form_widget(form.commentaire) }}
+                </div>
+                <div class="form-group mb-3">
+                    {{ form_widget(form.submit) }}
+                </div>
+            {{ form_end(form) }}
+        {% endif %}
+    </section>
+
+    <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+        <div class="text-center">
+            <a class="btn btn-outline-dark mt-auto" href="{{ path('blog.list') }}">Blog/Newletters</a>
+        </div>
+    </div>
+{% endblock %}

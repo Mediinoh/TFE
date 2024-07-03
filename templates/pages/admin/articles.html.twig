@@ -1,0 +1,84 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des articles{% endblock %}
+
+{% block body %}
+    <section class="bg-dark py-5">
+        <div class="container px-4 px-lg-5 my-5">
+            <div class="text-center text-white">
+                <h1 class="display-4 fw-bolder">Liste des articles</h1>
+                <p class="lead fw-normal text-white-50 mb-0">Ce que vous avez créé.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-5">
+        <p><a href="{{ path('admin_categories') }}" class="btn btn-warning"><span class="bi bi-tags" aria-hidden="true"></span> Ajouter une nouvelle catégorie d'articles</a></p>
+
+        {% if articles is empty %}
+            <p class="text-center">Aucun article dans la base de données !</p>
+        {% else %}
+            <table class="table table-hover" id="dataTable">
+                <thead>
+                    <tr>
+                        <th scope="col"># Id</th>
+                        <th scope="col">Photo de l'article</th>
+                        <th scope="col">Titre</th>
+                        <th scope="col">Nom de la catégorie</th>
+                        <th scope="col">Prix unitaire</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for article in articles %}
+                        <tr>
+                            <td col="row">{{ article.id }}</td>
+                            <td><img src="{{ asset (imagesArticlesPath ~ '/' ~ article.photoArticle) }}" alt="{{ article.titre }}"></td>
+                            <td>{{ article.titre }}</td>
+                            <td>{{ article.categorie.nomCategorie }}</td>
+                            <td>{{ article.prixUnitaire }}</td>
+                            <td>{{ article.description|nl2br }}</td>
+                            <td>
+                                {% if article.supprime %}
+                                    <p class="text-center">Cet article a déjà été supprimé !</p>
+                                {% endif %}
+                                {{ form(formulairesSupprimerArticle[article.id - 1]) }}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+    </section>
+
+    <section class="py-5 container-fluid">
+        <h2>Formulaire d'ajout d'un article :</h2>
+        {{ form_start(form) }}
+            <div class="form-group mb-3">
+                {{ form_label(form.titre) }}
+                {{ form_widget(form.titre) }}
+            </div>
+            <div class="form-group mb-3">
+                {{ form_label(form.prix_unitaire) }}
+                {{ form_widget(form.prix_unitaire) }}
+            </div>
+            <div class="form-group mb-3">
+                {{ form_label(form.categorie) }}
+                {{ form_widget(form.categorie) }}
+            </div>
+            <div class="form-group mb-3">
+                {{ form_label(form.description) }}
+                {{ form_widget(form.description) }}
+            </div>
+            <div class="form-group mb-3">
+                {{ form_label(form.photo_article) }}
+                {{ form_widget(form.photo_article) }}
+            </div>
+            <div class="form-group mb-3">
+                {{ form_widget(form.submit) }}
+            </div>
+        {{ form_end(form) }}
+    </section>
+
+{% endblock %}

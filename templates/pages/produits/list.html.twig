@@ -1,0 +1,92 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des produits{% endblock %}
+
+{% block body %}
+    <section class="bg-dark py-5">
+        <div class="container px-4 px-lg-5 my-5">
+            <div class="text-center text-white">
+                <h1 class="display-4 fw-bolder">La folie de la technologie </h1>
+                <p class="lead fw-normal text-white-50 mb-0">C'est ici que ça se passe.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-5">
+        <div class="row">
+            {% for label, messages in app.flashes(['success', 'warning']) %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ label }} mt-4" role="alert">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endfor %}
+
+            {{ form_start(searchForm, {'attr': {'class': 'd-flex align-items-center justify-content-end'}}) }}
+
+                <div class="form-group mb-3 me-3 d-flex align_items-center">
+                    <label for="{{ searchForm.categorie.vars.id }}" class="{{ searchForm.categorie.vars.label_attr.class }}">
+                        <span class="bi bi-tag" aria-hidden="true"></span> {{ searchForm.categorie.vars.label }}
+                    </label>
+                    {{ form_widget(searchForm.categorie) }}
+                </div>
+
+                <div class="form-group mb-3 me-3">
+                    <label for="{{ searchForm.mot_cle.vars.id }}" class="{{ searchForm.mot_cle.vars.label_attr.class }}">
+                        <span class="bi bi-fonts" aria-hidden="true"></span> {{ searchForm.mot_cle.vars.label }}
+                    </label>
+                    {{ form_widget(searchForm.mot_cle) }}
+                </div>
+
+                <div class="form-group mb-3 me-3">
+                    {{ form_widget(searchForm.rechercher) }}
+                </div>
+
+            {{ form_end(searchForm) }}
+        </div>
+    </section>
+
+    <section class="py-5">
+        <div class="container px-4 px-lg-5 mt-5">
+            <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+                {% if articles is empty %}
+                    <p class="text-center">Aucun article dans la base de données.</p>
+                {% else %}
+                    {% for article in articles %}
+                        <div class="col mb-5">
+                            <div class="card h-100 text-center">
+                                {% if app.user %}
+                                    {% set formulaireAjoutPanier = formulairesAjoutPanier['article_' ~ article.id] %}
+                                    {% set formulaireFavori = formulairesFavoris['article_' ~ article.id] %}
+                                    {{ form(formulaireFavori) }}
+                                {% endif %}
+                                <img src="{{ imagesArticlesPath }}/{{ article.photoArticle }}" alt="{{ article.titre }}" class="card-img-top">
+                                <div class="card-body p-4">
+                                    <h5 class="card-title">{{ article.titre }}</h5>
+                                    <div class="card-text">
+                                        <p>{{ article.categorie.nomCategorie }}</p>
+                                        <p>{{ article.prixUnitaire }}&euro;</p>
+                                        <p>{{ article.description|nl2br }}</p>
+                                    </div>
+                                </div>
+                                {% if app.user %}
+                                    <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                                        {{ form_start(formulaireAjoutPanier, {'attr': {'class': 'd-flex flex-column align-items-center'}}) }}
+                                            <div class="form-group mb-3">
+                                                {{ form_label(formulaireAjoutPanier.quantite) }}
+                                                {{ form_widget(formulaireAjoutPanier.quantite) }}
+                                            </div>
+                                            <div class="form-group">
+                                                {{ form_widget(formulaireAjoutPanier.ajout_panier) }}
+                                            </div>
+                                        {{ form_end(formulaireAjoutPanier) }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+    </section>
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Inscription{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <section class="py-5">
+            <h1 class="mt-4">
+                <span class="bi bi-person-add" aria-hidden="true"></span> Formulaire d'inscription
+            </h1>
+
+            {{ form(form) }}
+        </section>
+    </div>
+{% endblock %}

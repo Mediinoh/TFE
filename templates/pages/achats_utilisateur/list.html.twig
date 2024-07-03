@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des achats de l'utilisateur{% endblock %}
+
+{% block body %}
+    <section class="bg-dark py-5">
+        <div class="container px-4 px-lg-5 my-5">
+            <div class="text-center text-white">
+                <h1 class="display-4 fw-bolder">Achats de l'utilisateur</h1>
+                <p class="lead fw-normal text-white-50 mb-0">Ce que vous achetez.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-5">
+        {% if achats_utilisateur is empty %}
+            <p class="text-center">Cet utilisateur n'a pas encore effectué d'achats !</p>
+        {% else %}
+            <table class="table table-hover" id="dataTable">
+                <thead>
+                    <tr>
+                        <th scope="col">Utilisateur</th>
+                        <th scope="col">Date d'achat</th>
+                        <th scope="col">Montant total</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for achat_utilisateur in achats_utilisateur %}
+                        <tr>
+                            <td scope="row">{{ achat_utilisateur.utilisateur.pseudo }}</td>
+                            <td>{{ achat_utilisateur.dateAchat|date('d/m/Y H:i') }}</td>
+                            <td>{{ achat_utilisateur.montantTotal }}</td>
+                            <td>
+                                <a href="{{ path('admin_details_achat_utilisateur', {id: achat_utilisateur.id}) }}" class="btn btn-primary">
+                                    <span class="bi bi-eye" aria-hidden="true"></span> Voir les détails
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+    </section>
+
+    <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+        <div class="text-center">
+            <a class="btn btn-outline-dark mt-auto" href="{{ path('admin_utilisateurs') }}">Liste des utilisateurs</a>
+        </div>
+    </div>
+{% endblock %}

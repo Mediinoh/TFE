@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des meilleures ventes{% endblock %}
+
+{% block body %}
+    <section class="bg-dark py-5">
+        <div class="container px-4 px-lg-5 my-5">
+            <div class="text-center text-white">
+                <h1 class="display-4 fw-bolder">Parce que vous l'avez décidé !</h1>
+                <p class="lead fw-normal text-white-50 mb-0">Toutes nos meilleures ventes sont regroupées ici</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-5">
+        <div class="container px-4 px-lg-5 mt-5">
+            <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+                {% if articles is empty %}
+                    <p class="tetx-center">Aucun article correspondant dans la base de données.</p>
+                {% else %}
+                    {% for article in articles %}
+                        <div class="col mb-5">
+                            <div class="card h-100 text-center">
+                                <img src="{{ imagesArticlesPath }}/{{ article.photoArticle }}" alt="{{ article.titre }}" class="card-img-top">
+                                <div class="card-body p-4">
+                                    <h5 class="card-title">{{ article.titre }}</h5>
+                                    <div class="card-text">
+                                        <p>{{ article.categorie.nomCategorie }}</p>
+                                        <p>{{ article.prixUnitaire }}&euro;</p>
+                                        <p>{{ article.description|nl2br }}</p>
+                                    </div>
+                                </div>
+                                <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                                    <p>Il a été vendu en {{ article.totalVentes ?? 0 }} exemplaires.</p>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+    </section>
+{% endblock %}

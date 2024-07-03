@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des commentaires de l'utilisateur{% endblock %}
+
+{% block body %}
+    <section class="bg-dark py-5">
+        <div class="container px-4 px-lg-5 my-5">
+            <div class="text-center text-white">
+                <h1 class="display-4 fw-bolder">Commentaires de l'utilisateur</h1>
+                <p class="lead fw-normal text-white-50 mb-0">Ce que vous pensez.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-5 container--fluid">
+        <div class="container px-4 px-lg-5 mt-5">
+            {% if commentaires_utilisateur is empty %}
+                <p class="text-center">Cet utilisateur n'a pas encore fait de commentaires !</p>
+            {% else %}
+                {% for commentaire_utilisateur in commentaires_utilisateur %}
+                     <div class="col mb-5">
+                        <div class="card text-center">
+                            <img src="{{ asset (imagesArticlesPath ~ '/' ~ commentaire_utilisateur.photo_article) }}" alt="{{ commentaire_utilisateur.titre }}" class="card-img-top img-fluid">
+                            <div class="card-header d-flex justify-content-between">
+                                <p>{{ commentaire_utilisateur.titre }}</p>
+                                <p>{{ commentaire_utilisateur.commentaire.dateCommentaire|date('d/m/Y H:i') }}</p>
+                            </div>
+                            <div class="card-body p-4">
+                                <div class="card-text">
+                                    <p>{{ commentaire_utilisateur.commentaire.commentaire }}</p>
+                                </div>
+                            </div>
+                        </div>
+                     </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+    </section>
+
+    <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+        <div class="text-center">
+            <a class="btn btn-outline-dark mt-auto" href="{{ path('admin_utilisateurs') }}">Liste des utilisateurs</a>
+        </div>
+    </div>
+{% endblock %}

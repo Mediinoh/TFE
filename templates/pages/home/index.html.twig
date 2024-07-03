@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Accueil{% endblock %}
+
+{% block body %}
+    <section class="bg-dark py-5 position-relative overflow-hidden">
+        <div class="container px-4 px-lg-5 my-5">
+            <div class="text-center text-white">
+                <h1 class="display-4 fw-bolder">Les achats intelligents</h1>
+                <p class="lead fw-normal text-white-50 mb-0">Achetez les nouveautés en réduction !</p>
+            </div>
+        </div>
+        <img src="{{ asset('images/img-3.jpg') }}" class="img-fluid object-fit-cover h-100 w-100" alt="">
+    </section>
+{% endblock %}

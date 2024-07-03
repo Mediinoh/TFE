@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Chat{% endblock %}
+
+{% block body %}
+    <section class="bg-dark py-5">
+        <div class="container px-4 px-lg-5 my-5">
+            <div class="text-center text-white">
+                <h1 class="display-4 fw-bolder">Nous aimons l'échange et l'entre-aide.</h1>
+                <p class="lead fw-normal text-white-50 mb-0">Faite preuve d'imagination et laissez parlez votre esprit.</p>
+            </div>
+        </div>
+    </section>
+
+    <div class="container">
+        {% for label, messages in app.flashes(['success', 'warning', 'danger']) %}
+            {% for message in messages %}
+                <div class="alert alert-{{ label }} mt-4" role="alert">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endfor %}
+    </div>
+
+    <section class="py-5">
+        <div class="container px-4 px-lg-5 mt-5">
+            <div class="chat-container">
+                <div class="chat-messages">
+                    {% if messages is empty %}
+                        <p class="text-center">Aucun message à afficher</p>
+                    {% else %}
+                        {% for message in messages %}
+                            <div class="card mb-3">
+                                <div class="card-header d-flex justify-content-between">
+                                    <p>{{ message.utilisateur.pseudo }}</p>
+                                    <p>{{ message.dateMessage|date('d/m/Y H:i') }}</p>
+                                </div>
+                                <div class="card-body">
+                                    <div class="card-text">{{ message.message|nl2br }}</div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+
+            {% if app.user.isBloque %}
+                <p>Vous ne pouvez pas ajouter de message dans le chat car vous êtes bloqué !</p>
+            {% else %}
+                {{ form_start(form) }}
+                    <div class="form-group mb-3">
+                        {{ form_label(form.message) }}
+                        {{ form_widget(form.message) }}
+                    </div>
+                    <div class="form-group mb-3">
+                        {{ form_widget(form.submit) }}
+                    </div>
+                {{ form_end(form) }}
+            {% endif %}
+        </div>
+    </section>
+{% endblock %}

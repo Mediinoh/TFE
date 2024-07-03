@@ -1,0 +1,102 @@
+<header role="banner" id="header">
+    <!-- Navigation-->
+    <nav role="navigation" class="navbar navbar-expand-lg navbar-light bg-light fixed-top" aria-label="Menu principal de la page">
+        <div class="container px-4 px-lg-5">
+            <a class="navbar-brand" href="{{ path('home.index') }}">Med-Shop</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{{ path('home.index') }}">Accueil</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('propos.index') }}">À propos de nous</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Nos Produits</a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li>
+                                <a class="dropdown-item"  href="{{ path('produits.list') }}">Tous les produits</a>
+                            </li>
+                            <li><hr class="dropdown-divider" /></li>
+                            <li>
+                                <a class="dropdown-item" href="{{ path('produits.meilleures_ventes') }}">Meilleures ventes</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="{{ path('produits.nouveautes') }}">Nouveautés</a>
+                            </li>
+                            {% if app.user %}
+                                <li><hr class="dropdown-divider" /></li>
+                                <li>
+                                    <a class="dropdown-item" href="{{ path('produits.favoris') }}">
+                                        <span class="bi bi-heart-fill" aria-hidden="true"></span> Mes favoris
+                                    </a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ path('chat.index') }}">Chat</a>
+                        </li>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('blog.list') }}">Blog/Newletters</a>
+                    </li>
+                    {% if app.user and is_granted('ROLE_ADMIN')  %}
+                        <li class="nav-item">
+                            <a href="{{ path('admin_utilisateurs') }}" class="nav-link">Gestion des utilisateurs</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ path('admin_articles') }}" class="nav-link">Gestion des articles</a>
+                        </li>
+                    {% endif %}
+                </ul>
+                <div class="d-flex">
+                    <ul class="navbar-nav me-auto">
+                        {% if app.user %}
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle btn bg-primary d-flex align-items-center me-2" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    {% if app.user.photoProfil is null %}
+                                        <span class="bi bi-person-vcard me-2" aria-hidden="true"></span>
+                                    {% else %}
+                                        <img src="{{ asset('images/photos_profil/' ~ app.user.photoProfil) }}" alt="" class="rounded-circle img-fluid me-2" width="40" height="40">
+                                    {% endif %}
+                                    {{ app.user.pseudo }}
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                                    <li>
+                                        <a class="dropdown-item" href="{{ path('utilisateur.profil', {id: app.user.id}) }}">Modifier le profil</a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="{{ path('list_achats_utilisateur') }}">
+                                            <span class="bi bi-cart-list" aria-hidden="true"></span> Mes achats
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="{{ path('panier.list') }}">
+                                            <span class="bi bi-cart" aria-hidden="true"></span> Mon panier
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <hr class="dropdown-divider" />
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="{{ path('security.logout') }}">
+                                            <span clss="bi bi-power" aria-hidden="true"></span> Se déconnecter
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        {% else %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ path('security.login') }}">Connexion</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ path('security.inscription') }}">Inscription</a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+</header>

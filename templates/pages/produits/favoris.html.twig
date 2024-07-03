@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mes favoris{% endblock %}
+
+{% block body %}
+    <section class="bg-dark py-5">
+        <div class="container px-4 px-lg-5 my-5">
+            <div class="text-center text-white">
+                <h1 class="display-4 fw-bolder">Mes articles préférés</h1>
+                <p class="lead fw-normal text-white-50 mb-0">Tout ce que vous aimez.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-5">
+        <div class="container px-4 px-lg-5 mt-5">
+            <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+                {% if articles is empty %}
+                    <p class="text-center">Vous n'avez pas de favoris.</p>
+                {% else %}
+                    {% for article in articles %}
+                        <div class="col mb-5">
+                            <div class="card h-100 text-center">
+                                <img src="{{ imagesArticlesPath }}/{{ article.photoArticle }}" alt="{{ article.titre }}" class="card-img-top">
+                                <div class="card-body p-4">
+                                    <h5 class="card-title">{{ article.titre }}</h5>
+                                    <div class="card-text">
+                                        <p>{{ article.categorie.nomCategorie }}</p>
+                                        <p>{{ article.prixUnitaire }}&euro;</p>
+                                        <p>{{ article.description|nl2br }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+    </section>
+{% endblock %}

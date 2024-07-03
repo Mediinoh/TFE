@@ -1,0 +1,71 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des utilisateurs{% endblock %}
+
+{% block body %}
+    <section class="bg-dark py-5">
+        <div class="container px-4 px-lg-5 my-5">
+            <div class="text-center text-white">
+                <h1 class="display-4 fw-bolder">Liste des utilisateurs</h1>
+                <p class="lead fw-normal text-white-50 mb-0">Ce que vous pensez.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-5">
+        {% if infosUtilisateurs is empty %}
+            <p class="text-center">Aucun utilisateur dans la base de données</p>
+        {% else %}
+            <table class="table table-hover" id="dataTable">
+                <thead>
+                    <tr>
+                        <th scope="col"><span class="bi bi-key" aria-hidden="true"></span> Id</th>
+                        <th scope="col">Nom</th>
+                        <th scope="col">Prénom</th>
+                        <th scope="col"><span class="bi bi-geo-alt" aria-hidden="true"></span> Adresse</th>
+                        <th scope="col"><span class="bi bi-geo" aria-hidden="true"></span> Code postal</th>
+                        <th scope="col"><span class="bi bi-at" aria-hidden="true"></span> Email</th>
+                        <th scope="col"><span class="bi bi-cake2" aria-hidden="true"></span> Date de naissance</th>
+                        <th scope="col"><span class="bi bi-person-circle" aria-hidden="true"></span> Pseudo</th>
+                        <th scope="col"><span class="bi bi-person-fill-lock" aria-hidden="true"></span> Bloque</th>
+                        <th scope="col"><span class="bi bi-shield-lock-fill" aria-hidden="true"></span> Admin</th>
+                        <th scole="col"><span class="bi bi-calendar-day" aria-hidden="true"></span> Nombre de connexions du jour</th>
+                        <th scole="col"><span class="bi bi-calendar-week" aria-hidden="true"></span> Nombre de connexions des 7 derniers jours</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for infosUtilisateur in infosUtilisateurs %}
+                        <tr>
+                            <td col="row">{{ infosUtilisateur['utilisateur'].id }}</td>
+                            <td>{{ infosUtilisateur['utilisateur'].nom }}</td>
+                            <td>{{ infosUtilisateur['utilisateur'].prenom }}</td>
+                            <td>{{ infosUtilisateur['utilisateur'].adresse }}</td>
+                            <td>{{ infosUtilisateur['utilisateur'].codePostal }}</td>
+                            <td>{{ infosUtilisateur['utilisateur'].email }}</td>
+                            <td>{{ infosUtilisateur['utilisateur'].dateNaissance|date('d/m/Y') }}</td>
+                            <td>{{ infosUtilisateur['utilisateur'].pseudo }}</td>
+                            <td>{{ infosUtilisateur['utilisateur'].bloque ? 'Oui' : 'Non' }}</td>
+                            <td>{{ 'ROLE_ADMIN' in infosUtilisateur['utilisateur'].roles ? 'Oui' : 'Non' }}</td>
+                            <td>{{ infosUtilisateur['nbConnexionsJour'] }}</td>
+                            <td>{{ infosUtilisateur['nbConnexionsSemaine'] }}</td>
+                            <td>
+                                <div class="btn-group">
+                                    <a class="btn text-primary" href="{{ path('admin_commentaires_utilisateur', {id: infosUtilisateur['utilisateur'].id}) }}">
+                                        <span class="bi bi-eye" aria-hidden="true"></span> Voir commentaires
+                                    </a>
+                                    <a class="btn text-secundary" href="{{ path('admin_achats_utilisateur', {id: infosUtilisateur['utilisateur'].id}) }}">
+                                        <span class="bi bi-eye" aria-hidden="true"></span> Voir achats
+                                    </a>
+                                    {% if infosUtilisateur['utilisateur'] is not same as(app.user) %}
+                                        {{ form(infosUtilisateur['bloqueUtilisateurForm']) }}
+                                    {% endif %}
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+    </section>
+{% endblock %}

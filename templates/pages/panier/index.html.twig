@@ -1,0 +1,73 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mon panier{% endblock %}
+
+{% block body %}
+    <section class="bg-dark py-5">
+        <div class="container px-4 px-lg-5 my-5">
+            <div class="text-center text-white">
+                <h1 class="display-4 fw-bolder">Mon panier</h1>
+                <p class="lead fw-normal text-white-50 mb-0">Ce que vous commandez.</p>
+            </div>
+        </div>
+    </section>
+    
+    <section class="py-5">
+        <div class="container">
+            {% for label, messages in app.flashes(['success', 'warning']) %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ label }} mt-4" role="alert">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endfor %}
+
+            {% if articlesPanier is empty %}
+                <p class="text-center">Votre panier est vide</p>
+            {% else %}
+                <table id="dataTable" class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Photo de l'article</th>
+                            <th scope="col">Nom de l'article</th>
+                            <td scope="col">Prix unitaire</td>
+                            <th scope="col">Quantité</th>
+                            <th scope="col">Prix total</th>
+                            <th scope="col">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in articlesPanier %}
+                            {{ form_start(item.suppressionArticlePanierForm, {'attr': {'id': item.article.id}}) }}
+                                <tr>
+                                    <td><img src="{{ imagesArticlesPath }}/{{ item.article.photoArticle }}" alt="{{ item.article.titre }}" class="img-thumbail"></td>
+                                    <td>{{ item.article.titre }}</td>
+                                    <td>{{ item.article.prixUnitaire }}</td>
+                                    <td>{{ form_widget(item.suppressionArticlePanierForm.quantite) }}</td>
+                                    <td>{{ item.prix_total }}&euro;</td>
+                                    <td>{{ form_widget(item.suppressionArticlePanierForm.suppression_panier) }}</td>
+                                </tr>
+                            {{ form_end(item.suppressionArticlePanierForm) }}
+                        {% endfor %}
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="3">Total</td>
+                            <td>{{ quantiteTotale }}</td>
+                            <td>{{ total }}&euro;</td>
+                        </tr>
+                    </tfoot>
+                </table>
+                <div class="d-flex justify-content-end">
+                    {{ form(formPayer) }}
+                </div>
+            {% endif %}
+        </div>
+    </section>
+
+    <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+        <div class="text-center">
+            <a class="btn btn-outline-dark mt-auto" href="{{ path('produits.list') }}">Liste des produits</a>
+        </div>
+    </div>
+{% endblock %}

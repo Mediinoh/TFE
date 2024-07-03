@@ -1,0 +1,52 @@
+<!DOCTYPE HTML>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Facture du {{ historiqueAchat.dateAchat|date('d/m/Y à H:i') }} payée par {{ historiqueAchat.utilisateur.fullName }}</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+        <!-- Bootstrap icons -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" integrity="sha512-dPXYcDub/aeb08c63jRq/k6GaKccl256JQy/AnOq7CAnEZ9FzSL9wSbcZkMp4R26vBsMLFYH4kQ67/bbV8XaCQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <!-- DataTables -->
+        <link rel="stylesheet" href="https://cdn.datatables.net/2.0.8/css/dataTables.dataTables.css" />
+    </head>
+    <body>
+        <main role="main" id="main">
+            <h1>Facture du {{ historiqueAchat.dateAchat|date('d/m/Y à H:i') }} payée par {{ historiqueAchat.utilisateur.fullName }}</h1>
+            <table class="table text-center align-middle" id="dataTable">
+                <thead>
+                    <tr class="border-bottom">
+                        <th scope="col">Photo de l'article</th>
+                        <th scope="col">Titre</th>
+                        <th scope="col">Prix unitaire</th>
+                        <th scope="col">Quantité</th>
+                        <th scope="col">Prix total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% set quantiteTotale = 0 %}
+                    {% for detail_achat in details_achat %}
+                        {% set quantiteTotale = quantiteTotale + detail_achat.quantite %}
+                        <tr class="border-bottom">
+                            <td><img src="{{ absolute_url (imagesArticlesPath ~ '/' ~ detail_achat.photo_article) }}" alt="{{ detail_achat.titre }}" class="img-thumbail"></td>
+                            <td>{{ detail_achat.titre }}</td>
+                            <td>{{ detail_achat.prix_unitaire }}</td>
+                            <td>{{ detail_achat.quantite }}</td>
+                            <td>{{ detail_achat.prix_total }}
+                        </tr>
+                    {% endfor %}
+                </tbody>
+                <tfoot>
+                    <tr class="border-bottom">
+                        <td colspan="3">Total</td>
+                        <td>{{ quantiteTotale }}</td>
+                        <td>{{ historiqueAchat.montantTotal }}&euro;</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </main>
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.js"></script>
+        <script src="https://cdn.datatables.net/2.0.8/js/dataTables.js"></script>
+    </body>
+</html>
