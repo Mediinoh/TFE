@@ -31,7 +31,8 @@ class AdminAchatsUtilisateurController extends AbstractAchatsUtilisateurControll
             $this->addFlash('danger', `L'utilisateur avec l'id $id n'existe pas dans la base de données !`);
             return $this->redirectToRoute('admin_utilisateurs');
         }
-        return $this->voirAchatsUtilisateur($utilisateur, $historiqueAchatRepository);
+
+        return $this->voirAchatsUtilisateur($utilisateur, $historiqueAchatRepository, 'admin_details_achat_utilisateur');
     }
 
     #[Route('/admin/details_achat/{id}', 'admin_details_achat_utilisateur', methods: ['GET'])]

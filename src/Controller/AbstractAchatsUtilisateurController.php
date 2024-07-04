@@ -8,19 +8,18 @@ use App\Repository\HistoriqueAchatRepository;
 use Dompdf\Dompdf;
 use Dompdf\Options;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Routing\Annotation\Route;
 
 abstract class AbstractAchatsUtilisateurController extends AbstractController
 {
-    protected function voirAchatsUtilisateur(Utilisateur $utilisateur, HistoriqueAchatRepository $historiqueAchatRepository)
+    protected function voirAchatsUtilisateur(Utilisateur $utilisateur, HistoriqueAchatRepository $historiqueAchatRepository, string $redirectPath)
     {
         $achats_utilisateur = $historiqueAchatRepository->recupererHistoriqueAchats($utilisateur);
 
         return $this->render('pages/achats_utilisateur/list.html.twig', [
             'achats_utilisateur' => $achats_utilisateur,
+            'redirectPath' => $redirectPath,
         ]);
     }
 
@@ -41,7 +40,7 @@ abstract class AbstractAchatsUtilisateurController extends AbstractController
         ]);
     }
 
-    #[Route('/telecharger-facture/{id}', 'telecharger.facture', methods: ['GET'])]
+    #[Route('/telecharger_facture/{id}', 'telecharger_facture')]
     public function telechargerFactureAction(int $id, HistoriqueAchatRepository $historiqueAchatRepository) {
         $historiqueAchat = $historiqueAchatRepository->find($id);
         return $this->telechargerFacture($historiqueAchat, $historiqueAchatRepository);

@@ -65,7 +65,7 @@ class UtilisateurController extends AbstractAchatsUtilisateurController
             $this->redirectToRoute('security.login');
         }
 
-        return $this->voirAchatsUtilisateur($user, $historiqueAchatRepository);
+        return $this->voirAchatsUtilisateur($user, $historiqueAchatRepository, 'details_achat_utilisateur');
     }
 
     #[Route('/utilisateur/details_achat/{id}', 'details_achat_utilisateur', methods: ['GET'])]

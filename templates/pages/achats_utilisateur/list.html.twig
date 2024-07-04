@@ -33,10 +33,10 @@
                             <td>{{ achat_utilisateur.montantTotal }}</td>
                             <td>
                                 <div class="btn-group">
-                                    <a href="{{ path('admin_details_achat_utilisateur', {id: achat_utilisateur.id}) }}" class="btn text-primary">
+                                    <a href="{{ path(redirectPath, {id: achat_utilisateur.id}) }}" class="btn text-primary">
                                         <span class="bi bi-eye" aria-hidden="true"></span> Voir les détails
                                     </a>
-                                    <a href="{{ path('telecharger.facture', {id: achat_utilisateur.id}) }}" class="btn text-secondary">
+                                    <a href="{{ path('telecharger_facture', {id: achat_utilisateur.id}) }}" class="btn text-secondary">
                                         <span class="bi bi-download" aria-hidden="true"></span> Télécharger la facture
                                     </a>
                                 </div>
@@ -48,9 +48,11 @@
         {% endif %}
     </section>
 
-    <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-        <div class="text-center">
-            <a class="btn btn-outline-dark mt-auto" href="{{ path('admin_utilisateurs') }}">Liste des utilisateurs</a>
+    {% if is_granted('ROLE_ADMIN')  %}
+        <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+            <div class="text-center">
+                <a class="btn btn-outline-dark mt-auto" href="{{ path('admin_utilisateurs') }}">Liste des utilisateurs</a>
+            </div>
         </div>
-    </div>
+    {% endif %}
 {% endblock %}
