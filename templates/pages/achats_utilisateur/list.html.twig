@@ -32,9 +32,14 @@
                             <td>{{ achat_utilisateur.dateAchat|date('d/m/Y H:i') }}</td>
                             <td>{{ achat_utilisateur.montantTotal }}</td>
                             <td>
-                                <a href="{{ path('admin_details_achat_utilisateur', {id: achat_utilisateur.id}) }}" class="btn btn-primary">
-                                    <span class="bi bi-eye" aria-hidden="true"></span> Voir les détails
-                                </a>
+                                <div class="btn-group">
+                                    <a href="{{ path('admin_details_achat_utilisateur', {id: achat_utilisateur.id}) }}" class="btn text-primary">
+                                        <span class="bi bi-eye" aria-hidden="true"></span> Voir les détails
+                                    </a>
+                                    <a href="{{ path('telecharger.facture', {id: achat_utilisateur.id}) }}" class="btn text-secondary">
+                                        <span class="bi bi-download" aria-hidden="true"></span> Télécharger la facture
+                                    </a>
+                                </div>
                             </td>
                         </tr>
                     {% endfor %}

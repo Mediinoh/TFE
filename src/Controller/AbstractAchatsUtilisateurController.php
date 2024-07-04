@@ -8,7 +8,9 @@ use App\Repository\HistoriqueAchatRepository;
 use Dompdf\Dompdf;
 use Dompdf\Options;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Routing\Annotation\Route;
 
 abstract class AbstractAchatsUtilisateurController extends AbstractController
@@ -39,9 +41,18 @@ abstract class AbstractAchatsUtilisateurController extends AbstractController
         ]);
     }
 
-    protected function telechargerFacture(HistoriqueAchat $historiqueAchat, $details_achat, string $redirectPath): Response
+    #[Route('/telecharger-facture/{id}', 'telecharger.facture', methods: ['GET'])]
+    public function telechargerFactureAction(int $id, HistoriqueAchatRepository $historiqueAchatRepository) {
+        $historiqueAchat = $historiqueAchatRepository->find($id);
+        return $this->telechargerFacture($historiqueAchat, $historiqueAchatRepository);
+    }
+
+    protected function telechargerFacture(HistoriqueAchat $historiqueAchat, HistoriqueAchatRepository $historiqueAchatRepository): Response
     {
-        // Configuration de Dompdf selon nos besoins
+        // Récupérer les détails de l'achat
+        $details_achat = $historiqueAchatRepository->recupererDetailsAchat($historiqueAchat->getId());
+
+        // Générer le PDF
         $pdfOptions = new Options();
         $pdfOptions->set('defaultFont', 'Arial');
         $pdfOptions->set('isRemoteEnabled', true);
@@ -73,8 +84,6 @@ abstract class AbstractAchatsUtilisateurController extends AbstractController
             'Content-Disposition' => "attachment; filename=\"$filename\"",
         ]);
 
-        $response->send();
-
-        return $this->redirectToRoute($redirectPath);
+        return $response;
     }
 }

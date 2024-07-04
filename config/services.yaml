@@ -9,6 +9,7 @@ parameters:
     images_photos_profil_path: '/images/photos_profil'
     images_articles_directory: '%public_directory%/%images_articles_path%'
     images_photos_profil_directory: '%public_directory%/%images_photos_profil_path%'
+    factures_directory: '%public_directory%/factures'
 
 services:
     # default configuration for services in *this* file

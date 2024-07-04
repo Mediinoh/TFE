@@ -84,9 +84,9 @@ class PanierController extends AbstractAchatsUtilisateurController
                 $userId => [],
             ]);
 
-            $details_achat = $historiqueAchatRepository->recupererDetailsAchat($historiqueAchat->getId());
-            
-            return $this->telechargerFacture($historiqueAchat, $details_achat, 'panier.list');
+            $factureResponse = $this->telechargerFacture($historiqueAchat, $historiqueAchatRepository);
+
+            return $factureResponse;
         }
 
         return $this->render('pages/panier/index.html.twig', [
