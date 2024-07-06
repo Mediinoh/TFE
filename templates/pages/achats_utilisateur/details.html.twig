@@ -21,17 +21,19 @@
                     <tr>
                         <th scope="col">Photo de l'article</th>
                         <th scope="col">Titre</th>
+                        <th scope="col">Prix unitaire</th>
                         <th scope="col">Quantité</th>
-                        <th scope="col">Prix</th>
+                        <th scope="col">Prix Total</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for detail_achat in details_achat %}
                         <tr>
-                            <td><img src="{{ asset (imagesArticlesPath ~ '/' ~ detail_achat.photo_article) }}" alt="{{ detail_achat.titre }}" class="img-thumbnail"></td>
+                            <td><img src="{{ imagesArticlesPath ~ '/' ~ detail_achat.photo_article }}" alt="{{ detail_achat.titre }}" class="img-thumbnail"></td>
                             <td>{{ detail_achat.titre }}</td>
+                            <td>{{ detail_achat.prix_unitaire }}</td>
                             <td>{{ detail_achat.quantite }}</td>
-                            <td>{{ detail_achat.prix }}</td>
+                            <td>{{ detail_achat.prix_total }}</td>
                         </tr>
                     {% endfor %}
                 </tbody>

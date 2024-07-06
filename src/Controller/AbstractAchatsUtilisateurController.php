@@ -43,6 +43,13 @@ abstract class AbstractAchatsUtilisateurController extends AbstractController
     #[Route('/telecharger_facture/{id}', 'telecharger_facture')]
     public function telechargerFactureAction(int $id, HistoriqueAchatRepository $historiqueAchatRepository) {
         $historiqueAchat = $historiqueAchatRepository->find($id);
+        
+        if (!$historiqueAchat) {
+            $this->addFlash('danger', `L'historique d'achat avec l'id $id n'existe pas dans la base de données !`);
+            $redirectPath = $this->isGranted('ROLE_ADMIN') ? 'admin_achats_utilisateur' : 'list_achats_utilisateur';
+            return $this->redirectToRoute($redirectPath);
+        }
+
         return $this->telechargerFacture($historiqueAchat, $historiqueAchatRepository);
     }
 

@@ -10,6 +10,9 @@ parameters:
     images_articles_directory: '%public_directory%/%images_articles_path%'
     images_photos_profil_directory: '%public_directory%/%images_photos_profil_path%'
     factures_directory: '%public_directory%/factures'
+    tmdb_api_key: '%env(TMDB_API_KEY)%'
+    tmdb_api_url: 'https://api.themoviedb.org/3'
+    tmdb_api_images_url: 'https://image.tmdb.org/t/p/w500'
 
 services:
     # default configuration for services in *this* file
@@ -37,6 +40,11 @@ services:
     App\EventListener\UserLoggedInListener:
         tags:
             - { name: kernel.event_listener, event: 'user.logged_in', methods: 'onUserLoggedIn' }
+
+    App\Service\TmdbApiService:
+        arguments:
+            $apiKey: '%tmdb_api_key%'
+            $apiUrl: '%tmdb_api_url%'
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
