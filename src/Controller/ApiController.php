@@ -17,11 +17,14 @@ class ApiController extends AbstractController
     }
 
     #[Route('/api/films', 'api_films', methods: ['GET'])]
-    public function listFilms(): JsonResponse
+    public function listFilms(): Response
     {
         try {
             $films = $this->tmdbApiService->getPopularMovies();
-            return new JsonResponse($films, 200);
+            return $this->renderView('pages/tmdb/films.twig.html', [ 
+                'films' => $films,
+                'tmdb_images_url' => $this->getParameter('tmdb_api_images_url'),
+            ]);
         } catch(\Exception $e) {
             return new JsonResponse(['error' => $e->getMessage()]);
         }
