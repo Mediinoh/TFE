@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Service\BraintreeService;
 use App\Service\TmdbApiService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -24,5 +25,23 @@ class ApiController extends AbstractController
         } catch(\Exception $e) {
             return new JsonResponse(['error' => $e->getMessage()]);
         }
+    }
+
+    #[Route('/checkout', 'checkout')]
+    public function checkout(BraintreeService $braintreeService): Response
+    {
+        $clientToken = $braintreeService->getGateway()->clientToken()->generate();
+
+        return $this->render('checkout/checkout.html.twig', [
+            'clientToken' => $clientToken,
+        ]);
+    }
+
+    
+    #[Route('/checkout/process', 'checkout_process')]
+    public function processCheckout(BraintreeService $braintreeService): Response
+    {
+        // Code pour traiter le paiement Braintree
+        return new Response();
     }
 }
