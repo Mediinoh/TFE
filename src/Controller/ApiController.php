@@ -21,8 +21,36 @@ class ApiController extends AbstractController
     {
         try {
             $films = $this->tmdbApiService->getPopularMovies();
-            return $this->renderView('pages/tmdb/films.twig.html', [ 
+            return $this->render('pages/tmdb/films.twig.html', [ 
                 'films' => $films,
+                'tmdb_images_url' => $this->getParameter('tmdb_api_images_url'),
+            ]);
+        } catch(\Exception $e) {
+            return new JsonResponse(['error' => $e->getMessage()]);
+        }
+    }
+
+    #[Route('/api/tvshows', 'api_tvshows', methods: ['GET'])]
+    public function listSeries(): Response
+    {
+        try {
+            $tvShows = $this->tmdbApiService->getPopularTvShows();
+            return $this->render('pages/tmdb/tvshows.twig.html', [ 
+                'tvShows' => $tvShows,
+                'tmdb_images_url' => $this->getParameter('tmdb_api_images_url'),
+            ]);
+        } catch(\Exception $e) {
+            return new JsonResponse(['error' => $e->getMessage()]);
+        }
+    }
+
+    #[Route('/api/actors', 'api_actors', methods: ['GET'])]
+    public function listActors(): Response
+    {
+        try {
+            $actors = $this->tmdbApiService->getPopularActors();
+            return $this->render('pages/tmdb/actors.twig.html', [ 
+                'actors' => $actors,
                 'tmdb_images_url' => $this->getParameter('tmdb_api_images_url'),
             ]);
         } catch(\Exception $e) {
@@ -41,10 +69,23 @@ class ApiController extends AbstractController
     }
 
     
-    #[Route('/checkout/process', 'checkout_process')]
+    #[Route('/checkout/process', name: 'checkout_process', methods: ['POST'])]
     public function processCheckout(BraintreeService $braintreeService): Response
     {
-        // Code pour traiter le paiement Braintree
-        return new Response();
+        $nonceFromTheClient = $_POST['payment_method_nonce'];
+        
+        $result = $braintreeService->getGateway()->transaction()->sale([
+            'amount' => '10.00', // replace with the actual amount
+            'paymentMethodNonce' => $nonceFromTheClient,
+            'options' => [
+                'submitForSettlement' => true,
+            ],
+        ]);
+
+        if ($result->success) {
+            return new Response('Transaction successful!');
+        } else {
+            return new Response('Transaction failed: ' . $result->message);
+        }
     }
 }

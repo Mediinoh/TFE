@@ -31,6 +31,7 @@ class TmdbApiService
         $response = $this->httpClient->request('GET', $this->apiUrl . $endpoint, [
             'query' => [
                 'api_key' => $this->apiKey,
+                'language' => 'fr',
             ]
         ]);
 
@@ -40,6 +41,6 @@ class TmdbApiService
 
         $data = $response->toArray();
 
-        return $data['results'];
+        return $data['results'] ?? [];
     }
 }

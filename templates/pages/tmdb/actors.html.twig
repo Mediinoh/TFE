@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Les acteurs populaires du moment{% endblock %}
+
+{% block body %}
+    <section class="bg-dark py-5">
+        <div class="container px-4 px-lg-5 my-5">
+            <div class="text-center text-white">
+                <h1 class="display-4 fw-bolder">Les acteurs populaires du moment</h1>
+                <p class="lead fw-normal text-white-50 mb-0">Découvrez les stars du cinéma.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-5">
+        <div class="container px-4 px-lg-5 mt-5">
+            <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+                {% if actors is empty %}
+                    <p class="text-center">Il n'y a pas d'acteurs populaires.</p>
+                {% else %}
+                    {% for actor in actors %}
+                        <div class="col mb-5">
+                            <div class="card h-100 text-center">
+                                <img src="{{ tmdb_images_url }}/{{ film.poster_path }}" alt="{{ film.title }}" class="card-img-top">
+                                <div class="card-body p-4">
+                                    <h5 class="card-title">{{ film.title }}</h5>
+                                    <div class="card-text">
+                                        <p>{{ film.overview|nl2br }}</p>
+                                        <p>Sorti le {{ film.release_date|date('d/m/Y') }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+    </section>
+{% endblock %}
