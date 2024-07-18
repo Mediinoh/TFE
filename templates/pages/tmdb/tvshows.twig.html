@@ -21,12 +21,12 @@
                     {% for tvShow in tvShows %}
                         <div class="col mb-5">
                             <div class="card h-100 text-center">
-                                <img src="{{ tmdb_images_url }}/{{ tvShow.poster_path }}" alt="{{ actor.name }}" class="card-img-top">
+                                <img src="{{ tmdb_images_url }}/{{ tvShow.poster_path }}" alt="{{ tvShow.name }}" class="card-img-top">
                                 <div class="card-body p-4">
-                                    <h5 class="card-title">{{ actor.name }}</h5>
+                                    <h5 class="card-title">{{ tvShow.name }}</h5>
                                     <div class="card-text">
-                                        <p>{{ actor.known_for_department }}</p>
-                      <p>Popularité : {{ actor.popularity }}</p>
+                                        <p>{{ tvShow.overview|nl2br }}</p>
+                                        <p>Popularité : {{ tvShow.first_air_date|date('d/m/Y') }}</p>
                                     </div>
                                 </div>
                             </div>

@@ -49,7 +49,7 @@ class ApiController extends AbstractController
     {
         try {
             $actors = $this->tmdbApiService->getPopularActors();
-            return $this->render('pages/tmdb/actors.twig.html', [ 
+            return $this->render('pages/tmdb/actors.html.twig', [ 
                 'actors' => $actors,
                 'tmdb_images_url' => $this->getParameter('tmdb_api_images_url'),
             ]);

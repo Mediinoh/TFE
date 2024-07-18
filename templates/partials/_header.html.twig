@@ -41,6 +41,21 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{ path('blog.list') }}">Blog/Newletters</a>
                     </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle btn d-flex align-items-center me-2" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Cinéma
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                            <li>
+                                <a class="dropdown-item" href="{{ path('api_films') }}">Films populaires</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="{{ path('api_tvshows') }}">Séries TV populaires</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="{{ path('api_actors') }}">Acteurs populaires</a>
+                            </li>
+                        </ul>
                     {% if app.user and is_granted('ROLE_ADMIN')  %}
                         <li class="nav-item">
                             <a href="{{ path('admin_utilisateurs') }}" class="nav-link">Gestion des utilisateurs</a>
