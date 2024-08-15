@@ -1,11 +1,11 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Mon profil{% endblock %}
+{% block title %}{{ 'my_profile'|trans({}, 'messages', app.request.locale) }}{% endblock %}
 
 {% block body %}
     <section class="py-5">
         <div class="container">
-            <h1>Modifier mon profil</h1>
+            <h1>{{ 'edit_profile'|trans({}, 'messages', app.request.locale) }}</h1>
 
             {% for label, messages in app.flashes(['success', 'warning']) %}
                 {% for message in messages %}

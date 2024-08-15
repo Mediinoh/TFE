@@ -1,13 +1,13 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Mon panier{% endblock %}
+{% block title %}{{ 'my_cart'|trans({}, 'messages', app.request.locale) }}{% endblock %}
 
 {% block body %}
     <section class="bg-dark py-5">
         <div class="container px-4 px-lg-5 my-5">
             <div class="text-center text-white">
-                <h1 class="display-4 fw-bolder">Mon panier</h1>
-                <p class="lead fw-normal text-white-50 mb-0">Ce que vous commandez.</p>
+                <h1 class="display-4 fw-bolder">{{ 'my_cart'|trans({}, 'messages', app.request.locale) }}</h1>
+                <p class="lead fw-normal text-white-50 mb-0">{{ 'what_you_order'|trans({}, 'messages', app.request.locale) }}</p>
             </div>
         </div>
     </section>
@@ -23,17 +23,17 @@
             {% endfor %}
 
             {% if articlesPanier is empty %}
-                <p class="text-center">Votre panier est vide</p>
+                <p class="text-center">{{ 'your_cart_is_empty'|trans({}, 'messages', app.request.locale) }}</p>
             {% else %}
                 <table id="dataTable" class="table">
                     <thead>
                         <tr>
-                            <th scope="col">Photo de l'article</th>
-                            <th scope="col">Nom de l'article</th>
-                            <td scope="col">Prix unitaire</td>
-                            <th scope="col">Quantité</th>
-                            <th scope="col">Prix total</th>
-                            <th scope="col">Actions</th>
+                            <th scope="col">{{ 'product_photo'|trans({}, 'messages', app.request.locale) }}</th>
+                            <th scope="col">{{ 'product_name'|trans({}, 'messages', app.request.locale) }}</th>
+                            <td scope="col">{{ 'unit_price'|trans({}, 'messages', app.request.locale) }}</td>
+                            <th scope="col">{{ 'quantity'|trans({}, 'messages', app.request.locale) }}</th>
+                            <th scope="col">{{ 'total_price'|trans({}, 'messages', app.request.locale) }}</th>
+                            <th scope="col">{{ 'actions'|trans({}, 'messages', app.request.locale) }}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -67,7 +67,7 @@
 
     <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
         <div class="text-center">
-            <a class="btn btn-outline-dark mt-auto" href="{{ path('produits.list') }}">Liste des produits</a>
+            <a class="btn btn-outline-dark mt-auto" href="{{ path('produits.list') }}">{{ 'products_list'|trans({}, 'messages', app.request.locale) }}</a>
         </div>
     </div>
 {% endblock %}

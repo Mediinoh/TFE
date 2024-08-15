@@ -1,13 +1,13 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Chat{% endblock %}
+{% block title %}{{ 'chat'|trans({}, 'messages', app.request.locale) }}{% endblock %}
 
 {% block body %}
     <section class="bg-dark py-5">
         <div class="container px-4 px-lg-5 my-5">
             <div class="text-center text-white">
-                <h1 class="display-4 fw-bolder">Nous aimons l'échange et l'entre-aide.</h1>
-                <p class="lead fw-normal text-white-50 mb-0">Faite preuve d'imagination et laissez parlez votre esprit.</p>
+                <h1 class="display-4 fw-bolder">{{ 'we_love_exchange'|trans({}, 'messages', app.request.locale) }}</h1>
+                <p class="lead fw-normal text-white-50 mb-0">{{ 'be_imaginative'|trans({}, 'messages', app.request.locale) }}</p>
             </div>
         </div>
     </section>
@@ -27,7 +27,7 @@
             <div class="chat-container">
                 <div class="chat-messages">
                     {% if messages is empty %}
-                        <p class="text-center">Aucun message à afficher</p>
+                        <p class="text-center">{{ 'no_messages_to_display'|trans({}, 'messages', app.request.locale) }}</p>
                     {% else %}
                         {% for message in messages %}
                             <div class="card mb-3">
@@ -45,7 +45,7 @@
             </div>
 
             {% if app.user.isBloque %}
-                <p>Vous ne pouvez pas ajouter de message dans le chat car vous êtes bloqué !</p>
+                <p>{{ 'blocked_from_chat'|trans({}, 'messages', app.request.locale) }}</p>
             {% else %}
                 {{ form_start(form) }}
                     <div class="form-group mb-3">

@@ -2,11 +2,12 @@
 
 namespace App\Service;
 
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class TmdbApiService
 {
-    public function __construct(private HttpClientInterface $httpClient, private string $apiKey, private string $apiUrl)
+    public function __construct(private HttpClientInterface $httpClient, private RequestStack $requestStack, private string $apiKey, private string $apiUrl)
     {
         
     }
@@ -28,10 +29,12 @@ class TmdbApiService
 
     private function fetchFromTmdb(string $endpoint): array
     {
+        $locale = $this->requestStack->getCurrentRequest()->getLocale();
+
         $response = $this->httpClient->request('GET', $this->apiUrl . $endpoint, [
             'query' => [
                 'api_key' => $this->apiKey,
-                'language' => 'fr',
+                'language' => $locale,
             ]
         ]);
 

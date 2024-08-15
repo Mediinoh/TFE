@@ -7,61 +7,61 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="{{ path('home.index') }}">Accueil</a>
+                        <a class="nav-link active" aria-current="page" href="{{ path('home.index') }}">{{ 'home'|trans({}, 'messages', app.request.locale) }}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ path('propos.index') }}">À propos de nous</a>
+                        <a class="nav-link" href="{{ path('propos.index') }}">{{ 'about'|trans({}, 'messages', app.request.locale) }}</a>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Nos Produits</a>
+                        <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">{{ 'our_products'|trans({}, 'messages', app.request.locale) }}</a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <li>
-                                <a class="dropdown-item"  href="{{ path('produits.list') }}">Tous les produits</a>
+                                <a class="dropdown-item"  href="{{ path('produits.list') }}">{{ 'all_products'|trans({}, 'messages', app.request.locale) }}</a>
                             </li>
                             <li><hr class="dropdown-divider" /></li>
                             <li>
-                                <a class="dropdown-item" href="{{ path('produits.meilleures_ventes') }}">Meilleures ventes</a>
+                                <a class="dropdown-item" href="{{ path('produits.meilleures_ventes') }}">{{ 'best_sellers'|trans({}, 'messages', app.request.locale) }}</a>
                             </li>
                             <li>
-                                <a class="dropdown-item" href="{{ path('produits.nouveautes') }}">Nouveautés</a>
+                                <a class="dropdown-item" href="{{ path('produits.nouveautes') }}">{{ 'new_arrivals'|trans({}, 'messages', app.request.locale) }}</a>
                             </li>
                             {% if app.user %}
                                 <li><hr class="dropdown-divider" /></li>
                                 <li>
                                     <a class="dropdown-item" href="{{ path('produits.favoris') }}">
-                                        <span class="bi bi-heart-fill" aria-hidden="true"></span> Mes favoris
+                                        <span class="bi bi-heart-fill" aria-hidden="true"></span> {{ 'my_favorites'|trans({}, 'messages', app.request.locale) }}
                                     </a>
                                 </li>
                             {% endif %}
                         </ul>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ path('chat.index') }}">Chat</a>
+                            <a class="nav-link" href="{{ path('chat.index') }}">{{ 'chat'|trans({}, 'messages', app.request.locale) }}</a>
                         </li>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ path('blog.list') }}">Blog/Newletters</a>
+                        <a class="nav-link" href="{{ path('blog.list') }}">{{ 'blog_newsletters'|trans({}, 'messages', app.request.locale) }}</a>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle btn d-flex align-items-center me-2" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Films/Séries
+                            {{ 'movies_series'|trans({}, 'messages', app.request.locale) }}
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
                             <li>
-                                <a class="dropdown-item" href="{{ path('api_films') }}">Films populaires</a>
+                                <a class="dropdown-item" href="{{ path('api_films') }}">{{ 'popular_movies'|trans({}, 'messages', app.request.locale) }}</a>
                             </li>
                             <li>
-                                <a class="dropdown-item" href="{{ path('api_tvshows') }}">Séries TV populaires</a>
+                                <a class="dropdown-item" href="{{ path('api_tvshows') }}">{{ 'popular_series'|trans({}, 'messages', app.request.locale) }}</a>
                             </li>
                             <li>
-                                <a class="dropdown-item" href="{{ path('api_actors') }}">Acteurs populaires</a>
+                                <a class="dropdown-item" href="{{ path('api_actors') }}">{{ 'popular_actors'|trans({}, 'messages', app.request.locale) }}</a>
                             </li>
                         </ul>
                     {% if app.user and is_granted('ROLE_ADMIN')  %}
                         <li class="nav-item">
-                            <a href="{{ path('admin_utilisateurs') }}" class="nav-link">Gestion des utilisateurs</a>
+                            <a href="{{ path('admin_utilisateurs') }}" class="nav-link">{{ 'user_management'|trans({}, 'messages', app.request.locale) }}</a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ path('admin_articles') }}" class="nav-link">Gestion des articles</a>
+                            <a href="{{ path('admin_articles') }}" class="nav-link">{{ 'product_management'|trans({}, 'messages', app.request.locale) }}</a>
                         </li>
                     {% endif %}
                 </ul>
@@ -79,16 +79,16 @@
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
                                     <li>
-                                        <a class="dropdown-item" href="{{ path('utilisateur.profil', {id: app.user.id}) }}">Modifier le profil</a>
+                                        <a class="dropdown-item" href="{{ path('utilisateur.profil', {id: app.user.id}) }}">{{ 'edit_profile'|trans({}, 'messages', app.request.locale) }}</a>
                                     </li>
                                     <li>
                                         <a class="dropdown-item" href="{{ path('list_achats_utilisateur') }}">
-                                            <span class="bi bi-cart-list" aria-hidden="true"></span> Mes achats
+                                            <span class="bi bi-cart-list" aria-hidden="true"></span> {{ 'my_purchases'|trans({}, 'messages', app.request.locale) }}
                                         </a>
                                     </li>
                                     <li>
                                         <a class="dropdown-item" href="{{ path('panier.list') }}">
-                                            <span class="bi bi-cart" aria-hidden="true"></span> Mon panier
+                                            <span class="bi bi-cart" aria-hidden="true"></span> {{ 'my_cart'|trans({}, 'messages', app.request.locale) }}
                                         </a>
                                     </li>
                                     <li>
@@ -96,19 +96,44 @@
                                     </li>
                                     <li>
                                         <a class="dropdown-item" href="{{ path('security.logout') }}">
-                                            <span clss="bi bi-power" aria-hidden="true"></span> Se déconnecter
+                                            <span clss="bi bi-power" aria-hidden="true"></span> {{ 'logout'|trans({}, 'messages', app.request.locale) }}
                                         </a>
                                     </li>
                                 </ul>
                             </li>
                         {% else %}
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ path('security.login') }}">Connexion</a>
+                                <a class="nav-link" href="{{ path('security.login') }}">{{ 'login'|trans({}, 'messages', app.request.locale) }}</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ path('security.inscription') }}">Inscription</a>
+                                <a class="nav-link" href="{{ path('security.inscription') }}">{{ 'sign_up'|trans({}, 'messages', app.request.locale) }}</a>
                             </li>
                         {% endif %}
+                        <li class="nav-item dropdown">
+                            {% if app.request.locale == 'en' %}
+                                <a class="nav-link dropdown-toggle btn d-flex align-items-center me-2" href="#" id="languageDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <span class="fi fi-gb" aria-hidden="true"></span> English
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="languageDropdown">
+                                    <li>
+                                        <a class="dropdown-item" href="{{ path('changeLocale', {'locale': 'fr'}) }}">
+                                            <span class="fi fi-fr" aria-hidden="true"></span> Français
+                                        </a>
+                                    </li>
+                                </ul>
+                            {% elseif app.request.locale == 'fr' %}
+                                <a class="nav-link dropdown-toggle btn d-flex align-items-center me-2" href="#" id="languageDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <span class="fi fi-fr" aria-hidden="true"></span> Français
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="languageDropdown">
+                                    <li>
+                                        <a class="dropdown-item" href="{{ path('changeLocale', {'locale': 'en'}) }}">
+                                            <span class="fi fi-gb" aria-hidden="true"></span> English
+                                        </a>
+                                    </li>
+                                </ul>
+                            {% endif %}
+                        </li>
                     </ul>
                 </div>
             </div>

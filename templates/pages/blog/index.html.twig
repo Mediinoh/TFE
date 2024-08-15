@@ -1,14 +1,14 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Blog/News{% endblock %}
+{% block title %}{{ 'blog_newsletters'|trans({}, 'messages', app.request.locale) }}{% endblock %}
 
 {% block body %}
 
     <section class="bg-dark py-5">
         <div class="container px-4 px-lg-5 my-5">
             <div class="text-center text-white">
-                <h1 class="display-4 fw-bolder">Blog / Newletters.</h1>
-                <p class="lead fw-normal text-white-50 mb-0">Toute l'actualités en direct uniquement pour vous !</p>
+                <h1 class="display-4 fw-bolder">{{ 'blog_newsletters'|trans({}, 'messages', app.request.locale) }}</h1>
+                <p class="lead fw-normal text-white-50 mb-0">{{ 'all_news_live'|trans({}, 'messages', app.request.locale) }}</p>
             </div>
         </div>
     </section>
@@ -25,10 +25,10 @@
 
     <section class="py-5">
         <div class="container">
-            <h2>Bienvenue dans la page Actualités réservé uniquement aux membres.</h2>
-            <p>Vous trouverez ici tous les articles avec les commentaires lié à celui-ci.</p>
-            <p><span>Vous pourrez rajouter un commentaire mais n'oubliez pas : </span> <em>"Ici le respect est primordial."</em></p>
-            <q>L'échange d'information est l'arme la plus puissante d'aujourd'hui. Merci de l'utiliser à bonne escient.</q>
+            <h2>{{ 'welcome_news_page'|trans({}, 'messages', app.request.locale) }}</h2>
+            <p>{{ 'find_all_articles_comments'|trans({}, 'messages', app.request.locale) }}</p>
+            <p>{{ 'add_comment_reminder'|trans({}, 'messages', app.request.locale) }} : <em>"{{ 'respect_is_key_here'|trans({}, 'messages', app.request.locale) }}"</em></p>
+            <q>{{ 'information_exchange_powerful'|trans({}, 'messages', app.request.locale) }}</q>
 
             <div class="container px-4 px-lg-5 mt-5">
                 <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
@@ -46,7 +46,7 @@
                                 </div>
                                 <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
                                     <div class="text-center">
-                                        <a href="{{ path('commentaires.article', {'id': article.id}) }}" class="btn btn-outline-dark mt-0">Voir les commentaires</a>
+                                        <a href="{{ path('commentaires.article', {'id': article.id}) }}" class="btn btn-outline-dark mt-0">{{ 'view_comments'|trans({}, 'messages', app.request.locale) }}</a>
                                     </div>
                                 </div>
                             </div>
@@ -58,6 +58,6 @@
     </section>
 
     <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-        <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="{{ path('chat.index') }}">Mini-chat</a></div>
+        <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="{{ path('chat.index') }}">{{ 'chat'|trans({}, 'messages', app.request.locale) }}</a></div>
     </div>
 {% endblock %}

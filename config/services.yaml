@@ -49,6 +49,11 @@ services:
         arguments:
             $apiKey: '%tmdb_api_key%'
             $apiUrl: '%tmdb_api_url%'
+    
+    App\EventListener\LocaleListener:
+        arguments: ['%kernel.default_locale%']
+        tags:
+            - { name: kernel.event_listener, event: kernel.request }
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

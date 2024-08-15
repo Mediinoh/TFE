@@ -1,13 +1,13 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Les films populaires du moment{% endblock %}
+{% block title %}{{ 'current_popular_movies'|trans({}, 'messages', app.request.locale) }}{% endblock %}
 
 {% block body %}
     <section class="bg-dark py-5">
         <div class="container px-4 px-lg-5 my-5">
             <div class="text-center text-white">
-                <h1 class="display-4 fw-bolder">Les films populaires du moment</h1>
-                <p class="lead fw-normal text-white-50 mb-0">Tout ce que vous devez voir.</p>
+                <h1 class="display-4 fw-bolder">{{ 'current_popular_movies'|trans({}, 'messages', app.request.locale) }}</h1>
+                <p class="lead fw-normal text-white-50 mb-0">{{ 'must_see'|trans({}, 'messages', app.request.locale) }}</p>
             </div>
         </div>
     </section>
@@ -16,7 +16,7 @@
         <div class="container px-4 px-lg-5 mt-5">
             <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
                 {% if films is empty %}
-                    <p class="text-center">Il n'y a pas de films populaires.</p>
+                    <p class="text-center">{{ 'no_popular_movies'|trans({}, 'messages', app.request.locale) }}</p>
                 {% else %}
                     {% for film in films %}
                         <div class="col mb-5">
@@ -26,7 +26,7 @@
                                     <h5 class="card-title">{{ film.title }}</h5>
                                     <div class="card-text">
                                         <p>{{ film.overview|nl2br }}</p>
-                                        <p>Sorti le {{ film.release_date|date('d/m/Y') }}</p>
+                                        <p>{{ 'released_on'|trans({}, 'messages', app.request.locale) }} {{ film.release_date|date('d/m/Y') }}</p>
                                     </div>
                                 </div>
                             </div>

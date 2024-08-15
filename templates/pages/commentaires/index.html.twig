@@ -1,27 +1,27 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Commentaires{% endblock %}
+{% block title %}{{ 'comments'|trans({}, 'messages', app.request.locale) }}{% endblock %}
 
 {% block body %}
     <section class="bg-dark py-5">
         <div class="container px-4 px-lg-5 my-5">
             <div class="text-center text-white">
-                <h1 class="display-4 fw-bolder">Commentaires de l'article</h1>
-                <p class="lead fw-normal text-white-50 mb-0">Ce que vous pensez.</p>
+                <h1 class="display-4 fw-bolder">{{ 'article_comments'|trans({}, 'messages', app.request.locale) }}</h1>
+                <p class="lead fw-normal text-white-50 mb-0">{{ 'your_thoughts'|trans({}, 'messages', app.request.locale) }}</p>
             </div>
         </div>
     </section>
 
     <section class="py-5">
         {% if commentaires is empty %}
-            <p class="text-center">Aucun commentaire pour cet article</p>
+            <p class="text-center">{{ 'no_comments_for_article'|trans({}, 'messages', app.request.locale) }}</p>
         {% else %}
             <table class="table table-hover" id="dataTable">
                 <thead>
                     <tr>
-                        <th scope="col">Utilisateur</th>
-                        <th scope="col">Commentaire</th>
-                        <th scope="col">Date</th>
+                        <th scope="col">{{ 'user'|trans({}, 'messages', app.request.locale) }}</th>
+                        <th scope="col">{{ 'comment'|trans({}, 'messages', app.request.locale) }}</th>
+                        <th scope="col">{{ 'comment_date'|trans({}, 'messages', app.request.locale) }}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -51,7 +51,7 @@
 
     <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
         <div class="text-center">
-            <a class="btn btn-outline-dark mt-auto" href="{{ path('blog.list') }}">Blog/Newletters</a>
+            <a class="btn btn-outline-dark mt-auto" href="{{ path('blog.list') }}">{{ 'blog_newsletters'|trans({}, 'messages', app.request.locale) }}</a>
         </div>
     </div>
 {% endblock %}

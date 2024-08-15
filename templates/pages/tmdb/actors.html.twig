@@ -1,13 +1,13 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Les acteurs populaires du moment{% endblock %}
+{% block title %}{{ 'current_popular_actors'|trans({}, 'messages', app.request.locale) }}{% endblock %}
 
 {% block body %}
     <section class="bg-dark py-5">
         <div class="container px-4 px-lg-5 my-5">
             <div class="text-center text-white">
-                <h1 class="display-4 fw-bolder">Les acteurs populaires du moment</h1>
-                <p class="lead fw-normal text-white-50 mb-0">Découvrez les stars du cinéma.</p>
+                <h1 class="display-4 fw-bolder">{{ 'current_popular_actors'|trans({}, 'messages', app.request.locale) }}</h1>
+                <p class="lead fw-normal text-white-50 mb-0">{{ 'discover_movie_stars'|trans({}, 'messages', app.request.locale) }}</p>
             </div>
         </div>
     </section>
@@ -16,7 +16,7 @@
         <div class="container px-4 px-lg-5 mt-5">
             <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
                 {% if actors is empty %}
-                    <p class="text-center">Il n'y a pas d'acteurs populaires.</p>
+                    <p class="text-center">{{ 'no_popular_actors'|trans({}, 'messages', app.request.locale) }}</p>
                 {% else %}
                     {% for actor in actors %}
                         <div class="col mb-5">
@@ -25,8 +25,8 @@
                                 <div class="card-body p-4">
                                     <h5 class="card-title">{{ actor.name }}</h5>
                                     <div class="card-text">
-                                        <p>Connu pour : {{ actor.known_for_department }}</p>
-                                        <p>Popularité : {{ actor.popularity }}</p>
+                                        <p>{{ 'known_for'|trans({}, 'messages', app.request.locale) }} : {{ actor.known_for_department }}</p>
+                                        <p>{{ 'popularity'|trans({}, 'messages', app.request.locale) }} : {{ actor.popularity }}</p>
                                     </div>
                                 </div>
                             </div>

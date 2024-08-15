@@ -1,13 +1,13 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Liste des meilleures ventes{% endblock %}
+{% block title %}{{ 'best_sellers_list'|trans({}, 'messages', app.request.locale) }}{% endblock %}
 
 {% block body %}
     <section class="bg-dark py-5">
         <div class="container px-4 px-lg-5 my-5">
             <div class="text-center text-white">
-                <h1 class="display-4 fw-bolder">Parce que vous l'avez décidé !</h1>
-                <p class="lead fw-normal text-white-50 mb-0">Toutes nos meilleures ventes sont regroupées ici</p>
+                <h1 class="display-4 fw-bolder">{{ 'because_you_decided'|trans({}, 'messages', app.request.locale) }}</h1>
+                <p class="lead fw-normal text-white-50 mb-0">{{ 'best_sellers_here'|trans({}, 'messages', app.request.locale) }}</p>
             </div>
         </div>
     </section>
@@ -16,7 +16,7 @@
         <div class="container px-4 px-lg-5 mt-5">
             <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
                 {% if articles is empty %}
-                    <p class="tetx-center">Aucun article correspondant dans la base de données.</p>
+                    <p class="tetx-center">{{ 'no_matching_items'|trans({}, 'messages', app.request.locale) }}</p>
                 {% else %}
                     {% for article in articles %}
                         <div class="col mb-5">
@@ -31,7 +31,7 @@
                                     </div>
                                 </div>
                                 <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                                    <p>Il a été vendu en {{ article.totalVentes ?? 0 }} exemplaires.</p>
+                                    <p>{{ 'products_list'|trans({'count': article.totalVentes ?? 0}, 'messages', app.request.locale) }}</p>
                                 </div>
                             </div>
                         </div>
