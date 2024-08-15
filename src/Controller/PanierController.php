@@ -62,7 +62,7 @@ class PanierController extends AbstractAchatsUtilisateurController
 
         if ($formPayer->isSubmitted() && $formPayer->isValid()) {
             $panier = new Panier();
-                $panier->setUtilisateur($user)->setMontantTotal($total);
+            $panier->setUtilisateur($user)->setMontantTotal($total);
             $manager->persist($panier);
             
             foreach($articlesPanier as $articlePanier) {
