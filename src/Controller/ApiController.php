@@ -68,7 +68,6 @@ class ApiController extends AbstractController
         ]);
     }
 
-    
     #[Route('/checkout/process', name: 'checkout_process', methods: ['POST'])]
     public function processCheckout(BraintreeService $braintreeService): Response
     {
