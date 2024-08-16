@@ -1,28 +1,28 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Liste des achats de l'utilisateur{% endblock %}
+{% block title %}{{ 'user_purchase_list'|trans({}, 'messages', app.request.locale) }}{% endblock %}
 
 {% block body %}
     <section class="bg-dark py-5">
         <div class="container px-4 px-lg-5 my-5">
             <div class="text-center text-white">
-                <h1 class="display-4 fw-bolder">Achats de l'utilisateur</h1>
-                <p class="lead fw-normal text-white-50 mb-0">Ce que vous achetez.</p>
+                <h1 class="display-4 fw-bolder">{{ 'user_purchases'|trans({}, 'messages', app.request.locale) }}</h1>
+                <p class="lead fw-normal text-white-50 mb-0">{{ 'what_you_buy.'|trans({}, 'messages', app.request.locale) }}</p>
             </div>
         </div>
     </section>
 
     <section class="py-5">
         {% if achats_utilisateur is empty %}
-            <p class="text-center">Cet utilisateur n'a pas encore effectué d'achats !</p>
+            <p class="text-center">{{ 'no_purchases_yet'|trans({}, 'messages', app.request.locale) }}</p>
         {% else %}
             <table class="table table-hover" id="dataTable">
                 <thead>
                     <tr>
-                        <th scope="col">Utilisateur</th>
-                        <th scope="col">Date d'achat</th>
-                        <th scope="col">Montant total</th>
-                        <th scope="col">Action</th>
+                        <th scope="col">{{ 'user'|trans({}, 'messages', app.request.locale) }}</th>
+                        <th scope="col">{{ 'purchase_date'|trans({}, 'messages', app.request.locale) }}</th>
+                        <th scope="col">{{ 'total_amount'|trans({}, 'messages', app.request.locale) }}</th>
+                        <th scope="col">{{ 'actions'|trans({}, 'messages', app.request.locale) }}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -37,7 +37,7 @@
                                         <span class="bi bi-eye" aria-hidden="true"></span> Voir les détails
                                     </a>
                                     <a href="{{ path('telecharger_facture', {id: achat_utilisateur.id}) }}" class="btn text-secondary">
-                                        <span class="bi bi-download" aria-hidden="true"></span> Télécharger la facture
+                                        <span class="bi bi-download" aria-hidden="true"></span> {{ 'download_invoice'|trans({}, 'messages', app.request.locale) }}
                                     </a>
                                 </div>
                             </td>
@@ -51,7 +51,7 @@
     {% if is_granted('ROLE_ADMIN')  %}
         <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
             <div class="text-center">
-                <a class="btn btn-outline-dark mt-auto" href="{{ path('admin_utilisateurs') }}">Liste des utilisateurs</a>
+                <a class="btn btn-outline-dark mt-auto" href="{{ path('admin_utilisateurs') }}">{{ 'user_list'|trans({}, 'messages', app.request.locale) }}</a>
             </div>
         </div>
     {% endif %}

@@ -1,90 +1,127 @@
-comments: 'Comments'
-article_comments: 'Article comments'
-comment_date: 'Comment date'
-your_thoughts: 'What you think.'
-no_comments_for_article: 'No comments for this article.'
-comment: 'Comment'
-user: 'User'
-home: 'Home'
-smart_shopping: 'Smart shopping'
-buy_new_discounted: 'Buy the new arrivals at a discount !'
-about: 'About us'
-our_products: 'Our products'
-chat: 'Chat'
-we_love_exchange: 'We love exchange and mutual assistance.'
-be_imaginative: 'Be imaginative and let your mind speak.'
-no_messages_to_display: 'No messages to display.'
-blocked_from_chat: 'You cannot add a message in the chat because you are blocked !'
-no_matching_items: 'No matching items found in the database.'
-all_products: 'All products'
-product_list: 'Product list'
-tech_frenzy: 'The tech frenzy'
+comments: "Comments"
+article_comments: "Article comments"
+comment_date: "Comment date"
+your_thoughts: "What you think."
+no_comments_for_article: "No comments for this article."
+comment: "Comment"
+user: "User"
+home: "Home"
+smart_shopping: "Smart shopping"
+buy_new_discounted: "Buy the new arrivals at a discount !"
+about: "About us"
+our_products: "Our products"
+chat: "Chat"
+we_love_exchange: "We love exchange and mutual assistance."
+be_imaginative: "Be imaginative and let your mind speak."
+no_messages_to_display: "No messages to display."
+blocked_from_chat: "You cannot add a message in the chat because you are blocked !"
+no_matching_items: "No matching items found in the database."
+all_products: "All products"
+product_list: "Product list"
+tech_frenzy: "The tech frenzy"
 its_happening_here: "There is where it's happening."
-best_sellers: 'Best sellers'
-best_sellers_list: 'Best sellers list'
-because_you_decided: 'Because you decided !'
-best_sellers_here: 'All our best sellers are grouped here.'
-sold_copies: 'It has been sold in {{ count }} copies.'
-new_arrivals: 'New arrivals'
-new_arrivals list: 'New arrivals list'
-all_new_arrivals: 'All the new arrivals'
-latest_exclusives: 'The latest exclusives from Med-Shop.'
-my_favorites: 'My favorites'
-favorite_products: 'My favorite products'
-everything_you_love: 'Everything you love'
-no_favorites: 'You have no favorites.'
-movies_series: 'Movies/Series'
-popular_movies: 'Popular movies'
-current_popular_movies: 'Current popular movies'
-must_see: 'Everything you must see.'
-no_popular_movies: 'There are no popular movies.'
-released_on: 'Released on'
-popular_series: 'Popular series'
-current_popular_series: 'Current popular series'
-no_popular_series: 'There are no popular series.'
-first_air_date: 'First air date'
-popular_actors: 'Popular actors'
-current_popular_actors: 'Current popular actors'
-no_popular_actors: 'There are no popular actors.'
-discover_movie_stars: 'Discover movie stars.'
-known_for: 'Known for'
-popularity: 'Popularity'
-blog_newsletters: 'Blog/Newsletters'
-all_news_live: 'All the news live just for you !'
-welcome_news_page: 'Welcome to the News page, exclusively for members.'
-find_all_articles_comments: 'Here you will find all the articles with comments related to them.'
+best_sellers: "Best sellers"
+best_sellers_list: "Best sellers list"
+because_you_decided: "Because you decided !"
+best_sellers_here: "All our best sellers are grouped here."
+sold_copies: "It has been sold in %count% copies."
+new_arrivals: "New arrivals"
+new_arrivals list: "New arrivals list"
+all_new_arrivals: "All the new arrivals"
+latest_exclusives: "The latest exclusives from Med-Shop."
+my_favorites: "My favorites"
+favorite_products: "My favorite products"
+everything_you_love: "Everything you love"
+no_favorites: "You have no favorites."
+movies_series: "Movies/Series"
+popular_movies: "Popular movies"
+current_popular_movies: "Current popular movies"
+must_see: "Everything you must see."
+no_popular_movies: "There are no popular movies."
+released_on: "Released on"
+popular_series: "Popular series"
+current_popular_series: "Current popular series"
+no_popular_series: "There are no popular series."
+first_air_date: "First air date"
+popular_actors: "Popular actors"
+current_popular_actors: "Current popular actors"
+no_popular_actors: "There are no popular actors."
+discover_movie_stars: "Discover movie stars."
+known_for: "Known for"
+popularity: "Popularity"
+blog_newsletters: "Blog/Newsletters"
+all_news_live: "All the news live just for you !"
+welcome_news_page: "Welcome to the News page, exclusively for members."
+find_all_articles_comments: "Here you will find all the articles with comments related to them."
 add_comment_reminder: "You can add a comment, but don't forget"
-respect_is_key_here: 'Respect is key here.'
+respect_is_key_here: "Respect is key here."
 information_exchange_powerful: "Information exchange is today's most powerful weapon. Please use it wisely."
-view_comments: 'View comments'
-user_management: 'User management'
-product_management: 'Product management'
-edit_profile: 'Edit profile'
-my_profile: 'My profile'
-my_purchases: 'My purchases'
-my_cart: 'My cart'
-what_you_order: 'What your order.'
-your_cart_is_empty: 'Your cart is empty.'
-product_photo: 'Product photo'
-product_name: 'Product name'
-unit_price: 'Unit price'
-quantity: 'Quantity'
-total_price: 'Total price'
-actions: 'Actions'
-logout: 'Logout'
-login: 'Log in'
-login_btn: 'Log in'
-login_form: 'Login form' 
-email_address: 'Email adress'
-password: 'Password'
+view_comments: "View comments"
+user_management: "User management"
+product_management: "Product management"
+edit_profile: "Edit profile"
+my_profile: "My profile"
+my_purchases: "My purchases"
+my_cart: "My cart"
+what_you_order: "What your order."
+your_cart_is_empty: "Your cart is empty."
+product_photo: "Product photo"
+product_name: "Product name"
+unit_price: "Unit price"
+quantity: "Quantity"
+total_price: "Total price"
+actions: "Actions"
+logout: "Log out"
+login: "Log in"
+login_btn: "Log in"
+login_form: "Login form" 
+email_address: "Email adress"
+password: "Password"
 no_account: "Don't have an account ? Sign up !"
-sign_up: 'Sign up'
-registration_form: 'Registration form'
-already_have_account: 'Already have an account ? Log in !'
-but_first: 'But first !'
-who_are_we: 'Who are we ?'
-welcome_message: 'Welcome to my ICC project'
-introduction_part_1: 'Hello everyone! I am a 28-year-old IT enthusiast, passionate about technology in all its forms. My love for innovation and the latest advancements in the IT world, especially in gaming, drives me to share my passion with you.'
+sign_up: "Sign up"
+registration_form: "Registration form"
+already_have_account: "Already have an account ? Log in !"
+but_first: "But first !"
+who_are_we: "Who are we ?"
+welcome_message: "Welcome to my ICC project"
+introduction_part_1: "Hello everyone ! I am a 28-year-old IT enthusiast, passionate about technology in all its forms. My love for innovation and the latest advancements in the IT world, especially in gaming, drives me to share my passion with you."
 introduction_part_2: "That's why I created this site, a true goldmine for bargain hunters and deal enthusiasts. Here you will find a carefully curated selection of the best offers available, whether for high-tech equipment, innovative gadgets, or the latest gaming technologies."
 introduction_part_3: "Join me on this exciting journey where technology meets the thrill of great deals ! Explore the site, discover the gems I've found for you, and stay tuned for the most cutting-edge trends in the IT world."
 introduction_part_4: "Together, let's dive into the fascinating world of technology and opportunities not to be missed. Welcome to the site dedicated to enthusiasts, the curious, and everyone who shares a love for tech and great deals !"
+title: "Title"
+user_list: "User list"
+purchase_details: "Purchase details"
+purchase_details_list: "Purchase details list"
+no_purchase_details: "No purchase details."
+what_you_bought: "What you bought."
+invoice_paid_by: "Invoice from %date% paid by %user%"
+user_purchases: "User purchases"
+user_purchase_list: "user purchase list"
+what_you_buy: "What you buy."
+no_purchases_yet: "This user has not made any purchases yet !"
+purchase_date: "Purchase date"
+total_amount: "Total amount"
+download_invoice: "Download the invoice"
+what_you_created: "What you created."
+add_new_category: "Add a new article category."
+category_name: "Category name"
+description: "Description"
+article_already_deleted: "This article has already been deleted !"
+add_article_form: "Article addition form"
+category_list: "Category list"
+what_you_sorted: "What you sorted."
+no_category_in_db: "No category in the database !"
+user_comments: "User comments"
+user_comments_list: "User comments list"
+no_comments_yet: "This user hasn't made any comments yet !"
+no_user_in_db: "No user in the database."
+firstname: "First name"
+lastname: "Last name"
+address: "Address"
+postal_code: "Postal code"
+birth_date: "Birth date"
+username: "Username"
+blocked: "Blocked"
+daily_login_count: "Number of logins today"
+weekly_login_count: "Number of logins in the last 7 days"
+profile_picture: "Photo de profile"

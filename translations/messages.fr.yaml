@@ -1,89 +1,126 @@
-comments: 'Commentaires'
+comments: "Commentaires"
 article_comments: "Commentaires de l'article"
-comment_date: 'Date du commentaire'
-your_thoughts: 'Ce que vous pensez.'
-no_comments_for_article: 'No comments for this article.'
-comment: 'Commentaire'
-user: 'Utilisateur'
-home: 'Accueil'
-smart_shopping: 'Les achats intelligents'
-buy_new_discounted: 'Achetez les nouveautés en réduction !'
-about: 'À propos de nous'
-our_products: 'Nos produits'
-chat: 'Chat'
+comment_date: "Date du commentaire"
+your_thoughts: "Ce que vous pensez."
+no_comments_for_article: "No comments for this article."
+comment: "Commentaire"
+user: "Utilisateur"
+home: "Accueil"
+smart_shopping: "Les achats intelligents"
+buy_new_discounted: "Achetez les nouveautés en réduction !"
+about: "À propos de nous"
+our_products: "Nos produits"
+chat: "Chat"
 we_love_exchange: "Nous aimons l'échange et l'entraide."
 be_imaginative: "Faites preuve d'imagination et laissez parler votre esprit."
-blocked_from_chat: 'Vous ne pouvez pas ajouter de message dans le chat car vous êtes bloqué !'
-no_matching_items: 'Aucun article correspondant dans la base de données.'
-all_products: 'Tous les produits'
-product_list: 'Liste des produits'
-tech_frenzy: 'La folie de la technologie'
+blocked_from_chat: "Vous ne pouvez pas ajouter de message dans le chat car vous êtes bloqué !"
+no_matching_items: "Aucun article correspondant dans la base de données."
+all_products: "Tous les produits"
+product_list: "Liste des produits"
+tech_frenzy: "La folie de la technologie"
 its_happening_here: "C'est ici que ça se passe."
-best_sellers: 'Meilleures ventes'
-best_sellers_list: 'Liste des meilleures ventes'
+best_sellers: "Meilleures ventes"
+best_sellers_list: "Liste des meilleures ventes"
 because_you_decided: "Parce que vous l'avez décidé !"
-best_sellers_here: 'Toutes nos meilleures ventes sont regroupées ici.'
-sold_copies: 'Il a été vendu en {{ count }} exemplaires.'
-new_arrivals: 'Nouveautés'
-new_arrivals_list: 'Liste des nouveautés'
-all_new_arrivals: 'Toutes les nouveautés'
-latest_exclusives: 'Les dernières exclusivités de Med-Shop.'
-my_favorites: 'Mes favoris'
-favorite_products: 'Mes articles préférés'
-everything_you_love: 'Tout ce que vous aimez.'
+best_sellers_here: "Toutes nos meilleures ventes sont regroupées ici."
+sold_copies: "Il a été vendu en %count% exemplaires."
+new_arrivals: "Nouveautés"
+new_arrivals_list: "Liste des nouveautés"
+all_new_arrivals: "Toutes les nouveautés"
+latest_exclusives: "Les dernières exclusivités de Med-Shop."
+my_favorites: "Mes favoris"
+favorite_products: "Mes articles préférés"
+everything_you_love: "Tout ce que vous aimez."
 no_favorites: "Vous n'avez pas de favoris."
-movies_series: 'Films/séries'
-popular_movies: 'Films populaires'
+movies_series: "Films/Séries"
+popular_movies: "Films populaires"
 no_popular_movies: "Il n'y a pas de films populaires."
-current_popular_movies: 'Films populaires du moment'
-released_on: 'Sorti le'
-must_see: 'Tout ce que vous devez voir.'
-popular_series: 'Séries TV populaires'
-current_popular_series: 'Les séries TV populaires du moment'
+current_popular_movies: "Films populaires du moment"
+released_on: "Sorti le"
+must_see: "Tout ce que vous devez voir."
+popular_series: "Séries TV populaires"
+current_popular_series: "Les séries TV populaires du moment"
 no_popular_series: "Il n'y a pas de séries TV populaires."
-first_air_date: 'Première diffusion'
-popular_actors: 'Acteurs populaires'
-current_popular_actors: 'Acteurs populaires du moment'
+first_air_date: "Première diffusion"
+popular_actors: "Acteurs populaires"
+current_popular_actors: "Acteurs populaires du moment"
 no_popular_actors: "Il n'y a pas d'acteurs populaires."
-discover_movie_stars: 'Découvrez les stars du cinéma.'
-known_for: 'Connu pour'
-popularity: 'Popularité'
-blog_newsletters: 'Blog/Newsletters'
+discover_movie_stars: "Découvrez les stars du cinéma."
+known_for: "Connu pour"
+popularity: "Popularité"
+blog_newsletters: "Blog/Newsletters"
 all_news_live: "Toute l'actualité en direct uniquement pour vous !"
-welcome_news_page: 'Bienvenue dans la page Actualités réservée uniquement aux members.'
-find_all_articles_comments: 'Vous trouverez ici tous les articles avec les commentaires liés à ceux-ci.'
+welcome_news_page: "Bienvenue dans la page Actualités réservée uniquement aux members."
+find_all_articles_comments: "Vous trouverez ici tous les articles avec les commentaires liés à ceux-ci."
 add_comment_reminder: "Vous pourrez rajouter un commentaire mais n'oubliez pas"
-respect_is_key_here: 'Ici le respect est primordial.'
+respect_is_key_here: "Ici le respect est primordial."
 information_exchange_powerful: "L'échange d'information est l'arme la plus puissante d'aujourd'hui. Merci de l'utiliser à bon escient."
-view_comments: 'Voir les commentaires'
-user_management: 'Gestion des utilisateurs'
-product_management: 'Gestion des articles'
-edit_profile: 'Modifier le profil'
-my_profile: 'Mon profil'
-my_purchases: 'Mes achats'
-my_cart: 'Mon panier'
-what_you_order: 'Ce que vous commandez.'
-your_cart_is_empty: 'Votre panier est vide.'
+view_comments: "Voir les commentaires"
+user_management: "Gestion des utilisateurs"
+product_management: "Gestion des articles"
+edit_profile: "Modifier le profil"
+my_profile: "Mon profil"
+my_purchases: "Mes achats"
+my_cart: "Mon panier"
+what_you_order: "Ce que vous commandez."
+your_cart_is_empty: "Votre panier est vide."
 product_photo: "Photo de l'article"
 product_name: "Nom de l'article"
-unit_price: 'Prix unitaire'
-quantity: 'Quantité'
-total_price: 'Prix total'
-actions: 'Actions'
-logout: 'Se déconnecter'
-login: 'Connexion'
-login_form: 'Formulaire de connexion'
-login_btn: 'Se connecter'
-email_address: 'Adresse email'
-password: 'Mot de passe'
+unit_price: "Prix unitaire"
+quantity: "Quantité"
+total_price: "Prix total"
+actions: "Actions"
+logout: "Se déconnecter"
+login: "Connexion"
+login_form: "Formulaire de connexion"
+login_btn: "Se connecter"
+email_address: "Adresse email"
+password: "Mot de passe"
 no_account: "Vous n'avez pas de compte ? Inscrivez-vous !"
-sign_up: 'Inscription'
+sign_up: "Inscription"
 registration_form: "Formulaire d'inscription"
-already_have_account: 'Vous avez déjà un compte ? Connectez-vous !'
-who_are_we: 'Qui sommes-nous ?'
-but_first: 'Mais avant tout !'
-welcome_message: 'Bienvenue sur Mon Projet ICC'
+already_have_account: "Vous avez déjà un compte ? Connectez-vous !"
+who_are_we: "Qui sommes-nous ?"
+but_first: "Mais avant tout !"
+welcome_message: "Bienvenue sur Mon Projet ICC"
 introduction_part_1: "Salut à tous ! Je suis un jeune informaticien de 28 ans, passionné par la technologie sous toutes ses formes. Mon amour pour l'innovation et les dernières avancées dans le monde de l'informatique, notamment dans le domaine du gaming, me pousse à partager ma passion avec vous."
 introduction_part_2: "C'est pourquoi j'ai créé ce site, une véritable mine d'or pour les amateurs de bons plans et de promos. Vous y trouverez une sélection soigneusement élaborée des meilleures offres du moment, que ce soit pour des équipements high-tech, des gadgets innovants ou les dernières technologies liées au gaming."
 introduction_part_3: "Rejoignez-moi dans cette aventure passionnante où la technologie rencontre l'effervescence des bons plans ! Explorez le site, découvrez les pépites que j'ai dénichées pour vous, et restez à l'affût des tendances les plus pointues du monde informatique."
 introduction_part_4: "Ensemble, plongeons dans l'univers fascinant de la technologie et des opportunités à ne pas manquer. Bienvenue sur le site dédié aux passionnés, aux curieux, et à tous ceux qui partagent l'amour de la tech et des bonnes affaires !"
+title: "Titre"
+user_list: "Liste des utilisateurs"
+purchase_details: "Détails de l'achat"
+purchase_details_list: "Liste des détails de l'achat"
+what_you_bought: "Ce que vous avez acheté."
+no_purchase_details: "Aucun détail de l'achat."
+invoice_paid_by: "Facture du %date% payée par %user%"
+user_purchases: "Achats de l'utilisateur"
+user_purchase_list: "Liste des achats de l'utilisateur"
+what_you_buy: 'Ce que vous achetez.'
+no_purchases_yet: "Cet utilisateur n'a pas encore effectué d'achats !"
+purchase_date: "Date d'achat"
+total_amount: "Montant total"
+download_invoice: "Télécharger la facture"
+what_you_created: "Ce que vous avez créé."
+add_new_category: "Ajouter une nouvelle catégorie d'articles."
+category_name: "Nom de la catégorie."
+description: "Description"
+article_already_deleted: "Cet article a déjà été supprimé !"
+add_article_form: "Formulaire d'ajout d'un article"
+category_list: "Liste des catégories"
+what_you_sorted: "Ce que vous avez classé."
+no_category_in_db: "Aucune catégorie dans la base de données !"
+user_comments: "Commentaires de l'utilisateur"
+user_comments_list: "Liste des commentaires de l'utilisateur"
+no_comments_yet: "Cet urilisateur n'a pas encore fait de commentaires !"
+no_user_in_db: "Aucun utilisateur dans la base de données."
+firstname: "Prénom"
+lastname: "Nom de famille"
+address: "Adresse"
+postal_code: "Code postal"
+birth_date: "Date de naissance"
+username: "Pseudo"
+blocked: "Bloqué"
+daily_login_count: "Nombre de connexions du jour"
+weekly_login_count: "Nombre de connexions des 7 dernier jours"
+profile_picture: "Photo de profil"

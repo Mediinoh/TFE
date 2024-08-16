@@ -1,29 +1,29 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Détails de l'achat{% endblock %}
+{% block title %}{{ 'purchase_details'|trans({},'messages', app.request.locale) }}{% endblock %}
 
 {% block body %}
     <section class="bg-dark py-5">
         <div class="container px-4 px-lg-5 my-5">
             <div class="text-center text-white">
-                <h1 class="display-4 fw-bolder">Liste des détails de l'achat</h1>
-                <p class="lead fw-normal text-white-50 mb-0">Ce que vous avez acheté.</p>
+                <h1 class="display-4 fw-bolder">{{ 'purchase_details_list'|trans({}, 'messages', app.request.locale) }}</h1>
+                <p class="lead fw-normal text-white-50 mb-0">{{ 'what_you_bought'|trans({}, 'messages', app.request.locale) }}</p>
             </div>
         </div>
     </section>
 
     <section class="py-5">
         {% if details_achat is empty %}
-            <p class="text-center">Aucun détail de l'achat</p>
+            <p class="text-center">{{ 'no_purchase_details'|trans({}, 'messages', app.request.locale) }}</p>
         {% else %}
             <table class="table table-hover" id="dataTable">
                 <thead>
                     <tr>
-                        <th scope="col">Photo de l'article</th>
-                        <th scope="col">Titre</th>
-                        <th scope="col">Prix unitaire</th>
-                        <th scope="col">Quantité</th>
-                        <th scope="col">Prix Total</th>
+                        <th scope="col">{{ 'product_photo'|trans({}, 'messages', app.request.locale) }}</th>
+                        <th scope="col">{{ 'title'|trans({}, 'messages', app.request.locale) }}</th>
+                        <th scope="col">{{ 'unit_price'|trans({}, 'messages', app.request.locale) }}</th>
+                        <th scope="col">{{ 'quantity'|trans({}, 'messages', app.request.locale) }}</th>
+                        <th scope="col">{{ 'total_price'|trans({}, 'messages', app.request.locale) }}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -43,7 +43,7 @@
 
     <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
         <div class="text-center">
-            <a class="btn btn-outline-dark mt-auto" href="{{ path('admin_utilisateurs') }}">Liste des utilisateurs</a>
+            <a class="btn btn-outline-dark mt-auto" href="{{ path('admin_utilisateurs') }}">{{ 'users_list'|trans({}, 'messages', app.request.locale) }}</a>
         </div>
     </div>
 {% endblock %}

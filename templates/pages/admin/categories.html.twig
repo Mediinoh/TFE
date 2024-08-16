@@ -1,26 +1,26 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Liste des catégories{% endblock %}
+{% block title %}{{ 'category_list'|trans({}, 'messages', app.request.locale) }}{% endblock %}
 
 {% block body %}
     <section class="bg-dark py-5">
         <div class="container px-4 px-lg-5 my-5">
             <div class="text-center text-white">
-                <h1 class="display-4 fw-bolder">Liste des catégories</h1>
-                <p class="lead fw-normal text-white-50 mb-0">Ce que vous avez classé.</p>
+                <h1 class="display-4 fw-bolder">{{ 'category_list'|trans({}, 'messages', app.request.locale) }}</h1>
+                <p class="lead fw-normal text-white-50 mb-0">{{ 'what_you_sorted'|trans({}, 'messages', app.request.locale) }}</p>
             </div>
         </div>
     </section>
 
     <section class="py-5 container-fluid">
         {% if categories is empty %}
-            <p class="text-center">Aucune catégorie dans la base de données !</p>
+            <p class="text-center">{{ 'no_category_in_db'|trans({}, 'messages', app.request.locale) }}</p>
         {% else %}
             <table class="table table-hover" id="dataTable">
                 <thead>
                     <tr>
                         <th scope="col"># Id</th>
-                        <th scope="col">Nom</th>
+                        <th scope="col">{{ 'category_name'|trans({}, 'messages', app.request.locale) }}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -49,7 +49,7 @@
 
     <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
         <div class="text-center">
-            <a class="btn btn-outline-dark mt-auto" href="{{ path('admin_articles') }}">Liste des articles</a>
+            <a class="btn btn-outline-dark mt-auto" href="{{ path('admin_articles') }}">{{ 'product_list'|trans({}, 'messages', app.request.locale) }}</a>
         </div>
     </div>
 {% endblock %}

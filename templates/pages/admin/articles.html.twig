@@ -1,19 +1,19 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Liste des articles{% endblock %}
+{% block title %}{{ 'product_list'|trans({}, 'messages', app.request.locale) }}{% endblock %}
 
 {% block body %}
     <section class="bg-dark py-5">
         <div class="container px-4 px-lg-5 my-5">
             <div class="text-center text-white">
-                <h1 class="display-4 fw-bolder">Liste des articles</h1>
-                <p class="lead fw-normal text-white-50 mb-0">Ce que vous avez créé.</p>
+                <h1 class="display-4 fw-bolder">{{ 'product_list'|trans({}, 'messages', app.request.locale) }}</h1>
+                <p class="lead fw-normal text-white-50 mb-0">{{ 'what_you_created'|trans({}, 'messages', app.request.locale) }}</p>
             </div>
         </div>
     </section>
 
     <section class="py-5">
-        <p><a href="{{ path('admin_categories') }}" class="btn btn-warning"><span class="bi bi-tags" aria-hidden="true"></span> Ajouter une nouvelle catégorie d'articles</a></p>
+        <p><a href="{{ path('admin_categories') }}" class="btn btn-warning"><span class="bi bi-tags" aria-hidden="true"></span> {{ 'add_new_category'|trans({}, 'messages', app.request.locale) }}</a></p>
 
         {% if articles is empty %}
             <p class="text-center">Aucun article dans la base de données !</p>
@@ -22,12 +22,12 @@
                 <thead>
                     <tr>
                         <th scope="col"># Id</th>
-                        <th scope="col">Photo de l'article</th>
-                        <th scope="col">Titre</th>
-                        <th scope="col">Nom de la catégorie</th>
-                        <th scope="col">Prix unitaire</th>
-                        <th scope="col">Description</th>
-                        <th scope="col">Action</th>
+                        <th scope="col">{{ 'product_photo'|trans({}, 'messages', app.request.locale) }}</th>
+                        <th scope="col">{{ 'title'|trans({}, 'messages', app.request.locale) }}</th>
+                        <th scope="col">{{ 'category_name'|trans({}, 'messages', app.request.locale) }}</th>
+                        <th scope="col">{{ 'unit_price'|trans({}, 'messages', app.request.locale) }}</th>
+                        <th scope="col">{{ 'description'|trans({}, 'messages', app.request.locale) }}</th>
+                        <th scope="col">{{ 'actions'|trans({}, 'messages', app.request.locale) }}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -41,7 +41,7 @@
                             <td>{{ article.description|nl2br }}</td>
                             <td>
                                 {% if article.supprime %}
-                                    <p class="text-center">Cet article a déjà été supprimé !</p>
+                                    <p class="text-center">{{ 'article_already_deleted'|trans({}, 'messages', app.request.locale) }}</p>
                                 {% endif %}
                                 {{ form(formulairesSupprimerArticle[article.id - 1]) }}
                             </td>
@@ -53,7 +53,7 @@
     </section>
 
     <section class="py-5 container-fluid">
-        <h2>Formulaire d'ajout d'un article :</h2>
+        <h2>{{ 'add_article_form'|trans({}, 'messages', app.request.locale) }} :</h2>
         {{ form_start(form) }}
             <div class="form-group mb-3">
                 {{ form_label(form.titre) }}

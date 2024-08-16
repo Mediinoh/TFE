@@ -1,13 +1,13 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Liste des commentaires de l'utilisateur{% endblock %}
+{% block title %}{{ 'user_comments_list'|trans({}, 'messages', app.request.locale) }}{% endblock %}
 
 {% block body %}
     <section class="bg-dark py-5">
         <div class="container px-4 px-lg-5 my-5">
             <div class="text-center text-white">
-                <h1 class="display-4 fw-bolder">Commentaires de l'utilisateur</h1>
-                <p class="lead fw-normal text-white-50 mb-0">Ce que vous pensez.</p>
+                <h1 class="display-4 fw-bolder">{{ 'user_comments'|trans({}, 'messages', app.request.locale) }}</h1>
+                <p class="lead fw-normal text-white-50 mb-0">{{ 'your_thoughts'|trans({}, 'messages', app.request.locale) }}</p>
             </div>
         </div>
     </section>
@@ -15,7 +15,7 @@
     <section class="py-5 container--fluid">
         <div class="container px-4 px-lg-5 mt-5">
             {% if commentaires_utilisateur is empty %}
-                <p class="text-center">Cet utilisateur n'a pas encore fait de commentaires !</p>
+                <p class="text-center">{{ 'no_comments_yet'|trans({}, 'messages', app.request.locale) }}</p>
             {% else %}
                 {% for commentaire_utilisateur in commentaires_utilisateur %}
                      <div class="col mb-5">
@@ -39,7 +39,7 @@
 
     <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
         <div class="text-center">
-            <a class="btn btn-outline-dark mt-auto" href="{{ path('admin_utilisateurs') }}">Liste des utilisateurs</a>
+            <a class="btn btn-outline-dark mt-auto" href="{{ path('admin_utilisateurs') }}">{{ 'user_list'|trans({}, 'messages', app.request.locale) }}</a>
         </div>
     </div>
 {% endblock %}

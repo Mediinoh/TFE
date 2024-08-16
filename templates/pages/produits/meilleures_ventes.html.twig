@@ -21,17 +21,17 @@
                     {% for article in articles %}
                         <div class="col mb-5">
                             <div class="card h-100 text-center">
-                                <img src="{{ imagesArticlesPath }}/{{ article.photoArticle }}" alt="{{ article.titre }}" class="card-img-top">
+                                <img src="{{ imagesArticlesPath }}/{{ article[0].photoArticle }}" alt="{{ article[0].titre }}" class="card-img-top">
                                 <div class="card-body p-4">
-                                    <h5 class="card-title">{{ article.titre }}</h5>
+                                    <h5 class="card-title">{{ article[0].titre }}</h5>
                                     <div class="card-text">
-                                        <p>{{ article.categorie.nomCategorie }}</p>
-                                        <p>{{ article.prixUnitaire }}&euro;</p>
-                                        <p>{{ article.description|nl2br }}</p>
+                                        <p>{{ article[0].categorie.nomCategorie }}</p>
+                                        <p>{{ article[0].prixUnitaire }}&euro;</p>
+                                        <p>{{ article[0].description|nl2br }}</p>
                                     </div>
                                 </div>
                                 <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                                    <p>{{ 'products_list'|trans({'count': article.totalVentes ?? 0}, 'messages', app.request.locale) }}</p>
+                                    <p>{{ 'sold_copies'|trans({'%count%': article.total_ventes ?? 0}, 'messages', app.request.locale) }}</p>
                                 </div>
                             </div>
                         </div>
