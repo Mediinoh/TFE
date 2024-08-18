@@ -6,7 +6,7 @@ use App\Entity\HistoriqueAchat;
 use App\Entity\LigneCommande;
 use App\Entity\Panier;
 use App\Entity\Utilisateur;
-use App\Form\PayerType;
+use App\Form\PaymentType;
 use App\Form\SuppressionArticlePanierType;
 use App\Repository\ArticleRepository;
 use App\Repository\HistoriqueAchatRepository;
@@ -20,8 +20,19 @@ use Symfony\Component\Routing\Annotation\Route;
 class PanierController extends AbstractAchatsUtilisateurController
 {
     #[Route('/panier', name: 'panier.list', methods: ['GET', 'POST'])]
-    public function list(SessionInterface $session, ArticleRepository $articleRepository, Request $request, EntityManagerInterface $manager, HistoriqueAchatRepository $historiqueAchatRepository): Response
+    public function list(SessionInterface $session, ArticleRepository $articleRepository): Response
     {
+        $panier = $this->getPanier($session, $articleRepository);
+
+        return $this->render('pages/panier/index.html.twig', [
+            'articlesPanier' => $panier['articlesPanier'],
+            'total' => $panier['total'],
+            'quantiteTotale' => $panier['quantiteTotale'],
+            'imagesArticlesPath' => $this->getParameter('images_articles_path'),
+        ]);
+    }
+
+    private function getPanier(SessionInterface $session, ArticleRepository $articleRepository) {
         /** @var Utilisateur $user */
         $user = $this->getUser();
 
@@ -57,15 +68,29 @@ class PanierController extends AbstractAchatsUtilisateurController
             }
         }
 
-        $formPayer = $this->createForm(PayerType::class);
-        $formPayer->handleRequest($request);
+        return [
+            'articlesPanier' => $articlesPanier,
+            'total' => $total,
+            'quantiteTotale' => $quantiteTotale,
+            'user' => $user,
+        ];
+    }
 
-        if ($formPayer->isSubmitted() && $formPayer->isValid()) {
+    #[Route('/panier/validation', 'panier.validation', methods: ['GET', 'POST'])]
+    public function validationPanier(SessionInterface $session, ArticleRepository $articleRepository, Request $request, EntityManagerInterface $manager): Response
+    {
+        $panierData = $this->getPanier($session, $articleRepository);
+        $user = $panierData['user'];
+
+        $formValidationPayer = $this->createForm(PaymentType::class);
+        $formValidationPayer->handleRequest($request);
+
+        if ($formValidationPayer->isSubmitted() && $formValidationPayer->isValid()) {
             $panier = new Panier();
-            $panier->setUtilisateur($user)->setMontantTotal($total);
+            $panier->setUtilisateur($user)->setMontantTotal($panierData['total']);
             $manager->persist($panier);
             
-            foreach($articlesPanier as $articlePanier) {
+            foreach($panierData['articlesPanier'] as $articlePanier) {
                 $ligneCommande = new LigneCommande();
                 $ligneCommande->setArticle($articlePanier['article'])
                                 ->setPanier($panier)
@@ -75,26 +100,37 @@ class PanierController extends AbstractAchatsUtilisateurController
             }
 
             $historiqueAchat = new HistoriqueAchat();
-            $historiqueAchat->setUtilisateur($user)->setMontantTotal($total)->setPanier($panier);
+            $historiqueAchat->setUtilisateur($user)->setMontantTotal($panierData['total'])->setPanier($panier);
             $manager->persist($historiqueAchat);
             
             $manager->flush();
 
             $session->set('panier', [
-                $userId => [],
+                $user->getId() => [],
             ]);
 
-            $factureResponse = $this->telechargerFacture($historiqueAchat, $historiqueAchatRepository);
-
-            return $factureResponse;
+            return $this->redirectToRoute('panier.confirmation', ['id' => $historiqueAchat->getId()]);
         }
 
-        return $this->render('pages/panier/index.html.twig', [
-            'articlesPanier' => $articlesPanier,
-            'total' => $total,
-            'quantiteTotale' => $quantiteTotale,
-            'formPayer' => $formPayer->createView(),
-            'imagesArticlesPath' => $this->getParameter('images_articles_path'),
+        return $this->render('pages/panier/validation.html.twig', [
+            'formValidationPayer' => $formValidationPayer->createView(),
+        ]);
+    }
+
+    #[Route('/panier/confirmation/{id}', 'panier.confirmation', methods: ['GET'])]
+    public function confirmationPanier(int $id, HistoriqueAchatRepository $historiqueAchatRepository): Response
+    {
+        /** @var Utilisateur $user */
+        $user = $this->getUser();
+
+        if (!$user) {
+            $this->redirectToRoute('security.login');
+        }
+        
+        $historiqueAchat = $historiqueAchatRepository->find($id);
+
+        return $this->render('pages/panier/confirmation.html.twig', [
+            'historiqueAchat' => $historiqueAchat,
         ]);
     }
 

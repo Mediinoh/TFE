@@ -22,7 +22,7 @@ class CommentaireRepository extends ServiceEntityRepository
         parent::__construct($registry, Commentaire::class);
     }
 
-    public function recupererCommentairesUtilisateur(Utilisateur $utilisateur, int $maxCommentaires = 5)
+    public function recupererCommentairesUtilisateur(Utilisateur $utilisateur, int $maxCommentaires = 15)
     {
         return $this->createQueryBuilder('c')
                     ->select('c AS commentaire, a.photo_article, a.titre')

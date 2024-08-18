@@ -12,7 +12,7 @@
     </head>
     <body>
         <main role="main" id="main">
-            <h1>{{ 'invoice_paid_by'|trans({'%date%': historiqueAchat.dateAchat|date('d/m/Y à H:i'), '%user%': historiqueAchat.utilisateur.fullName}, 'messages', app.request.locale) }}</h1>
+            <h1>{{ 'invoice_paid_by'|trans({'%date%': historiqueAchat.dateAchat|date('d/m/Y H:i'), '%user%': historiqueAchat.utilisateur.fullName}, 'messages', app.request.locale) }}</h1>
             <table class="table text-center align-middle" id="dataTable">
                 <thead>
                     <tr class="border-bottom">

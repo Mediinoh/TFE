@@ -32,10 +32,10 @@ class FiltreArticleParType extends AbstractType
                     return $er->createQueryBuilder('c')
                                 ->orderBy('c.id', 'ASC');
                 },
-                'label' => 'Catégorie',
+                'label' => $this->translator->trans('category', [], 'messages', $locale),
                 'choice_label' => 'nomCategorie',
                 'required' => false,
-                'placeholder' => 'Toutes les catégories',
+                'placeholder' => $this->translator->trans('all_categories', [], 'messages', $locale),
                 'attr' => [
                     'class' => 'form-select',
                 ],
@@ -45,7 +45,7 @@ class FiltreArticleParType extends AbstractType
             ])
             ->add('mot_cle', SearchType::class, [
                 'required' => false,
-                'label' => 'Mot(s) clé(s)',
+                'label' => $this->translator->trans('keyword', [], 'messages', $locale),
                 'attr' => [
                     'class' => 'form-control',
                 ],
@@ -58,7 +58,7 @@ class FiltreArticleParType extends AbstractType
                     'class' => 'btn btn-primary',
                 ],
                 'label_html' => true,
-                'label' => '<span class="bi bi-search-heart" aria-hidden="true"></span> Rechercher',
+                'label' => '<span class="bi bi-search-heart" aria-hidden="true"></span> ' . $this->translator->trans('search', [], 'messages', $locale),
             ]);
     }
 

@@ -59,7 +59,7 @@
                     </tfoot>
                 </table>
                 <div class="d-flex justify-content-end">
-                    {{ form(formPayer) }}
+                    <a href="{{ path('panier.validation') }}" class="btn btn-primary">{{ 'pay'|trans({}, 'messages', app.request.locale) }}</a>
                 </div>
             {% endif %}
         </div>
@@ -67,7 +67,7 @@
 
     <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
         <div class="text-center">
-            <a class="btn btn-outline-dark mt-auto" href="{{ path('produits.list') }}">{{ 'products_list'|trans({}, 'messages', app.request.locale) }}</a>
+            <a class="btn btn-outline-dark mt-auto" href="{{ path('produits.list') }}">{{ 'product_list'|trans({}, 'messages', app.request.locale) }}</a>
         </div>
     </div>
 {% endblock %}

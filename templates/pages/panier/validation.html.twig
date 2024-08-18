@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'my_cart'|trans({}, 'messages', app.request.locale) }}{% endblock %}
+
+{% block body %}
+    <section class="bg-dark py-5">
+        <div class="container px-4 px-lg-5 my-5">
+            <div class="text-center text-white">
+                <h1 class="display-4 fw-bolder">{{ 'my_cart'|trans({}, 'messages', app.request.locale) }}</h1>
+                <p class="lead fw-normal text-white-50 mb-0">{{ 'what_you_order'|trans({}, 'messages', app.request.locale) }}</p>
+            </div>
+        </div>
+    </section>
+    
+    <section class="py-5">
+        <div class="container">
+            {% for label, messages in app.flashes(['success', 'warning']) %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ label }} mt-4" role="alert">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endfor %}
+
+            {{ form_start(formValidationPayer) }}
+                <div class="form-group mb-3 me-3">
+                    {{ form_label(formValidationPayer.nom) }}
+                    {{ form_widget(formValidationPayer.nom) }}
+                </div>
+                <div class="form-group mb-3 me-3">
+                    {{ form_label(formValidationPayer.numeroCarte) }}
+                    {{ form_widget(formValidationPayer.numeroCarte) }}
+                </div>
+                <div class="d-flex align_items-center">
+                    <div class="form-group mb-3 me-3">
+                        {{ form_label(formValidationPayer.moisExpiration) }}
+                        {{ form_widget(formValidationPayer.moisExpiration) }}
+                    </div>
+                    <div class="form-group mb-3 me-3">
+                        {{ form_label(formValidationPayer.anneeExpiration) }}
+                        {{ form_widget(formValidationPayer.anneeExpiration) }}
+                    </div>
+                    <div class="form-group mb-3 me-3">
+                        {{ form_label(formValidationPayer.cvc) }}
+                        {{ form_widget(formValidationPayer.cvc) }}
+                    </div>
+                </div>
+                <div class="form-group mb-3 me-3 d-flex align_items-center">
+                    <a href="{{ path('panier.list') }}" class="btn btn-danger me-2">{{ 'cancel_payment'|trans({}, 'messages', app.request.locale) }}</a>
+                    {{ form_widget(formValidationPayer.valider) }}
+                </div>
+            {{ form_end(formValidationPayer) }}
+        </div>
+    </section>
+
+{% endblock %}
