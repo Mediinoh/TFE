@@ -38,9 +38,6 @@ class PaymentType extends AbstractType
                 ],
                 'constraints' => [
                     new Assert\NotBlank(),
-                    new Assert\Regex([
-                        'pattern' => '/^[a-zA-Z]+ [a-zA-Z]+$/',
-                    ]),
                 ],
             ])
             ->add('numeroCarte', TextType::class, [
@@ -92,9 +89,10 @@ class PaymentType extends AbstractType
                 ],
                 'constraints' => [
                     new Assert\Blank(),
-                    new Assert\Length(['min' => 3, 'max' => 3]),
-                    new Assert\Regex([
-                        'pattern' => '/^\d{3}$/' ])
+                    new Assert\Length([
+                        'min' => 3,
+                        'max' => 3,
+                    ]),
                 ],
             ])
             ->add('valider', SubmitType::class, [
