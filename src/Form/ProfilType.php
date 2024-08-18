@@ -12,14 +12,23 @@ use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ProfilType extends AbstractType
 {
+    public function __construct(private TranslatorInterface $translator, private RequestStack $requestStack)
+    {
+        
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        $locale = $this->requestStack->getCurrentRequest()->getLocale();
+
         $builder
             ->add('nom', TextType::class, [
                 'attr' => [
@@ -28,7 +37,7 @@ class ProfilType extends AbstractType
                     'maxlength' => '50',
                     'autocmplete' => 'family-name',
                 ],
-                'label' => 'Nom',
+                'label' => $this->translator->trans('lastname', [], 'messages', $locale),
                 'label_attr' => [
                     'class' => 'form-label mt-4',
                 ],
@@ -44,7 +53,7 @@ class ProfilType extends AbstractType
                     'maxlength' => '50',
                     'autocomplete' => 'given-name',
                 ],
-                'label' => 'Prénom',
+                'label' => $this->translator->trans('firstname', [], 'messages', $locale),
                 'label_attr' => [
                     'class' => 'form-label mt-4',
                 ],
@@ -60,7 +69,7 @@ class ProfilType extends AbstractType
                     'maxlength' => '255',
                     'autocomplete' => 'street-address',
                 ],
-                'label' => '<span class="bi bi-geo-alt" aria-hidden="true"></span> Adresse',
+                'label' => '<span class="bi bi-geo-alt" aria-hidden="true"></span> ' . $this->translator->trans('address', [], 'messages', $locale),
                 'label_html' => true,
                 'label_attr' => [
                     'class' => 'form-label mt-4',
@@ -77,7 +86,7 @@ class ProfilType extends AbstractType
                     'maxlength' => '10',
                     'autocomplete' => 'postal-code',
                 ],
-                'label' => '<span class="bi bi-geo" aria-hidden="true"></span> Code postal',
+                'label' => '<span class="bi bi-geo" aria-hidden="true"></span> ' . $this->translator->trans('postal_code', [], 'messages', $locale),
                 'label_html' => true,
                 'label_attr' => [
                     'class' => 'form-label mt-4',
@@ -94,7 +103,7 @@ class ProfilType extends AbstractType
                     'maxlength' => '180',
                     'autocomplete' => 'email',
                 ],
-                'label' => '<span class="bi bi-at" aria-hidden="true"></span> Adresse email',
+                'label' => '<span class="bi bi-at" aria-hidden="true"></span> ' . $this->translator->trans('email_address', [], 'messages', $locale),
                 'label_html' => true,
                 'label_attr' => [
                     'class' => 'form-label mt-4',
@@ -111,7 +120,7 @@ class ProfilType extends AbstractType
                     'class' => 'form-control',
                     'autocomplete' => 'bday',
                 ],
-                'label' => '<span class="bi bi-cake2" aria-hidden="true"></span> Date de naissance',
+                'label' => '<span class="bi bi-cake2" aria-hidden="true"></span> ' . $this->translator->trans('birth_date', [], 'messages', $locale),
                 'label_html' => true,
                 'label_attr' => [
                     'class' => 'form-label mt-4',
@@ -126,7 +135,7 @@ class ProfilType extends AbstractType
                     'minlength' => '2',
                     'maxlength' => '50',
                 ],
-                'label' => '<span class="bi bi-person-circle" aria-hidden="true"></span> Pseudo',
+                'label' => '<span class="bi bi-person-circle" aria-hidden="true"></span> ' . $this->translator->trans('username', [], 'messages', $locale),
                 'label_html' => true,
                 'label_attr' => [
                     'class' => 'form-label mt-4',
@@ -143,7 +152,7 @@ class ProfilType extends AbstractType
                         'class' => 'form-control',
                         'autocomplete' => 'new-password',
                     ],
-                    'label' => '<span class="bi bi-lock" aria-hidden="true"></span> Mot de passe',
+                    'label' => '<span class="bi bi-lock" aria-hidden="true"></span> ' . $this->translator->trans('password', [], 'messages', $locale),
                     'label_html' => true,
                     'label_attr' => [
                         'class' => 'form-label mt-4',
@@ -154,18 +163,18 @@ class ProfilType extends AbstractType
                         'class' => 'form-control',
                         'autocomplete' => 'new-password',
                     ],
-                    'label' => '<span class="bi bi-lock" aria-hidden="true"></span> Confirmation de mot de passe',
+                    'label' => '<span class="bi bi-lock" aria-hidden="true"></span> ' . $this->translator->trans('password_confirmation', [], 'messages', $locale),
                     'label_html' => true,
                     'label_attr' => [
                         'class' => 'form-label mt-4',
                     ],
                 ],
                 'required' => false,
-                'invalid_message' => 'Les mots de passe ne correspondent pas !',
+                'invalid_message' => $this->translator->trans('password_mismatch', [], 'messages', $locale),
                 'constraints' => [
                     new Assert\Length([
                         'min'=> 8,
-                        'minMessage' => 'Le mot de passe doit contenir au moins {{ limit }} caractères !'
+                        'minMessage' => $this->translator->trans('password_length', [], 'messages', $locale)
                     ]),
                 ],
             ])
@@ -175,7 +184,7 @@ class ProfilType extends AbstractType
                     'accept' => 'image/png, image/jpeg',
                     'autocomplete' => 'photo',
                 ],
-                'label' => '<span class="bi bi-file-image" aria-hidden="true"></span> Photo de profil',
+                'label' => '<span class="bi bi-file-image" aria-hidden="true"></span> ' . $this->translator->trans('profile_picture', [], 'messages', $locale),
                 'label_html' => true,
                 'required' => false,
                 'mapped' => false,
@@ -188,7 +197,7 @@ class ProfilType extends AbstractType
                             'image/png',
                             'image/jpeg',
                         ],
-                        'mimeTypesMessage' => 'Merci de télécharger une image valide (PNG ou JPG).',
+                        'mimeTypesMessage' => $this->translator->trans('upload_image_valid', [], 'messages', $locale),
                     ]),
                 ],
             ])
@@ -196,7 +205,7 @@ class ProfilType extends AbstractType
                 'attr' => [
                     'class' => 'btn btn-primary mt-4',
                 ],
-                'label' => 'Modifier le profil',
+                'label' => $this->translator->trans('edit_profile', [], 'messages', $locale),
             ]);
     }
 

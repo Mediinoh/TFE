@@ -2,7 +2,6 @@
 
 namespace App\Form;
 
-use App\Entity\Article;
 use App\Entity\Categorie;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
@@ -10,14 +9,22 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SearchType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class FiltreArticleParType extends AbstractType
 {
+    public function __construct(private TranslatorInterface $translator, private RequestStack $requestStack)
+    {
+        
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        $locale = $this->requestStack->getCurrentRequest()->getLocale();
+        
         $builder
             ->add('categorie', EntityType::class, [
                 'class' => Categorie::class,

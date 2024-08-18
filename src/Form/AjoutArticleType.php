@@ -14,14 +14,23 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class AjoutArticleType extends AbstractType
 {
+    public function __construct(private TranslatorInterface $translator, private RequestStack $requestStack)
+    {
+        
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        $locale = $this->requestStack->getCurrentRequest()->getLocale();
+
         $builder
             ->add('titre', TextType::class, [
                 'attr' => [
@@ -29,7 +38,7 @@ class AjoutArticleType extends AbstractType
                     'minlength' => '2',
                     'maxlength' => '255',
                 ],
-                'label' => 'Titre',
+                'label' => $this->translator->trans('title', [], 'messages', $locale),
                 'label_attr' => [
                     'class' => 'form-label',
                 ],
@@ -45,7 +54,7 @@ class AjoutArticleType extends AbstractType
                     'step' => 0.01,
                     'value' => 0,
                 ],
-                'label' => 'Prix unitaire',
+                'label' => $this->translator->trans('unit_price', [], 'messages', $locale),
                 'scale' => 2,
                 'label_attr' => [
                     'class' => 'form-label',
@@ -61,11 +70,11 @@ class AjoutArticleType extends AbstractType
                     return $er->createQueryBuilder('c')
                                 ->orderBy('c.id', 'ASC');
                 },
-                'label' => '<span class="bi bi-tag" aria-hidden="true"></span> Catégorie',
+                'label' => '<span class="bi bi-tag" aria-hidden="true"></span> ' . $this->translator->trans('category', [], 'messages', $locale),
                 'label_html' => true,
                 'choice_label' => 'nomCategorie',
                 'required' => false,
-                'placeholder' => 'Toutes les catégories',
+                'placeholder' => $this->translator->trans('all_categories', [], 'messages', $locale),
                 'attr' => [
                     'class' => 'form-select',
                 ],
@@ -79,7 +88,7 @@ class AjoutArticleType extends AbstractType
                     'cols' => 30,
                     'rows' => 10,
                 ],
-                'label' => 'Description',
+                'label' => $this->translator->trans('description', [], 'messages', $locale),
                 'label_attr' => [
                     'class' => 'form-label',
                 ],
@@ -92,7 +101,7 @@ class AjoutArticleType extends AbstractType
                     'class' => 'form-control',
                     'accept' => 'image/png, image/jpeg',
                 ],
-                'label' => 'Photo de l\'article',
+                'label' => $this->translator->trans('article_photo', [], 'messages', $locale),
                 'label_attr' => [
                     'class' => 'form-label',
                 ],
@@ -104,7 +113,7 @@ class AjoutArticleType extends AbstractType
                             'image/png',
                             'image/jpeg',
                         ],
-                        'mimeTypesMessage' => 'Merci de télécharger une image valide (PNG ou JPG).',
+                        'mimeTypesMessage' =>$this->translator->trans('upload_image_valid', [], 'messages', $locale),
                     ]),
                 ],
             ])
@@ -112,7 +121,7 @@ class AjoutArticleType extends AbstractType
                 'attr' => [
                     'class' => 'btn btn-primary',
                 ],
-                'label' => '<span class="bi bi-plus-circle" aria-hidden="true"></span> Ajout d\'un article',
+                'label' => '<span class="bi bi-plus-circle" aria-hidden="true"></span> ' . $this->translator->trans('add_article', [], 'messages', $locale),
                 'label_html' => true,
             ]);
     }

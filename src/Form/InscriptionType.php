@@ -12,14 +12,23 @@ use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class InscriptionType extends AbstractType
 {
+    public function __construct(private TranslatorInterface $translator, private RequestStack $requestStack)
+    {
+
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        $locale = $this->requestStack->getCurrentRequest()->getLocale();
+
         $builder
             ->add('nom', TextType::class, [
                 'attr' => [
@@ -28,7 +37,7 @@ class InscriptionType extends AbstractType
                     'maxlength' => '50',
                     'autocomplete' => 'family-name',
                 ],
-                'label' => 'Nom',
+                'label' => $this->translator->trans('lastname', [], 'messages', $locale),
                 'label_attr' => [
                     'class' => 'form-label mt-4',
                 ],
@@ -44,7 +53,7 @@ class InscriptionType extends AbstractType
                     'maxlength' => '50',
                     'autocomplete' => 'given-name',
                 ],
-                'label' => 'Prénom',
+                'label' => $this->translator->trans('firstname', [], 'messages', $locale),
                 'label_attr' => [
                     'class' => 'form-label mt-4',
                 ],
@@ -60,7 +69,7 @@ class InscriptionType extends AbstractType
                     'maxlength' => '255',
                     'autocomplete' => 'street-address',
                 ],
-                'label' => 'Adresse',
+                'label' => $this->translator->trans('address', [], 'messages', $locale),
                 'label_attr' => [
                     'class' => 'form-label mt-4',
                 ],
@@ -76,7 +85,7 @@ class InscriptionType extends AbstractType
                     'maxlength' => '10',
                     'autocomplete' => 'postal-code',
                 ],
-                'label' => 'Code postal',
+                'label' => $this->translator->trans('postal_code', [], 'messages', $locale),
                 'label_attr' => [
                     'class' => 'form-label mt-4',
                 ],
@@ -92,7 +101,7 @@ class InscriptionType extends AbstractType
                     'maxlength' => '180',
                     'autocomplete' => 'email',
                 ],
-                'label' => 'Adresse email',
+                'label' => $this->translator->trans('email_address', [], 'messages', $locale),
                 'label_attr' => [
                     'class' => 'form-label mt-4',
                 ],
@@ -107,7 +116,7 @@ class InscriptionType extends AbstractType
                     'class' => 'form-control',
                     'autocomplete' => 'bday',
                 ],
-                'label' => 'Date de naissance',
+                'label' => $this->translator->trans('birth_date', [], 'messages', $locale),
                 'label_attr' => [
                     'class' => 'form-label mt-4',
                 ],
@@ -121,7 +130,7 @@ class InscriptionType extends AbstractType
                     'minlength' => '2',
                     'maxlength' => '50',
                 ],
-                'label' => 'Pseudo',
+                'label' => $this->translator->trans('username', [], 'messages', $locale),
                 'label_attr' => [
                     'class' => 'form-label mt-4',
                 ],
@@ -137,7 +146,7 @@ class InscriptionType extends AbstractType
                         'class' => 'form-control',
                         'autocomplete' => 'new-password',
                     ],
-                    'label' => 'Mot de passe',
+                    'label' => $this->translator->trans('password', [], 'messages', $locale),
                     'label_attr' => [
                         'class' => 'form-label mt-4',
                         'autocomplete' => 'new-password',
@@ -147,14 +156,14 @@ class InscriptionType extends AbstractType
                     'attr' => [
                         'class' => 'form-control',
                     ],
-                    'label' => 'Confirmation de mot de passe',
+                    'label' => $this->translator->trans('password_confirmation', [], 'messages', $locale),
                     'label_attr' => [
                         'class' => 'form-label mt-4',
                     ],
                 ],
-                'invalid_message' => 'Les mots de passe ne correspondent pas !',
+                'invalid_message' => $this->translator->trans('password_mismatch', [], 'messages', $locale),
                 'constraints' => [
-                    new Assert\Length(['min'=> 8, 'minMessage' => 'Le mot de passe doit contenir au moins {{ limit }} caractères !']),
+                    new Assert\Length(['min'=> 8, 'minMessage' => $this->translator->trans('password_length', [], 'messages', $locale)]),
                 ],
             ])
             ->add('photo_profil', FileType::class, [
@@ -163,7 +172,7 @@ class InscriptionType extends AbstractType
                     'accept' => 'image/png, image/jpeg, *.jpeg, *.jpg, *.png',
                     'autocomplete' => 'photo',
                 ],
-                'label' => '<span class="bi bi-file-image" aria-hidden="true"></span> Photo de profil',
+                'label' => '<span class="bi bi-file-image" aria-hidden="true"></span> ' . $this->translator->trans('profile_picture', [], 'messages', $locale),
                 'label_html' => true,
                 'required' => false,
                 'label_attr' => [
@@ -176,7 +185,7 @@ class InscriptionType extends AbstractType
                             'image/png',
                             'image/jpeg',
                         ],
-                        'mimeTypesMessage' => 'Merci de télécharger une image valide (PNG ou JPG).',
+                        'mimeTypesMessage' => $this->translator->trans('upload_image_valid', [], 'messages', $locale),
                     ]),
                 ],
             ])
@@ -184,7 +193,7 @@ class InscriptionType extends AbstractType
                 'attr' => [
                     'class' => 'btn btn-primary mt-4',
                 ],
-                'label' => '<span class="bi bi-person-add" aria-hidden="true"></span> S\'inscrire',
+                'label' => '<span class="bi bi-person-add" aria-hidden="true"></span> ' . $this->translator->trans('sign_up', [], 'messages', $locale),
                 'label_html' => true,
             ]);
     }
