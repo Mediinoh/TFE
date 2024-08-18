@@ -203,7 +203,7 @@ class ProfilType extends AbstractType
             ])
             ->add('submit', SubmitType::class, [
                 'attr' => [
-                    'class' => 'btn btn-primary mt-4',
+                    'class' => 'btn btn-primary',
                 ],
                 'label' => $this->translator->trans('edit_profile', [], 'messages', $locale),
             ]);

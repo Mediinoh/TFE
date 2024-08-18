@@ -52,7 +52,31 @@ class UtilisateurController extends AbstractAchatsUtilisateurController
 
         return $this->render('pages/utilisateur/profil.html.twig', [
             'form' => $form->createView(),
+            'userId' => $id,
         ]);
+    }
+
+    #[Route('/utilisateur/profil/delete/{id}', name: 'utilisateur.profil.delete', methods: ['GET'])]
+    public function removeProfil(int $id, UtilisateurRepository $utilisateurRepository, Request $request, EntityManagerInterface $manager): Response
+    {
+        /** @var Utilisateur $user */
+        $user = $this->getUser();
+
+        if (!$user) {
+            return $this->redirectToRoute('security.login');
+        }
+
+        $utilisateur = $utilisateurRepository->find($id);
+
+        if (is_null($utilisateur) && $user !== $utilisateur) {
+            return $this->redirectToRoute('home.index');
+        }
+
+        $manager->remove($utilisateur);
+
+        $this->addFlash('success', 'Votre compte a été supprimé');
+
+        return $this->redirectToRoute('security.login');
     }
 
     #[Route('/utilisateur/achats_utilisateur', 'list_achats_utilisateur', methods: ['GET'])]

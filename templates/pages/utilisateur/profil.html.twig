@@ -15,7 +15,48 @@
                 {% endfor %}
             {% endfor %}
 
-            {{ form(form) }}
+            {{ form_start(form) }}
+                <div class="form-group mb-3 me-3">
+                    {{ form_label(form.nom) }}
+                    {{ form_widget(form.nom) }}
+                </div>
+                <div class="form-group mb-3 me-3">
+                    {{ form_label(form.prenom) }}
+                    {{ form_widget(form.prenom) }}
+                </div>
+                <div class="form-group mb-3 me-3">
+                    {{ form_label(form.adresse) }}
+                    {{ form_widget(form.adresse) }}
+                </div>
+                <div class="form-group mb-3 me-3">
+                    {{ form_label(form.code_postal) }}
+                    {{ form_widget(form.code_postal) }}
+                </div>
+                <div class="form-group mb-3 me-3">
+                    {{ form_label(form.email) }}
+                    {{ form_widget(form.email) }}
+                </div>
+                <div class="form-group mb-3 me-3">
+                    {{ form_label(form.date_naissance) }}
+                    {{ form_widget(form.date_naissance) }}
+                </div>
+                <div class="form-group mb-3 me-3">
+                    {{ form_label(form.pseudo) }}
+                    {{ form_widget(form.pseudo) }}
+                </div>
+                <div class="form-group mb-3 me-3">
+                    {{ form_label(form.plainPassword) }}
+                    {{ form_widget(form.plainPassword) }}
+                </div>
+                <div class="form-group mb-3 me-3">
+                    {{ form_label(form.photo_profil) }}
+                    {{ form_widget(form.photo_profil) }}
+                </div>
+                <div class="form-group mb-3 me-3 d-flex align_items-center">
+                    {{ form_widget(form.submit) }}
+                    <a href="{{ path('utilisateur.profil.delete', {id: userId}) }}" class="btn btn-danger ms-2">{{ 'remove_profile'|trans({}, 'messages', app.request.locale) }}</a>
+                </div>
+            {{ form_end(form) }}
         </div>
     </section>
 {% endblock %}

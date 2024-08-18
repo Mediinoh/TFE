@@ -101,7 +101,8 @@ class PaymentType extends AbstractType
                 'attr' => [
                     'class' => 'btn btn-success',
                 ],
-                'label' => $this->translator->trans('confirm_payment', [], 'messages', $locale),
+                'label' => '<span class="bi bi-check-square" aria-hidden="true"></span> ' . $this->translator->trans('confirm_payment', [], 'messages', $locale),
+                'label_html' => true,
             ]);
     }
 
