@@ -11,6 +11,8 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
+use Symfony\Component\Validator\Constraints as Assert;
+
 class PaymentType extends AbstractType
 {
     public function __construct(private TranslatorInterface $translator, private RequestStack $requestStack)
@@ -34,6 +36,12 @@ class PaymentType extends AbstractType
                 'label_attr' => [
                     'class' => 'form-label',
                 ],
+                'constraints' => [
+                    new Assert\NotBlank(),
+                    new Assert\Regex([
+                        'pattern' => '/^[a-zA-Z]+ [a-zA-Z]+$/',
+                    ]),
+                ],
             ])
             ->add('numeroCarte', TextType::class, [
                 'attr' => [
@@ -43,6 +51,12 @@ class PaymentType extends AbstractType
                 'label' => $this->translator->trans('card_number', [], 'messages', $locale),
                 'label_attr' => [
                     'class' => 'form_label',
+                ],
+                'constraints' => [
+                    new Assert\NotBlank(),
+                    new Assert\Length([
+                        'min' => 6,
+                    ]),
                 ],
             ])
             ->add('moisExpiration', ChoiceType::class, [
@@ -75,6 +89,12 @@ class PaymentType extends AbstractType
                 ],
                 'label_attr' => [
                     'class' => 'form-label',
+                ],
+                'constraints' => [
+                    new Assert\Blank(),
+                    new Assert\Length(['min' => 3, 'max' => 3]),
+                    new Assert\Regex([
+                        'pattern' => '/^\d{3}$/' ])
                 ],
             ])
             ->add('valider', SubmitType::class, [
