@@ -59,7 +59,7 @@
                                     </a>
                                     {% if infosUtilisateur['utilisateur'] is not same as(app.user) %}
                                         {{ form(infosUtilisateur['bloqueUtilisateurForm']) }}
-                                        <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{ utilisateur.id }}">
+                                        <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{ infosUtilisateur['utilisateur'].id }}">
                                           <span class="bi bi-trash" aria-hidden="true"></span> {{ 'delete'|trans({}, 'messages', app.request.locale) }}
                                         </button>
                                     {% endif %}
@@ -67,7 +67,7 @@
                             </td>
                         </tr>
 
-                        <div class="modal fade" id="deleteModal{{ utilisateur.id }}" tabindex="-1" aria-labbelledby="deleteModalLabel{{ utilisateur.id }}" aria-hidden="true">
+                        <div class="modal fade" id="deleteModal{{ infosUtilisateurs['utilisateur'].id }}" tabindex="-1" aria-labbelledby="deleteModalLabel{{ infosUtilisateur['utilisateur'].id }}" aria-hidden="true">
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header">
