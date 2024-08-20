@@ -79,7 +79,7 @@
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
                                     <li>
-                                        <a class="dropdown-item" href="{{ path('utilisateur.profil', {id: app.user.id}) }}">{{ 'edit_profile'|trans({}, 'messages', app.request.locale) }}</a>
+                                        <a class="dropdown-item" href="{{ path('utilisateur.profil', { id: app.user.id }) }}">{{ 'edit_profile'|trans({}, 'messages', app.request.locale) }}</a>
                                     </li>
                                     <li>
                                         <a class="dropdown-item" href="{{ path('list_achats_utilisateur') }}">

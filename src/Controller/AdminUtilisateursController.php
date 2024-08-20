@@ -11,7 +11,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -95,6 +94,42 @@ use Symfony\Contracts\Translation\TranslatorInterface;
             $manager->flush();
 
             $this->addFlash('success', $translator->trans($blocked ? 'user_blocked' : 'user_unblocked', [], 'messages', $locale));
+
+            return $this->redirectToRoute('admin_utilisateurs');
+        }
+
+        #[Route('/supprimer_utilisateur/{id}', 'admin_supprimer_utilisateur', methods: ['POST'])]
+        public function supprimerUtilisateur(int $id, UtilisateurRepository $utilisateurRepository, EntityManagerInterface $manager, TranslatorInterface$translator, RequestStack $requestStack): Response
+        {
+            $locale = $requestStack->getCurrentRequest()->getLocale();
+
+            /** @var Utilisateur $user */
+            $user = $this->getUser();
+            
+            if (!$user) {
+                return $this->redirectToRoute('security.login');
+            }
+
+            if (!$this->isGranted('ROLE_ADMIN')) {
+                $this->redirectToRoute('home.index');
+            }
+
+            $utilisateur = $utilisateurRepository->find($id);
+
+            if (!$utilisateur) {
+                    $this->addFlash('danger', $translator->trans('user_not_found', ['%id%' => $id], 'messages', $locale));
+                    return $this->redirectToRoute('admin_utilisateurs');
+            }
+
+            if ($utilisateur === $user) {
+                $this->addFlash('danger', $translator->trans('cannot_remove_current_user', [], 'messages', $locale));
+                return $this->redirectToRoute('admin_utilisateurs');
+            }
+
+            $manager->remove($utilisateur);
+            $manager->flush();
+
+            $this->addFlash('success', $translator->trans('user_removed', [], 'messages', $locale));
 
             return $this->redirectToRoute('admin_utilisateurs');
         }

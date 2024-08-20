@@ -23,7 +23,7 @@
             {% endfor %}
             
             <p>{{ 'congratulations_payment_approved'|trans({}, 'messages', app.request.locale) }}</p>
-            <a href="{{ path('telecharger_facture', {id: historiqueAchat.id}) }}" class="btn text-secondary">
+            <a href="{{ path('telecharger_facture', { id: historiqueAchat.id }) }}" class="btn text-secondary">
                 <span class="bi bi-download" aria-hidden="true"></span> {{ 'download_invoice'|trans({}, 'messages', app.request.locale) }}
             </a>
         </div>
