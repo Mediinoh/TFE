@@ -71,7 +71,7 @@
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <p class="modal-title" id="deleteModalLabel{{ utilisateur.id }}">{{ 'delete_confirmation'|trans({}, 'messages', app.request.locale) }}</p>
+                                        <p class="modal-title" id="deleteModalLabel{{ infosUtilisateur['utilisateur'].id }}">{{ 'delete_confirmation'|trans({}, 'messages', app.request.locale) }}</p>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{{ 'close'|trans({}, 'messages', app.request.locale) }}"></button>
                                     </div>
                                     <div class="modal-body">
@@ -79,7 +79,7 @@
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ 'no'|trans({}, 'messages', app.request.locale) }}</button>
-                                        <form method="post" action="{{ path('admin_supprimer_utilisateur', { id: utilisateur.id }) }}">
+                                        <form method="post" action="{{ path('admin_supprimer_utilisateur', { id: infosUtilisateur['utilisateur'].id }) }}">
                                             <button type="submit" class="btn btn-danger">
                                                 {{ 'yes'|trans({}, 'messages', app.request.locale) }}
                                             </button>
