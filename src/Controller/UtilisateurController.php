@@ -60,7 +60,7 @@ class UtilisateurController extends AbstractAchatsUtilisateurController
         ]);
     }
 
-    #[Route('/utilisateur/profil/delete/{id}', name: 'utilisateur.profil.delete', methods: ['POST'])]
+    #[Route('/utilisateur/profil/delete/{id}', name: 'utilisateur.profil.delete', methods: ['GET'])]
     public function removeProfil(int $id, UtilisateurRepository $utilisateurRepository, Request $request, EntityManagerInterface $manager, TranslatorInterface $translator): Response
     {
         $locale = $request->getLocale();
