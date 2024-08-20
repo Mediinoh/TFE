@@ -14,7 +14,7 @@
     
     <section class="py-5">
         <div class="container">
-            {% for label, messages in app.flashes(['success', 'warning']) %}
+            {% for label, messages in app.flashes(['success', 'warning', 'danger']) %}
                 {% for message in messages %}
                     <div class="alert alert-{{ label }} mt-4" role="alert">
                         {{ message }}

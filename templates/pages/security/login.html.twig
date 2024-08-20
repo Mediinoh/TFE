@@ -28,6 +28,8 @@
                 </button>
             </form>
 
+            <a href="{{ path('security.forgot_password') }}" class="btn btn-link mt-3">{{ 'forgot_password'|trans({}, 'messages', app.request.locale) }}</a>
+
             <a href="{{ path('security.inscription') }}" class="btn btn-link mt-3">{{ 'no_account'|trans({}, 'messages', app.request.locale) }}</a>
         </section>
     </div>

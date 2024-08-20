@@ -57,34 +57,4 @@ class ApiController extends AbstractController
             return new JsonResponse(['error' => $e->getMessage()]);
         }
     }
-
-    #[Route('/checkout', 'checkout')]
-    public function checkout(BraintreeService $braintreeService): Response
-    {
-        $clientToken = $braintreeService->getGateway()->clientToken()->generate();
-
-        return $this->render('checkout/checkout.html.twig', [
-            'clientToken' => $clientToken,
-        ]);
-    }
-
-    #[Route('/checkout/process', name: 'checkout_process', methods: ['POST'])]
-    public function processCheckout(BraintreeService $braintreeService): Response
-    {
-        $nonceFromTheClient = $_POST['payment_method_nonce'];
-        
-        $result = $braintreeService->getGateway()->transaction()->sale([
-            'amount' => '10.00', // replace with the actual amount
-            'paymentMethodNonce' => $nonceFromTheClient,
-            'options' => [
-                'submitForSettlement' => true,
-            ],
-        ]);
-
-        if ($result->success) {
-            return new Response('Transaction successful!');
-        } else {
-            return new Response('Transaction failed: ' . $result->message);
-        }
-    }
 }
