@@ -10,12 +10,15 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ChatController extends AbstractController
 {
     #[Route('/chat', name: 'chat.index', methods: ['GET', 'POST'])]  
-    public function index(MessageRepository $messageRepository, Request $request, EntityManagerInterface $manager): Response
+    public function index(MessageRepository $messageRepository, Request $request, EntityManagerInterface $manager, TranslatorInterface $translator): Response
     {
+        $locale = $request->getLocale();
+
         /** @var Utilisateur $user */
         $user = $this->getUser();
 
@@ -28,7 +31,7 @@ class ChatController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             if ($user->isBloque()) {
-                $this->addFlash('danger', 'Vous ne pouvez pas ajouter de message dans le chat car vous êtes bloqué !');
+                $this->addFlash('danger', $translator->trans('chat_message_blocked', [], 'messages', $locale));
             } else {
                 $message = $form->getData();
                 $message->setUtilisateur($user);
@@ -36,7 +39,7 @@ class ChatController extends AbstractController
                 $manager->persist($message);
                 $manager->flush();
 
-                $this->addFlash('success', 'Votre message a été ajouté !');
+                $this->addFlash('success', $translator->trans('message_added', [], 'messages', $locale));
             }
 
             return $this->redirectToRoute('chat.index');

@@ -15,6 +15,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ProduitsController extends AbstractController
 {
@@ -76,8 +77,10 @@ class ProduitsController extends AbstractController
     }
 
     #[Route('/ajout-panier/{id}', 'ajout_panier', methods: ['POST'])]
-    public function ajoutPanier(int $id, ArticleRepository $articleRepository, Request $request, SessionInterface $session): Response
+    public function ajoutPanier(int $id, ArticleRepository $articleRepository, Request $request, SessionInterface $session, TranslatorInterface $translator): Response
     {
+        $locale = $request->getLocale();
+
        /** @var Utilisateur $user */
        $user = $this->getUser();
        
@@ -88,7 +91,8 @@ class ProduitsController extends AbstractController
        $article = $articleRepository->find($id);
 
        if (!$article) {
-            throw new NotFoundHttpException('L\'article n\'existe pas.');
+            $this->addFlash('danger', $translator->trans('article_not_dound', ['%id%' => $id], 'messages', $locale));
+            return $this->redirectToRoute('produits.list');
         }
 
         if (!$session->has('panier')) {
@@ -114,14 +118,16 @@ class ProduitsController extends AbstractController
 
         $session->set('panier', $panier);
 
-        $this->addFlash('success', 'Cet article a été ajouté dans votre panier !');
+        $this->addFlash('success', $translator->trans('article_added_to_cart', [], 'messages', $locale));
 
         return $this->redirectToRoute('produits.list');
     }
 
     #[Route('/ajout-favoris/{id}', 'ajout_favoris', methods: ['POST'])]
-    public function ajoutFavoris(int $id, ArticleRepository $articleRepository, EntityManagerInterface $manager): Response
+    public function ajoutFavoris(int $id, ArticleRepository $articleRepository, EntityManagerInterface $manager, TranslatorInterface $translator, Request $request): Response
     {
+        $locale = $request->getLocale();
+
        /** @var Utilisateur $user */
        $user = $this->getUser();
        
@@ -132,20 +138,23 @@ class ProduitsController extends AbstractController
        $article = $articleRepository->find($id);
 
        if (!$article) {
-            throw new NotFoundHttpException('L\'article n\'existe pas.');
+            $this->addFlash('danger', $translator->trans('article_not_found', ['%id%' => $id], 'messages', $locale));
+            return $this->redirectToRoute('produits.list');
         }
 
         $user->addFavori($article);
         $manager->flush();
 
-        $this->addFlash('success', 'Cet article a été ajouté à vos favoris !');
+        $this->addFlash('success', $translator->trans('article_added_to_favorites'));
 
         return $this->redirectToRoute('produits.list');
     }
 
     #[Route('/suppression-favoris/{id}', 'suppression_favoris', methods: ['POST'])]
-    public function suppressionFavoris(int $id, ArticleRepository $articleRepository, EntityManagerInterface $manager): Response
+    public function suppressionFavoris(int $id, ArticleRepository $articleRepository, EntityManagerInterface $manager, Request $request, TranslatorInterface $translator): Response
     {
+        $locale = $request->getLocale();
+
        /** @var Utilisateur $user */
        $user = $this->getUser();
        
@@ -156,13 +165,14 @@ class ProduitsController extends AbstractController
        $article = $articleRepository->find($id);
 
        if (!$article) {
-            throw new NotFoundHttpException('L\'article n\'existe pas.');
+            $this->addFlash('danger', $translator->trans('article_not_found', ['%id%' => $id], 'messages', $locale));
+            return $this->redirectToRoute('produits.list');
         }
 
         $user->removeFavori($article);
         $manager->flush();
 
-        $this->addFlash('success', 'Cet article a été supprimé de vos favoris !');
+        $this->addFlash('success', $translator->trans('article_removed_from_favorites', [], 'messages', $locale));
 
         return $this->redirectToRoute('produits.list');
     }
@@ -188,7 +198,7 @@ class ProduitsController extends AbstractController
     }
 
     #[Route('/produits/favoris', name: 'produits.favoris')]
-    public function favoris(): Response
+    public function favoris(Request $request): Response
     {
         /** @var Utilisateur $user */
         $user = $this->getUser();
@@ -197,9 +207,22 @@ class ProduitsController extends AbstractController
             return $this->redirectToRoute('security.login');
         }
 
+        $formulairesFavoris = [];
         $articles = array_reverse($user->getFavoris()->toArray());
+        
+        foreach($articles as $article) {
+            $favorisForm = $this->createForm(FavorisType::class, null, [
+                'action' => $this->generateUrl('suppression_favoris', ['id' => $article->getId()]),
+                'method' => 'POST',
+                'isFavorite' => true,
+            ]);
+            $favorisForm->handleRequest($request);
+            $formulairesFavoris['article_' . $article->getId()] = $favorisForm->createView();
+        }
+
         return $this->render('pages/produits/favoris.html.twig', [
             'articles' => $articles,
+            'formulairesFavoris' => $formulairesFavoris,
             'imagesArticlesPath' => $this->imagesArticlesPath,
         ]);
     }

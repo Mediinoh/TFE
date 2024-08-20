@@ -8,8 +8,10 @@ use App\Repository\HistoriqueAchatRepository;
 use Dompdf\Dompdf;
 use Dompdf\Options;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 abstract class AbstractAchatsUtilisateurController extends AbstractController
 {
@@ -23,12 +25,14 @@ abstract class AbstractAchatsUtilisateurController extends AbstractController
         ]);
     }
 
-    protected function voirDetailsAchat(int $id, HistoriqueAchatRepository $historiqueAchatRepository, string $redirectPath): Response
+    protected function voirDetailsAchat(int $id, HistoriqueAchatRepository $historiqueAchatRepository, string $redirectPath, TranslatorInterface $translator, RequestStack $requestStack): Response
     {
+        $locale = $requestStack->getCurrentRequest()->getLocale();
+
         $historiqueAchat = $historiqueAchatRepository->find($id);
 
         if (!$historiqueAchat) {
-            $this->addFlash('danger', `L'historique d'achat avec l'id $id n'existe pas dans la base de données !`);
+            $this->addFlash('danger', $translator->trans('purchase_history_not_found', ['%id%' => $id], 'messages', $locale));
             return $this->redirectToRoute($redirectPath);
         }
         
@@ -41,11 +45,13 @@ abstract class AbstractAchatsUtilisateurController extends AbstractController
     }
 
     #[Route('/telecharger_facture/{id}', 'telecharger_facture')]
-    public function telechargerFactureAction(int $id, HistoriqueAchatRepository $historiqueAchatRepository) {
+    public function telechargerFactureAction(int $id, HistoriqueAchatRepository $historiqueAchatRepository, TranslatorInterface $translator, RequestStack $requestStack) {
+        $locale = $requestStack->getCurrentRequest()->getLocale();
+
         $historiqueAchat = $historiqueAchatRepository->find($id);
         
         if (!$historiqueAchat) {
-            $this->addFlash('danger', `L'historique d'achat avec l'id $id n'existe pas dans la base de données !`);
+            $this->addFlash('danger', $translator->trans('purchase_history_not_found', ['%id%' => $id], 'messages', $locale));
             $redirectPath = $this->isGranted('ROLE_ADMIN') ? 'admin_achats_utilisateur' : 'list_achats_utilisateur';
             return $this->redirectToRoute($redirectPath);
         }

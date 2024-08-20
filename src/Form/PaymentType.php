@@ -88,10 +88,17 @@ class PaymentType extends AbstractType
                     'class' => 'form-label',
                 ],
                 'constraints' => [
-                    new Assert\Blank(),
+                    new Assert\NotBlank([
+                        'message' => $this->translator->trans('cvc_required', [], 'messages', $locale),
+                    ]),
                     new Assert\Length([
                         'min' => 3,
                         'max' => 3,
+                        'exactMessage' => $this->translator->trans('cvc_length', [], 'messages', $locale),
+                    ]),
+                    new Assert\Regex([
+                        'pattern' => '/^\d{3}$/',
+                        'message' => $this->translator->trans('cvc_digits', [], 'messages', $locale),
                     ]),
                 ],
             ])

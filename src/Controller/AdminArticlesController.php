@@ -10,10 +10,11 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class AdminArticlesController extends AbstractController
 {
@@ -72,8 +73,10 @@ class AdminArticlesController extends AbstractController
     }
 
     #[Route('/supprimer_article/{id}', 'admin_supprimer_article', methods: ['POST'])]
-    public function supprimerArticle(int $id, ArticleRepository $articleRepository, Request $request, EntityManagerInterface $manager): Response
+    public function supprimerArticle(int $id, ArticleRepository $articleRepository, EntityManagerInterface $manager, TranslatorInterface $translator, RequestStack $requestStack): Response
     {
+        $locale = $requestStack->getCurrentRequest()->getLocale();
+
        /** @var Utilisateur $user */
        $user = $this->getUser();
        
@@ -88,7 +91,8 @@ class AdminArticlesController extends AbstractController
        $article = $articleRepository->find($id);
 
        if (!$article) {
-            throw new NotFoundHttpException('L\'article n\'existe pas.');
+        $this->addFlash('danger', $translator->trans('article_not_found', ['%id%' => $id], 'messages', $locale));
+        return $this->redirectToRoute('admin_articles');    
        }
 
         $article->setSupprime(!$article->isSupprime());
@@ -96,7 +100,7 @@ class AdminArticlesController extends AbstractController
         $manager->persist($article);
         $manager->flush();
 
-        $this->addFlash('success', 'Cet article a été supprimé de votre panier !');
+        $this->addFlash('success', $translator->trans('article_removed_from_cart', [], 'messages', $locale));
 
         return $this->redirectToRoute('admin_articles');
     }

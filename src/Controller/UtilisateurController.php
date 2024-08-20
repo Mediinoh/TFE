@@ -9,14 +9,18 @@ use App\Repository\UtilisateurRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class UtilisateurController extends AbstractAchatsUtilisateurController
 {
     #[Route('/utilisateur/profil/{id}', name: 'utilisateur.profil', methods: ['GET', 'POST'])]
-    public function profil(int $id, UtilisateurRepository $utilisateurRepository, Request $request, EntityManagerInterface $manager): Response
+    public function profil(int $id, UtilisateurRepository $utilisateurRepository, Request $request, EntityManagerInterface $manager, TranslatorInterface $translator): Response
     {
+        $locale = $request->getLocale();
+
         if (!$this->getUser()) {
             return $this->redirectToRoute('security.login');
         }
@@ -45,7 +49,7 @@ class UtilisateurController extends AbstractAchatsUtilisateurController
             $manager->persist($utilisateur);
             $manager->flush();
 
-            $this->addFlash('success', 'Les informations de votre compte ont bien été modifiées !');
+            $this->addFlash('success', $translator->trans('account_information_updated', [], 'messages', $locale));
 
             return $this->redirectToRoute('utilisateur.profil', ['id' => $utilisateur->getId()]);
         }
@@ -56,9 +60,11 @@ class UtilisateurController extends AbstractAchatsUtilisateurController
         ]);
     }
 
-    #[Route('/utilisateur/profil/delete/{id}', name: 'utilisateur.profil.delete', methods: ['GET'])]
-    public function removeProfil(int $id, UtilisateurRepository $utilisateurRepository, Request $request, EntityManagerInterface $manager): Response
+    #[Route('/utilisateur/profil/delete/{id}', name: 'utilisateur.profil.delete', methods: ['POST'])]
+    public function removeProfil(int $id, UtilisateurRepository $utilisateurRepository, Request $request, EntityManagerInterface $manager, TranslatorInterface $translator): Response
     {
+        $locale = $request->getLocale();
+
         /** @var Utilisateur $user */
         $user = $this->getUser();
 
@@ -68,15 +74,16 @@ class UtilisateurController extends AbstractAchatsUtilisateurController
 
         $utilisateur = $utilisateurRepository->find($id);
 
-        if (is_null($utilisateur) && $user !== $utilisateur) {
+        if (is_null($utilisateur) || $user !== $utilisateur) {
             return $this->redirectToRoute('home.index');
         }
 
         $manager->remove($utilisateur);
+        $manager->flush();
 
-        $this->addFlash('success', 'Votre compte a été supprimé');
+        $this->addFlash('success', $translator->trans('account_deleted',[], 'messages', $locale));
 
-        return $this->redirectToRoute('security.login');
+        return $this->redirectToRoute('security.logout');
     }
 
     #[Route('/utilisateur/achats_utilisateur', 'list_achats_utilisateur', methods: ['GET'])]
@@ -93,7 +100,7 @@ class UtilisateurController extends AbstractAchatsUtilisateurController
     }
 
     #[Route('/utilisateur/details_achat/{id}', 'details_achat_utilisateur', methods: ['GET'])]
-    public function details_achat(int $id, Request $request, HistoriqueAchatRepository $historiqueAchatRepository): Response
+    public function details_achat(int $id, Request $request, HistoriqueAchatRepository $historiqueAchatRepository, TranslatorInterface $translator, RequestStack $requestStack): Response
     {
         /** @var Utilisateur $user */
         $user = $this->getUser();
@@ -104,6 +111,6 @@ class UtilisateurController extends AbstractAchatsUtilisateurController
 
         $routePath = $request->attributes->get('_route');
 
-        return $this->voirDetailsAchat($id, $historiqueAchatRepository, $routePath);
+        return $this->voirDetailsAchat($id, $historiqueAchatRepository, $routePath, $translator, $requestStack);
     }
 }

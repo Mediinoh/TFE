@@ -21,6 +21,10 @@
                     {% for article in articles %}
                         <div class="col mb-5">
                             <div class="card h-100 text-center">
+                                {% if app.user %}
+                                    {% set formulaireFavori = formulairesFavoris['article_' ~ article.id] %}
+                                    {{ form(formulaireFavori) }}
+                                {% endif %}
                                 <img src="{{ imagesArticlesPath }}/{{ article.photoArticle }}" alt="{{ article.titre }}" class="card-img-top">
                                 <div class="card-body p-4">
                                     <h5 class="card-title">{{ article.titre }}</h5>

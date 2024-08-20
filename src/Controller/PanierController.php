@@ -16,6 +16,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class PanierController extends AbstractAchatsUtilisateurController
 {
@@ -135,8 +136,10 @@ class PanierController extends AbstractAchatsUtilisateurController
     }
 
     #[Route('/panier/supprimer/{id}', 'panier.supprimer', methods: ['POST'])]
-    public function suppressionPanier(int $id, ArticleRepository $articleRepository, SessionInterface $session, Request $request): Response
+    public function suppressionPanier(int $id, ArticleRepository $articleRepository, SessionInterface $session, Request $request, TranslatorInterface $translator): Response
     {
+        $locale = $request->getLocale();
+
         /** @var Utilisateur $user */
         $user = $this->getUser();
 
@@ -147,7 +150,8 @@ class PanierController extends AbstractAchatsUtilisateurController
         $article = $articleRepository->find($id);
 
        if (!$article) {
-            throw new NotFoundHttpException('L\'article n\'existe pas.');
+            $this->addFlash('danger', $translator->trans('article_not_found', ['%id' => $id], 'messages', $locale));
+            return $this->redirectToRoute('panier.list');
        }
 
         $userId = $user->getId();
@@ -163,7 +167,7 @@ class PanierController extends AbstractAchatsUtilisateurController
             
             $session->set('panier', $panier);
 
-            $this->addFlash('success', "Article supprimé du panier en $quantite exemplaires !");
+            $this->addFlash('success', $translator->trans('article_removed_quantity_from_cart', ['%quantity%' => $quantite], 'messages', $locale));
         }
 
         return $this->redirectToRoute('panier.list');

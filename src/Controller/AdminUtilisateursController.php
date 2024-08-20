@@ -9,9 +9,11 @@ use App\Repository\HistoriqueConnexionRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
     class AdminUtilisateursController extends AbstractController
     {
@@ -58,8 +60,10 @@ use Symfony\Component\Routing\Annotation\Route;
         }
 
         #[Route('/bloquer_utilisateur/{id}', 'admin_bloquer_utilisateur', methods: ['POST'])]
-        public function bloquerUtilisateur(int $id, UtilisateurRepository $utilisateurRepository, Request $request, EntityManagerInterface $manager): Response
+        public function bloquerUtilisateur(int $id, UtilisateurRepository $utilisateurRepository, EntityManagerInterface $manager, TranslatorInterface$translator, RequestStack $requestStack): Response
         {
+            $locale = $requestStack->getCurrentRequest()->getLocale();
+
             /** @var Utilisateur $user */
             $user = $this->getUser();
             
@@ -74,20 +78,23 @@ use Symfony\Component\Routing\Annotation\Route;
             $utilisateur = $utilisateurRepository->find($id);
 
             if (!$utilisateur) {
-                    throw new NotFoundHttpException('L\'utilisateur n\'existe pas !');
+                    $this->addFlash('danger', $translator->trans('user_not_found', ['%id%' => $id], 'messages', $locale));
+                    return $this->redirectToRoute('admin_utilisateurs');
             }
 
             if ($utilisateur === $user) {
-                $this->addFlash('danger', 'Vous ne pouvez pas bloquer/débloquer l\'utilisateur courant !');
+                $this->addFlash('danger', $translator->trans('cannot_block_unbock_current_user', [], 'messages', $locale));
                 return $this->redirectToRoute('admin_utilisateurs');
             }
 
-            $utilisateur->setBloque(!$utilisateur->isBloque());
+            $blocked = !$utilisateur->isBloque();
+
+            $utilisateur->setBloque($blocked);
 
             $manager->persist($utilisateur);
             $manager->flush();
 
-            $this->addFlash('success', 'Cet utilisateur a été bloqué !');
+            $this->addFlash('success', $translator->trans($blocked ? 'user_blocked' : 'user_unblocked', [], 'messages', $locale));
 
             return $this->redirectToRoute('admin_utilisateurs');
         }

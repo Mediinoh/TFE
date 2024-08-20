@@ -11,12 +11,14 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class CommentairesController extends AbstractController
 {
     #[Route('/commentaires/{id}', name: 'commentaires.article')]
-    public function list(int $id, ArticleRepository $articleRepository, CommentaireRepository $commentaireRepository, Request $request, EntityManagerInterface $manager): Response
+    public function list(int $id, ArticleRepository $articleRepository, CommentaireRepository $commentaireRepository, Request $request, EntityManagerInterface $manager, TranslatorInterface $translator): Response
     {
+        $locale = $request->getLocale();
 
         /** @var Utilisateur $user */
         $user = $this->getUser();
@@ -24,7 +26,7 @@ class CommentairesController extends AbstractController
         $article = $articleRepository->findOneBy(['id' => $id]);
 
         if (!$article) {
-            $this->addFlash('danger', `L'article avec l'id $id n'existe pas dans la base de données !`);
+            $this->addFlash('danger', $translator->trans('article_not_found', [], 'messages', $locale));
             return $this->redirectToRoute('blog.list');
         }
 
@@ -38,7 +40,7 @@ class CommentairesController extends AbstractController
             $manager->persist($commentaire);
             $manager->flush();
 
-            $this->addFlash('success', 'Votre commentaire a été ajouté !');
+            $this->addFlash('success', $translator->trans('comment_added', [], 'messages', $locale));
             $form = $this->createForm(CommentaireType::class);
             $this->redirectToRoute('commentaires.article', ['id' => $id]);
         }
