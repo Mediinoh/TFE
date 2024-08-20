@@ -72,7 +72,7 @@
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <p class="modal-title" id="deleteModalLabel{{ utilisateur.id }}">{{ 'delete_confirmation'|trans({}, 'messages', app.request.locale) }}</p>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{{ 'close'|trans({}, 'messages', app.request.locale) }}"></button>
                                     </div>
                                     <div class="modal-body">
                                         {{ 'confirm_delete_user'|trans({}, 'messages', app.request.locale) }}
