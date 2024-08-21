@@ -72,6 +72,10 @@ class UtilisateurController extends AbstractAchatsUtilisateurController
             return $this->redirectToRoute('security.login');
         }
 
+        if ($this->isGranted('ROLE_ADMIN')) {
+            $this->redirectToRoute('utilisateur.profil');
+        }
+
         $utilisateur = $utilisateurRepository->find($id);
 
         if (is_null($utilisateur) || $user !== $utilisateur) {
@@ -87,7 +91,7 @@ class UtilisateurController extends AbstractAchatsUtilisateurController
     }
 
     #[Route('/utilisateur/achats_utilisateur', 'list_achats_utilisateur', methods: ['GET'])]
-    public function list_achats(Request $request, HistoriqueAchatRepository $historiqueAchatRepository): Response
+    public function list_achats(HistoriqueAchatRepository $historiqueAchatRepository): Response
     {
         /** @var Utilisateur $user */
         $user = $this->getUser();

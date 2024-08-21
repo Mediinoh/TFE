@@ -13,11 +13,7 @@ parameters:
     tmdb_api_key: '%env(TMDB_API_KEY)%'
     tmdb_api_url: 'https://api.themoviedb.org/3'
     tmdb_api_images_url: 'https://image.tmdb.org/t/p/w500'
-    environment: 'sandbox'
-    merchantId: 'tqpvtq6p3mvn525b'
-    publicKey: 'zyf4msz425vkqtt7'
-    privateKey: 'a525bb11310b4da856ffc21310c80f88'
-
+    
 services:
     # default configuration for services in *this* file
     _defaults:

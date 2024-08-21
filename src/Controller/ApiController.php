@@ -1,8 +1,6 @@
 <?php
 
 namespace App\Controller;
-
-use App\Service\BraintreeService;
 use App\Service\TmdbApiService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
