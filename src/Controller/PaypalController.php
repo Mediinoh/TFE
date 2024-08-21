@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class PaypalController extends AbstractController
 {
@@ -20,10 +21,10 @@ class PaypalController extends AbstractController
     {
         $payment = $this->payPalService->createPayment(
             20.00, // Total
-            'USD', // Devise
+            'EUR', // Devise
             'Description du paiement',
-            $this->generateUrl('paypal_success', [], true), // URL de retour en cas de succès
-            $this->generateUrl('paypal_cancel', [], true) // URL de retour en cas d'annulation
+            $this->generateUrl('paypal_success', [], UrlGeneratorInterface::ABSOLUTE_URL), // URL de retour en cas de succès
+            $this->generateUrl('paypal_cancel', [], UrlGeneratorInterface::ABSOLUTE_URL) // URL de retour en cas d'annulation
         );
 
         return $this->redirect($payment->getApprovalLink());
