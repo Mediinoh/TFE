@@ -22,11 +22,11 @@ class AdminAchatsUtilisateurController extends AbstractAchatsUtilisateurControll
         $user = $this->getUser();
 
         if (!$user) {
-            $this->redirectToRoute('security.login');
+            return $this->redirectToRoute('security.login');
         }
 
         if (!$this->isGranted('ROLE_ADMIN')) {
-            $this->redirectToRoute('home.index');
+            return $this->redirectToRoute('home.index');
         }
 
         $utilisateur = $utilisateurRepository->find($id);
@@ -46,11 +46,11 @@ class AdminAchatsUtilisateurController extends AbstractAchatsUtilisateurControll
         $user = $this->getUser();
 
         if (!$user) {
-            $this->redirectToRoute('security.login');
+            return $this->redirectToRoute('security.login');
         }
 
         if (!$this->isGranted('ROLE_ADMIN')) {
-            $this->redirectToRoute('home.index');
+            return $this->redirectToRoute('home.index');
         }
 
         $routePath = $request->attributes->get('_route');

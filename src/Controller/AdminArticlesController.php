@@ -24,11 +24,11 @@ class AdminArticlesController extends AbstractController
         $user = $this->getUser();
 
         if (!$user) {
-            $this->redirectToRoute('security.login');
+            return $this->redirectToRoute('security.login');
         }
 
         if (!$this->isGranted('ROLE_ADMIN')) {
-            $this->redirectToRoute('home.index');
+            return $this->redirectToRoute('home.index');
         }
 
         $form = $this->createForm(AjoutArticleType::class);
@@ -84,7 +84,7 @@ class AdminArticlesController extends AbstractController
        }
 
        if (!$this->isGranted('ROLE_ADMIN')) {
-        $this->redirectToRoute('home.index');
+        return $this->redirectToRoute('home.index');
     }
 
        $article = $articleRepository->find($id);

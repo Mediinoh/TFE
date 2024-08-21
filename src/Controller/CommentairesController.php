@@ -42,7 +42,7 @@ class CommentairesController extends AbstractController
 
             $this->addFlash('success', $translator->trans('comment_added', [], 'messages', $locale));
             $form = $this->createForm(CommentaireType::class);
-            $this->redirectToRoute('commentaires.article', ['id' => $id]);
+            return $this->redirectToRoute('commentaires.article', ['id' => $id]);
         }
 
         $commentaires = $commentaireRepository->findBy(['article' => $article], ['date_commentaire' => 'DESC']);

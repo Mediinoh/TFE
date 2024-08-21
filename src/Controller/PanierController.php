@@ -37,7 +37,7 @@ class PanierController extends AbstractAchatsUtilisateurController
         $user = $this->getUser();
 
         if (!$user) {
-            $this->redirectToRoute('security.login');
+            return $this->redirectToRoute('security.login');
         }
 
         $userId = $user->getId();
@@ -124,7 +124,7 @@ class PanierController extends AbstractAchatsUtilisateurController
         $user = $this->getUser();
 
         if (!$user) {
-            $this->redirectToRoute('security.login');
+            return $this->redirectToRoute('security.login');
         }
         
         $historiqueAchat = $historiqueAchatRepository->find($id);
@@ -143,7 +143,7 @@ class PanierController extends AbstractAchatsUtilisateurController
         $user = $this->getUser();
 
         if (!$user) {
-            $this->redirectToRoute('security.login');
+            return $this->redirectToRoute('security.login');
         }
 
         $article = $articleRepository->find($id);
