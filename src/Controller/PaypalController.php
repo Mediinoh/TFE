@@ -13,7 +13,6 @@ class PaypalController extends AbstractController
 {
     public function __construct(private PayPalService $payPalService)
     {
-        
     }
 
     #[Route('/paypal_payment', name: 'paypal_payment')]
@@ -21,7 +20,7 @@ class PaypalController extends AbstractController
     {
         $payment = $this->payPalService->createPayment(
             20.00, // Total
-            'EUR', // Devise
+            'USD', // Devise
             'Description du paiement',
             $this->generateUrl('paypal_success', [], UrlGeneratorInterface::ABSOLUTE_URL), // URL de retour en cas de succès
             $this->generateUrl('paypal_cancel', [], UrlGeneratorInterface::ABSOLUTE_URL) // URL de retour en cas d'annulation
@@ -30,7 +29,7 @@ class PaypalController extends AbstractController
         return $this->redirect($payment->getApprovalLink());
     }
 
-    #[Route('/success', name: 'paypal_success')]
+    #[Route('/paypal_success', name: 'paypal_success')]
     public function success(Request $request): Response
     {
         $paymentId = $request->query->get('paymentId');
@@ -44,7 +43,7 @@ class PaypalController extends AbstractController
         }
     }
 
-    #[Route('/cancel', name: 'paypal_cancel')]
+    #[Route('/paypal_cancel', name: 'paypal_cancel')]
     public function cancel(): Response
     {
         return new Response('Paiement annulé.');

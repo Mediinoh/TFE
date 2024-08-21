@@ -24,8 +24,9 @@ class PayPalService
         $this->apiContext->setConfig([
             'mode' => $mode,
             'http.ConnectionTimeOut' => 30,
-            'log.LogEnabled' => false,
-            'log.LogLevel' => 'FINE',
+            'log.LogEnabled' => true,
+            'log.FileName' => '../PayPal.log',
+            'log.LogLevel' => 'DEBUG',
             'validation.level' => 'log',
             'cache.enabled' => true,
         ]);
@@ -53,7 +54,6 @@ class PayPalService
                 ->setPayer($payer)
                 ->setTransactions([$transaction])
                 ->setRedirectUrls($redirectUrls);
-
         try {
             $payment->create($this->apiContext);
             return $payment;
@@ -67,7 +67,7 @@ class PayPalService
     {
         $payment = Payment::get($paymentId, $this->apiContext);
 
-        $execution = new \PayPal\Api\PaymentExecution();
+        $execution = new PaymentExecution();
         $execution->setPayerId($payerId);
 
         try {
