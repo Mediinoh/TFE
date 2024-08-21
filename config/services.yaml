@@ -47,8 +47,7 @@ services:
             $apiUrl: '%tmdb_api_url%'
     
     App\EventListener\LocaleListener:
-        arguments:
-            $defaultLocale: '%locale%'
+        arguments: ['@request_stack', '%kernel.default_locale%']
         tags:
             - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
             - { name: kernel.event_listener, event: kernel.response, method: onKernelResponse }
