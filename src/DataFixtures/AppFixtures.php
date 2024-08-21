@@ -59,7 +59,7 @@ use Faker\Generator;
                 ['titre' => 'Chargeur iPhone', 'prix' => 19.99, 'description' => 'Chargeur iPhone original', 'categorie_id' => 6, 'photo_article' => 'téléchargement (2).jpg'],
                 ['titre' => 'Docking Station Dell', 'prix' => 89.65, 'description' => 'Docking station de marque DELL', 'categorie_id' => 6, 'photo_article' => 'téléchargement (3).jpg'],
                 ['titre' => 'Jeux PS4', 'prix' => 39.99, 'description' => 'FC24 pour PS4', 'categorie_id' => 7, 'photo_article' => 'téléchargement (13).jpg'],
-                ['titre' => 'Tomb Raider', 'prix' => 49.90, 'description' => 'Jeux PS4 tomb raider', 'categorie_id' => 7, 'photo_article' => 'télécharment (14).jpg'],
+                ['titre' => 'Tomb Raider', 'prix' => 49.90, 'description' => 'Jeux PS4 tomb raider', 'categorie_id' => 7, 'photo_article' => 'téléchargement (14).jpg'],
                 ['titre' => 'Écran gaming AOC', 'prix' => 139, 'description' => 'Écran 27\' AOC', 'categorie_id' => 4, 'photo_article' => 'téléchargement (17).jpg'],
                 ['titre' => 'Écran gaming TUF', 'prix' => 119, 'description' => 'Écran 27\' TUF', 'categorie_id' => 4, 'photo_article' => 'téléchargement (18).jpg'],
                 ['titre' => 'Écran Gaming MSI', 'prix' => 149, 'description' => 'Écran gaming MSI curvé 27\' (240 fps)', 'categorie_id' => 4, 'photo_article' => 'téléchargement (19).jpg'],
