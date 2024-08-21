@@ -62,7 +62,7 @@ class PayPalService
         }
     }
 
-    public function executerPayment(string $paymentId, string $payerId)
+    public function executePayment(string $paymentId, string $payerId)
     {
         $payment = Payment::get($paymentId, $this->apiContext);
 
