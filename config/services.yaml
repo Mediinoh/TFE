@@ -46,6 +46,12 @@ services:
             $apiKey: '%tmdb_api_key%'
             $apiUrl: '%tmdb_api_url%'
     
+    App\Service\PayPalService:
+        arguments:
+            $clientId: '%env(PAYPAL_CLIENT_ID)%'
+            $clientSecret: '%env(PAYPAL_CLIENT_SECRET)%'
+            $mode: '%env(PAYPAL_MODE)%'
+    
     App\EventListener\LocaleListener:
         arguments: ['@request_stack', '%kernel.default_locale%']
         tags:

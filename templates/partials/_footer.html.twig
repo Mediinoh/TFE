@@ -1,6 +1,38 @@
 <!-- Footer-->
 <footer class="footer d-flex flex-column align-items-center bg-dark py-5" role="contentinfo" id="footer">
     <div class="container">
-        <p class="m-0 text-center text-white">Copyright &copy; Mehdi Assam 2024</p>
+        <div class="row text-center text-white">
+            <div class="social-icons col-md-3">
+                <a href="https://www.facebook.com/login" target="_blank" title="Facebook"><span class="bi bi-facebook" aria-hidden="true"></span></a>
+                <a href="https://www.instagram.com/accounts/login/" target="_blank" title="Instagram"><span class="bi bi-instagram" aria-hidden="true"></span></a>
+                <a href="https://twitter.com/login" target="_blank" title="Twitter"><span class="bi bi-twitter" aria-hidden="true"></span></a>
+                <a href="https://www.tiktok.com/login" target="_blank" title="TikTok"><span class="bi bi-tiktok" aria-hidden="true"></span></a>
+            </div>
+            <!-- Newsletter -->
+            <div class="col-md-3">
+                <h5>S'inscrire à la Newsletter</h5>
+                <form action="#" method="post">
+                    <div class="form-group">
+                        <input type="email" class="form-control" placeholder="Votre email">
+                    </div>
+                    <button type="submit" class="btn btn-primary mt-2">S'inscrire</button>
+                </form>
+            </div>
+            <!-- Horaires et Contact -->
+            <div class="col-md-3">
+                <h5>Contact</h5>
+                <p>Adresse : ICC , Bruxelles</p>
+                <p>Email : <a href="mailto:contact@medshop.com" class="text-white">medshop@hotmail.com</a></p>
+                <p>Téléphone : +32485/950/631</p>
+            </div>
+            <!-- Logos de Paiement -->
+            <div class="col-md-3">
+                <h5>Nous acceptons</h5>
+                <img src="{{ asset('images/visa.jpg') }}" alt="Visa" height="30">
+                <img src="{{ asset('images/mastercard.jpg') }}" alt="MasterCard" height="30">
+                <img src="{{ asset('images/paypal.jpg') }}" alt="PayPal" height="30">
+            </div>
+        </div>
+        <p class="m-0 text-center text-white mt-4">Copyright &copy; Mehdi Assam 2024</p>
     </div>
 </footer>
