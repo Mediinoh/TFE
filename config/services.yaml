@@ -40,6 +40,11 @@ services:
     App\EventListener\UserLoggedInListener:
         tags:
             - { name: kernel.event_listener, event: 'user.logged_in', methods: 'onUserLoggedIn' }
+    
+    App\EventListener\UserLoggedOutListener:
+        tags:
+            - { name: 'kernel.event_listener', event: 'user.logged_out', method: 'onUserLoggedOut' }
+
 
     App\Service\TmdbApiService:
         arguments:

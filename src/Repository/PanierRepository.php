@@ -21,6 +21,22 @@ class PanierRepository extends ServiceEntityRepository
         parent::__construct($registry, Panier::class);
     }
 
+    public function findLastPanierNotInHistoriqueAchats($utilisateurId)
+    {
+        $qb = $this->createQueryBuilder('p')
+            ->leftJoin('p.historiqueAchats', 'ha')
+            ->leftJoin('p.ligneCommandes', 'lc') // Joindre les lignes de commande
+            ->leftJoin('lc.article', 'a') // Joindre les articles associés aux lignes de commande
+            ->addSelect('lc', 'a') // Sélectionner les lignes de commande et les articles
+            ->where('p.utilisateur = :utilisateur')
+            ->andWhere('ha.id IS NULL')
+            ->setParameter('utilisateur', $utilisateurId)
+            ->orderBy('p.createdAt', 'DESC') // Assurez-vous que vous avez un champ `createdAt` dans votre table Panier
+            ->setMaxResults(1);
+
+        return $qb->getQuery()->getOneOrNullResult();
+    }
+
 //    /**
 //     * @return Panier[] Returns an array of Panier objects
 //     */
