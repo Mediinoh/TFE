@@ -46,7 +46,7 @@ class ForgotPasswordType extends AbstractType
                         'class' => 'form-control',
                         'autocomplete' => 'new-password',
                     ],
-                    'label' => $this->translator->trans('password', [], 'messages', $locale),
+                    'label' => $this->translator->trans('new_password', [], 'messages', $locale),
                     'label_attr' => [
                         'class' => 'form-label mt-4',
                         'autocomplete' => 'new-password',

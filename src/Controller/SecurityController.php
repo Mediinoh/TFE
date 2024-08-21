@@ -14,6 +14,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -89,7 +90,7 @@ class SecurityController extends AbstractController
     }
 
     #[Route('/forgot_password', 'security.forgot_password', methods: ['GET', 'POST'])]
-    public function forgotPassword(Request $request, EntityManagerInterface $manager, UtilisateurRepository $utilisateurRepository, TranslatorInterface $translator): Response
+    public function forgotPassword(Request $request, EntityManagerInterface $manager, UtilisateurRepository $utilisateurRepository, TranslatorInterface $translator, UserPasswordHasherInterface $hasher): Response
     {
         if ($this->getUser()) {
             return $this->redirectToRoute('home.index');
@@ -106,10 +107,12 @@ class SecurityController extends AbstractController
 
             if (!$utilisateur) {
                 $this->addFlash('danger', $translator->trans('account_not_found_with_email', [], 'messages', $locale));
-                return $this->redirectToRoute('app_forgot_password');
+                return $this->redirectToRoute('security.forgot_password');
             }
 
-            $utilisateur->setPlainPassword($utilisateurData['plainPassword']);
+            $utilisateur->setPassword(
+                $hasher->hashPassword($utilisateur, $utilisateurData['plainPassword'])
+            );
 
             $manager->persist($utilisateur);
             $manager->flush();
