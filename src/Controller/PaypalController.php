@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class PayPalController extends AbstractController
 {
@@ -15,7 +16,7 @@ class PayPalController extends AbstractController
         
     }
 
-    #[Route('/paypal-payment', 'paypal', methods: ['GET', 'POST'])]
+    #[Route('/paypal_payment', name: 'paypal_payment')]
     public function payment(): Response
     {
         $payment = $this->payPalService->createPayment(

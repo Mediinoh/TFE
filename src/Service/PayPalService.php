@@ -53,11 +53,12 @@ class PayPalService
                 ->setPayer($payer)
                 ->setTransactions([$transaction])
                 ->setRedirectUrls($redirectUrls);
-        
+
         try {
             $payment->create($this->apiContext);
             return $payment;
-        } catch(\Exception $ex) {
+        } catch (\Exception $ex) {
+            // Gérer l'erreur
             throw new \Exception("Erreur lors de la création du paiement : " . $ex->getMessage());
         }
     }
@@ -66,13 +67,14 @@ class PayPalService
     {
         $payment = Payment::get($paymentId, $this->apiContext);
 
-        $execution = new PaymentExecution();
+        $execution = new \PayPal\Api\PaymentExecution();
         $execution->setPayerId($payerId);
 
         try {
             $result = $payment->execute($execution, $this->apiContext);
             return $result;
         } catch (\Exception $ex) {
+            // Gérer l'erreur
             throw new \Exception("Erreur lors de l'exécution du paiement : " . $ex->getMessage());
         }
     }
