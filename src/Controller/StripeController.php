@@ -86,7 +86,7 @@ class StripeController extends AbstractController
 
             return new JsonResponse(['id' => $checkout_session->id]);
         } catch (\Exception $e) {
-            $this->addFlash('error', 'An error occurred: ' . $e->getMessage());
+            $this->addFlash('error', 'An error occurred : ' . $e->getMessage());
             return new JsonResponse(['error' => $e->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
