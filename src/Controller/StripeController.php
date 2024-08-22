@@ -42,6 +42,9 @@ class StripeController extends AbstractController
             }
 
             $session = $this->requestStack->getSession();
+            if (!$session) {
+                return $this->redirectToRoute('security.login');
+            }
             
             $userId = $utilisateur->getId();
             $panier = $session->get('panier', []);
