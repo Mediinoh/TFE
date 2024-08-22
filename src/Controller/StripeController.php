@@ -35,7 +35,8 @@ class StripeController extends AbstractController
 
             $checkout_session = Session::create([
                 'payment_method_types' => ['card'],
-                'line_items' => [[
+                'line_items' => [
+                  [
                     'price_data' => [
                         'currency' => 'eur',
                         'product_data' => [
@@ -44,7 +45,8 @@ class StripeController extends AbstractController
                         'unit_amount' => 2000,
                     ],
                     'quantity' => 1,
-                ]],
+                  ],
+                ],
                 'mode' => 'payment',
                 'success_url' => $this->generateUrl('stripe_success', [], UrlGeneratorInterface::ABSOLUTE_URL),
                 'cancel_url' => $this->generateUrl('stripe_error', [], UrlGeneratorInterface::ABSOLUTE_URL),
