@@ -35,7 +35,7 @@ class StripeController extends AbstractController
     {
         try {
             /** @var Utilisateur $utilisateur */
-            $utilisateur = $this->getUser();
+            /*$utilisateur = $this->getUser();
 
             if (!$utilisateur) {
                 return $this->redirectToRoute('security.login');
@@ -53,6 +53,7 @@ class StripeController extends AbstractController
             $lineItems = [];
 
             if (isset($panier[$userId])) {
+                $panier = [$userId];
                 $panierUtilisateur = $panier[$userId];
                 foreach ($panierUtilisateur as $articleId => $quantite) {
                     $article = $this->articleRepository->find($articleId);
@@ -65,20 +66,41 @@ class StripeController extends AbstractController
                             'currency' => 'eur',
                             'product_data' => [
                                 'name' => $article->getTitre(),
-                                'images' => [$photoArticle],
+                                //'images' => [$photoArticle],
                             ],
                             'unit_amount' => $article->getPrixUnitaire() * 100, // Convert to cents
                         ],
                         'quantity' => $quantite,
                     ];
                 }
-            }
+            }*/
 
             Stripe::setApiKey($this->params->get('stripe_secret'));
 
             $checkout_session = Session::create([
                 'payment_method_types' => ['card'],
-                'line_items' => $lineItems,
+                'line_items' => [
+                    [
+                        'price_data' => [
+                        'currency' => 'usd',
+                        'product_data' => [
+                            'name' => 'T-shirt',
+                        ],
+                        'unit_amount' => 2000,
+                        ],
+                        'quantity' => 2,
+                    ],
+                    [
+                        'price_data' => [
+                        'currency' => 'eur',
+                        'product_data' => [
+                            'name' => 'Shirt',
+                        ],
+                        'unit_amount' => 3000,
+                        ],
+                        'quantity' => 7,
+                    ],
+                ],
                 'mode' => 'payment',
                 'success_url' => $this->generateUrl('stripe_success', [], UrlGeneratorInterface::ABSOLUTE_URL),
                 'cancel_url' => $this->generateUrl('stripe_error', [], UrlGeneratorInterface::ABSOLUTE_URL),
