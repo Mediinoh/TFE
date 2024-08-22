@@ -42,11 +42,9 @@ class StripeController extends AbstractController
             }
 
             $session = $this->requestStack->getSession();
-            dd($session); // Vérifie que la session est bien récupérée
-
+            
             $userId = $utilisateur->getId();
             $panier = $session->get('panier', []);
-            dd($panier); // Vérifie que le panier est bien récupéré
 
             $lineItems = [];
 
@@ -72,8 +70,6 @@ class StripeController extends AbstractController
                 }
             }
 
-            dd($lineItems); // Vérifie le contenu des lineItems
-
             Stripe::setApiKey($this->params->get('stripe_secret'));
 
             $checkout_session = Session::create([
@@ -86,7 +82,7 @@ class StripeController extends AbstractController
 
             return new JsonResponse(['id' => $checkout_session->id]);
         } catch (\Exception $e) {
-            $this->addFlash('error', 'An error occurred : ' . $e->getMessage());
+            $this->addFlash('error', $e->getMessage());
             return new JsonResponse(['error' => $e->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
