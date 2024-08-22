@@ -9,6 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Asset\Packages;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -30,51 +31,51 @@ class StripeController extends AbstractController
         ]);
     }
 
-    #[Route('/create-checkout-session', 'stripe_checkout', methods: ['POST'])]
-    public function checkout(): Response
+    #[Route('/create-checkout-session', 'stripe_checkout', methods: ['GET', 'POST'])]
+    public function checkout(Request $request): Response
     {
-        try {
-            /** @var Utilisateur $utilisateur */
-            /*$utilisateur = $this->getUser();
+        /** @var Utilisateur $utilisateur */
+        $utilisateur = $this->getUser();
 
-            if (!$utilisateur) {
-                return $this->redirectToRoute('security.login');
-            }
+        if (!$utilisateur) {
+            return $this->redirectToRoute('security.login');
+        }
 
-            $session = $this->requestStack->getSession();
-            
-            if (!$session) {
-                return $this->redirectToRoute('security.login');
-            }
-            
-            $userId = $utilisateur->getId();
-            $panier = $session->get('panier', []);
+        $session = $this->requestStack->getSession();
+        
+        if (!$session) {
+            return $this->redirectToRoute('security.login');
+        }
+        
+        $userId = $utilisateur->getId();
+        $panier = $session->get('panier', []);
 
-            $lineItems = [];
+        $lineItems = [];
 
-            if (isset($panier[$userId])) {
-                $panier = [$userId];
-                $panierUtilisateur = $panier[$userId];
-                foreach ($panierUtilisateur as $articleId => $quantite) {
-                    $article = $this->articleRepository->find($articleId);
+        /*if (isset($panier[$userId])) {
+            $panier = [$userId];
+            $panierUtilisateur = $panier[$userId];
+            foreach ($panierUtilisateur as $articleId => $quantite) {
+                $article = $this->articleRepository->find($articleId);
 
-                    $imagesArticlesPath = $this->params->get('images_articles_path');
-                    $photoArticle = $this->assets->getUrl($imagesArticlesPath) . $article->getPhotoArticle();
+                $imagesArticlesPath = $this->params->get('images_articles_path');
+                $photoArticle = $this->assets->getUrl($imagesArticlesPath) . $article->getPhotoArticle();
 
-                    $lineItems[] = [
-                        'price_data' => [
-                            'currency' => 'eur',
-                            'product_data' => [
-                                'name' => $article->getTitre(),
-                                //'images' => [$photoArticle],
-                            ],
-                            'unit_amount' => $article->getPrixUnitaire() * 100, // Convert to cents
+                $lineItems[] = [
+                    'price_data' => [
+                        'currency' => 'eur',
+                        'product_data' => [
+                            'name' => $article->getTitre(),
+                            //'images' => [$photoArticle],
                         ],
-                        'quantity' => $quantite,
-                    ];
-                }
-            }*/
+                        'unit_amount' => $article->getPrixUnitaire() * 100, // Convert to cents
+                    ],
+                    'quantity' => $quantite,
+                ];
+            }
+        }*/
 
+        try {
             Stripe::setApiKey($this->params->get('stripe_secret'));
 
             $checkout_session = Session::create([
@@ -82,7 +83,7 @@ class StripeController extends AbstractController
                 'line_items' => [
                     [
                         'price_data' => [
-                        'currency' => 'usd',
+                        'currency' => 'eur',
                         'product_data' => [
                             'name' => 'T-shirt',
                         ],
@@ -96,7 +97,7 @@ class StripeController extends AbstractController
                         'product_data' => [
                             'name' => 'Shirt',
                         ],
-                        'unit_amount' => 3000,
+                        'unit_amount' => 450,
                         ],
                         'quantity' => 7,
                     ],
