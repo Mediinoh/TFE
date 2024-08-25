@@ -43,7 +43,7 @@
                                 {% if article.supprime %}
                                     <p class="text-center">{{ 'article_already_deleted'|trans({}, 'messages', app.request.locale) }}</p>
                                 {% endif %}
-                                {{ form(formulairesSupprimerArticle[article.id - 1]) }}
+                                {{ form(formulairesSupprimerArticle[article.id]) }}
                             </td>
                         </tr>
                     {% endfor %}

@@ -17,13 +17,15 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class StripeController extends AbstractController
 {
-
-    public function __construct(private ParameterBagInterface $params, private Packages $assets, private RequestStack $requestStack, private ArticleRepository $articleRepository)
-    {
-        
+    public function __construct(
+        private ParameterBagInterface $params,
+        private Packages $assets,
+        private RequestStack $requestStack,
+        private ArticleRepository $articleRepository
+    ) {
     }
 
-    #[Route('/stripe', 'stripe.index')]
+    #[Route('/stripe', name: 'stripe_index', methods: ['GET'])]
     public function index(): Response
     {
         return $this->render('pages/stripe/index.html.twig', [
@@ -31,7 +33,7 @@ class StripeController extends AbstractController
         ]);
     }
 
-    #[Route('/create-checkout-session', 'stripe_checkout', methods: ['GET', 'POST'])]
+    #[Route('/create-checkout-session', name: 'stripe_checkout', methods: ['POST'])]
     public function checkout(Request $request): Response
     {
         /** @var Utilisateur $utilisateur */
@@ -46,62 +48,45 @@ class StripeController extends AbstractController
         if (!$session) {
             return $this->redirectToRoute('security.login');
         }
-        
+
         $userId = $utilisateur->getId();
         $panier = $session->get('panier', []);
-
         $lineItems = [];
 
-        /*if (isset($panier[$userId])) {
-            $panier = [$userId];
+        if (isset($panier[$userId])) {
             $panierUtilisateur = $panier[$userId];
             foreach ($panierUtilisateur as $articleId => $quantite) {
                 $article = $this->articleRepository->find($articleId);
 
+                // Génération de l'URL de l'image en utilisant le même processus que dans les factures
                 $imagesArticlesPath = $this->params->get('images_articles_path');
-                $photoArticle = $this->assets->getUrl($imagesArticlesPath) . $article->getPhotoArticle();
+                $photoArticle = $this->getParameter('app.base_url') . $this->assets->getUrl($imagesArticlesPath . '/' . $article->getPhotoArticle());
+
+                // Vérification de l'URL de l'image
+                if (filter_var($photoArticle, FILTER_VALIDATE_URL) === false) {
+                    $photoArticle = null; // ou définir une URL par défaut ici
+                }
 
                 $lineItems[] = [
                     'price_data' => [
                         'currency' => 'eur',
                         'product_data' => [
                             'name' => $article->getTitre(),
-                            //'images' => [$photoArticle],
+                            'images' => $photoArticle ? [$photoArticle] : [], // Ajout de l'image ici
                         ],
                         'unit_amount' => $article->getPrixUnitaire() * 100, // Convert to cents
                     ],
                     'quantity' => $quantite,
                 ];
             }
-        }*/
+        }
 
         try {
             Stripe::setApiKey($this->params->get('stripe_secret'));
 
             $checkout_session = Session::create([
                 'payment_method_types' => ['card'],
-                'line_items' => [
-                    [
-                        'price_data' => [
-                        'currency' => 'eur',
-                        'product_data' => [
-                            'name' => 'T-shirt',
-                        ],
-                        'unit_amount' => 2000,
-                        ],
-                        'quantity' => 2,
-                    ],
-                    [
-                        'price_data' => [
-                        'currency' => 'eur',
-                        'product_data' => [
-                            'name' => 'Shirt',
-                        ],
-                        'unit_amount' => 450,
-                        ],
-                        'quantity' => 7,
-                    ],
-                ],
+                'line_items' => $lineItems,
                 'mode' => 'payment',
                 'success_url' => $this->generateUrl('stripe_success', [], UrlGeneratorInterface::ABSOLUTE_URL),
                 'cancel_url' => $this->generateUrl('stripe_error', [], UrlGeneratorInterface::ABSOLUTE_URL),
@@ -114,19 +99,15 @@ class StripeController extends AbstractController
         }
     }
 
-    #[Route('/stripe_success', 'stripe_success')]
+    #[Route('/stripe_success', name: 'stripe_success')]
     public function success(): Response
     {
-        return $this->render('pages/stripe/success.html.twig', [
-            
-        ]);
+        return $this->render('pages/stripe/success.html.twig');
     }
 
-    #[Route('/stripe_error', 'stripe_error')]
+    #[Route('/stripe_error', name: 'stripe_error')]
     public function error(): Response
     {
-        return $this->render('pages/stripe/error.html.twig', [
-            
-        ]);
+        return $this->render('pages/stripe/error.html.twig');
     }
 }

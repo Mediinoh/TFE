@@ -53,15 +53,16 @@ class AdminArticlesController extends AbstractController
         $articles = $articleRepository->findBy([], ['id' => 'ASC']);
 
         $formulairesSupprimerArticle = [];
-        foreach($articles as $article) {
-            $supprimerArticleForm = $this->createForm(SupprimeArticleType::class, null, [
-                'action' => $this->generateUrl('admin_supprimer_article', ['id' => $article->getId()]),
-                'method' => 'POST',
-                'supprime' => !$article->isSupprime(),
-            ]);
-            $supprimerArticleForm->handleRequest($request);
-            $formulairesSupprimerArticle[] = $supprimerArticleForm->createView();
-        }
+foreach ($articles as $article) {
+    $supprimerArticleForm = $this->createForm(SupprimeArticleType::class, null, [
+        'action' => $this->generateUrl('admin_supprimer_article', ['id' => $article->getId()]),
+        'method' => 'POST',
+        'supprime' => !$article->isSupprime(),
+    ]);
+    $supprimerArticleForm->handleRequest($request);
+    $formulairesSupprimerArticle[$article->getId()] = $supprimerArticleForm->createView();
+}
+
 
         return $this->render('pages/admin/articles.html.twig', [
             'articles' => $articles,

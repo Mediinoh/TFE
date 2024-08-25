@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}  {# Étend le modèle de base #}
+
+{% block title %}Hello PayementController!{% endblock %} {# Définit le bloc titre qui sera utilisé dans la balise <title> du HTML #}
+
+{% block body %}  {# Commence le bloc body où le contenu principal de la page sera placé #}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>  {# Styles spécifiques à ce modèle #}
+
+<div class="example-wrapper">
+    <h1>Hello {{ controller_name }}! ✅</h1>  {# Affiche un message de bienvenue utilisant une variable passée depuis le contrôleur #}
+
+    Ce message amical provient de :
+    <ul>
+        <li>Votre contrôleur à <code><a href="{{ 'C:/TFE/TFE/src/Controller/PayementController.php'|file_link(0) }}">src/Controller/PayementController.php</a></code></li>  {# Lien vers le fichier du contrôleur #}
+        <li>Votre modèle à <code><a href="{{ 'C:/TFE/TFE/templates/payement/index.html.twig'|file_link(0) }}">templates/payement/index.html.twig</a></code></li>  {# Lien vers le fichier du modèle (template) #}
+    </ul>
+</div>
+{% endblock %}  {# Termine le bloc body #}

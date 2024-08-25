@@ -115,7 +115,7 @@ invoice_paid_by: "Facture du %date% payée par %user%"
 user_purchases: "Achats de l'utilisateur"
 user_purchase_list: "Liste des achats de l'utilisateur"
 purchase_history_not_found: "L'historique d'achat avec l'ID %id% n'existe pas dans la base de données !"
-what_you_buy: 'Ce que vous achetez.'
+what_you_buy: 'Ce que vous avez achetez.'
 no_purchases_yet: "Cet utilisateur n'a pas encore effectué d'achats !"
 purchase_date: "Date d'achat"
 total_amount: "Montant total"

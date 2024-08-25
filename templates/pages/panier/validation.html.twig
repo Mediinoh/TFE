@@ -22,37 +22,11 @@
                 {% endfor %}
             {% endfor %}
 
-            {{ form_start(formValidationPayer) }}
-                <div class="form-group mb-3 me-3">
-                    {{ form_label(formValidationPayer.nom) }}
-                    {{ form_widget(formValidationPayer.nom) }}
-                </div>
-                <div class="form-group mb-3 me-3">
-                    {{ form_label(formValidationPayer.numeroCarte) }}
-                    {{ form_widget(formValidationPayer.numeroCarte) }}
-                </div>
-                <div class="d-flex align_items-center">
-                    <div class="form-group mb-3 me-3">
-                        {{ form_label(formValidationPayer.moisExpiration) }}
-                        {{ form_widget(formValidationPayer.moisExpiration) }}
-                    </div>
-                    <div class="form-group mb-3 me-3">
-                        {{ form_label(formValidationPayer.anneeExpiration) }}
-                        {{ form_widget(formValidationPayer.anneeExpiration) }}
-                    </div>
-                    <div class="form-group mb-3 me-3">
-                        {{ form_label(formValidationPayer.cvc) }}
-                        {{ form_widget(formValidationPayer.cvc) }}
-                    </div>
-                </div>
-                <div class="form-group mb-3 me-3 d-flex align_items-center">
-                    <a href="{{ path('panier.list') }}" class="btn btn-danger me-2">
-                        <span class="bi bi-x-octagon" aria-hidden="true"></span> {{ 'cancel_payment'|trans({}, 'messages', app.request.locale) }}
-                    </a>
-                    {{ form_widget(formValidationPayer.valider) }}
-                </div>
-            {{ form_end(formValidationPayer) }}
+            <div class="d-flex justify-content-end">
+                <form action="{{ path('stripe_checkout') }}" method="post">
+                    <button type="submit" class="btn btn-primary">{{ 'pay_with_stripe'|trans({}, 'messages', app.request.locale) }}</button>
+                </form>
+            </div>
         </div>
     </section>
-
 {% endblock %}
