@@ -3,60 +3,69 @@
 {% block title %}{{ 'chat'|trans({}, 'messages', app.request.locale) }}{% endblock %}
 
 {% block body %}
-    <section class="bg-dark py-5">
-        <div class="container px-4 px-lg-5 my-5">
-            <div class="text-center text-white">
-                <h1 class="display-4 fw-bolder">{{ 'we_love_exchange'|trans({}, 'messages', app.request.locale) }}</h1>
-                <p class="lead fw-normal text-white-50 mb-0">{{ 'be_imaginative'|trans({}, 'messages', app.request.locale) }}</p>
-            </div>
+<section class="bg-dark py-5">
+    <div class="container px-4 px-lg-5 my-5">
+        <div class="text-center text-white">
+            <h1 class="display-4 fw-bolder">{{ 'we_love_exchange'|trans({}, 'messages', app.request.locale) }}</h1>
+            <p class="lead fw-normal text-white-50 mb-0">{{ 'be_imaginative'|trans({}, 'messages', app.request.locale) }}</p>
         </div>
-    </section>
-
-    <div class="container">
-        {% for label, messages in app.flashes(['success', 'warning', 'danger']) %}
-            {% for message in messages %}
-                <div class="alert alert-{{ label }} mt-4" role="alert">
-                    {{ message }}
-                </div>
-            {% endfor %}
-        {% endfor %}
     </div>
+</section>
 
-    <section class="py-5">
-        <div class="container px-4 px-lg-5 mt-5">
-            <div class="chat-container">
-                <div class="chat-messages">
-                    {% if messages is empty %}
-                        <p class="text-center">{{ 'no_messages_to_display'|trans({}, 'messages', app.request.locale) }}</p>
-                    {% else %}
-                        {% for message in messages %}
-                            <div class="card mb-3">
-                                <div class="card-header d-flex justify-content-between">
-                                    <p>{{ message.utilisateur.pseudo }}</p>
-                                    <p>{{ message.dateMessage|date('d/m/Y H:i') }}</p>
-                                </div>
-                                <div class="card-body">
-                                    <div class="card-text">{{ message.message|nl2br }}</div>
-                                </div>
-                            </div>
-                        {% endfor %}
-                    {% endif %}
-                </div>
+<div class="container">
+    {% for label, messages in app.flashes(['success', 'warning', 'danger']) %}
+        {% for message in messages %}
+            <div class="alert alert-{{ label }} mt-4" role="alert">
+                {{ message }}
             </div>
+        {% endfor %}
+    {% endfor %}
+</div>
 
-            {% if app.user.isBloque %}
-                <p>{{ 'blocked_from_chat'|trans({}, 'messages', app.request.locale) }}</p>
-            {% else %}
-                {{ form_start(form) }}
-                    <div class="form-group mb-3">
-                        {{ form_label(form.message) }}
-                        {{ form_widget(form.message) }}
-                    </div>
-                    <div class="form-group mb-3">
-                        {{ form_widget(form.submit) }}
-                    </div>
-                {{ form_end(form) }}
-            {% endif %}
+<section class="py-5">
+    <div class="container px-4 px-lg-5 mt-5">
+        <div class="chat-container">
+            <div class="chat-messages">
+                {% if messages is empty %}
+                    <p class="text-center">{{ 'no_messages_to_display'|trans({}, 'messages', app.request.locale) }}</p>
+                {% else %}
+                    {% for message in messages %}
+                        <div class="chat-message">
+                            <div class="message-header">
+                                <span class="username">{{ message.utilisateur.pseudo }}</span>
+                                <span class="timestamp">{{ message.dateMessage|date('d/m/Y H:i') }}</span>
+                            </div>
+                            <div class="message-body">
+                                {{ message.message|nl2br }}
+                            </div>
+
+                            {% if message.reponses is not empty %}
+                                <div class="replies">
+                                    {% for reply in message.reponses %}
+                                        <div class="chat-reply">
+                                            <div class="message-header">
+                                                <span class="username">{{ reply.utilisateur.pseudo }}</span>
+                                                <span class="timestamp">{{ reply.dateMessage|date('d/m/Y H:i') }}</span>
+                                            </div>
+                                            <div class="message-body">
+                                                {{ reply.message|nl2br }}
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+
+                            <div class="reply-form">
+                                {{ form_start(replyForms[message.id]) }}
+                                {{ form_widget(replyForms[message.id].message) }}
+                                {{ form_widget(replyForms[message.id].submit) }}
+                                {{ form_end(replyForms[message.id]) }}
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
         </div>
-    </section>
+    </div>
+</section>
 {% endblock %}

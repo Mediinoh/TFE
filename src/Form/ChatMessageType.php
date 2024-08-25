@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Message;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -13,10 +14,10 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class ChatMessageType extends AbstractType
 {
-    public function __construct(private TranslatorInterface $translator, private RequestStack $requestStack)
-    {
-
-    }
+    public function __construct(
+        private TranslatorInterface $translator,
+        private RequestStack $requestStack
+    ) {}
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -33,6 +34,13 @@ class ChatMessageType extends AbstractType
                 'label_attr' => [
                     'class' => 'form-label',
                 ],
+            ])
+            ->add('reponseA', EntityType::class, [
+                'class' => Message::class,
+                'choice_label' => 'message',
+                'label' => $this->translator->trans('reply_to', [], 'messages', $locale),
+                'required' => false,
+                'placeholder' => $this->translator->trans('no_reply', [], 'messages', $locale),
             ])
             ->add('submit', SubmitType::class, [
                 'attr' => [

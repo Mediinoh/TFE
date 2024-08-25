@@ -40,12 +40,15 @@ class StripeController extends AbstractController
             foreach ($panierUtilisateur as $articleId => $quantite) {
                 $article = $articleRepository->find($articleId);
                 if ($article) {
+                    // Encoder l'URL de l'image
+                    $imageUrl = $this->getParameter('app.base_url') . '/images/articles/' . urlencode($article->getPhotoArticle());
+
                     $lineItems[] = [
                         'price_data' => [
                             'currency' => 'eur',
                             'product_data' => [
                                 'name' => $article->getTitre(),
-                                'images' => [$this->getParameter('app.base_url') . '/images/articles/' . $article->getPhotoArticle()],
+                                'images' => [$imageUrl],
                             ],
                             'unit_amount' => $article->getPrixUnitaire() * 100,
                         ],
@@ -82,6 +85,7 @@ class StripeController extends AbstractController
             // Créer un nouvel enregistrement Panier (qui sera lié à HistoriqueAchat)
             $panierEntity = new Panier();
             $panierEntity->setUtilisateur($utilisateur);
+            $panierEntity->setDateAchat(new \DateTimeImmutable()); // Assurez-vous de définir la date d'achat
             $panierEntity->setMontantTotal(0);  // Sera mis à jour plus tard
 
             $this->entityManager->persist($panierEntity);

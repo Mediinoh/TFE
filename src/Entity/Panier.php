@@ -19,21 +19,20 @@ class Panier
     #[ORM\ManyToOne(inversedBy: 'paniers')]
     private ?Utilisateur $utilisateur = null;
 
-    #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
     private ?\DateTimeImmutable $date_achat = null;
 
-    #[ORM\Column(type: 'float')]
+    #[ORM\Column(type: 'float', nullable: true)]
     private ?float $montant_total = null;
 
     #[ORM\OneToMany(targetEntity: HistoriqueAchat::class, mappedBy: 'panier')]
     private Collection $historiqueAchats;
 
-    #[ORM\OneToMany(targetEntity: LigneCommande::class, mappedBy: 'panier')]
+    #[ORM\OneToMany(targetEntity: LigneCommande::class, mappedBy: 'panier', cascade: ['persist', 'remove'])]
     private Collection $ligneCommandes;
 
     public function __construct()
     {
-        $this->date_achat = new \DateTimeImmutable();
         $this->historiqueAchats = new ArrayCollection();
         $this->ligneCommandes = new ArrayCollection();
     }
@@ -60,7 +59,7 @@ class Panier
         return $this->date_achat;
     }
 
-    public function setDateAchat(\DateTimeImmutable $date_achat): static
+    public function setDateAchat(?\DateTimeImmutable $date_achat): static
     {
         $this->date_achat = $date_achat;
 
@@ -72,7 +71,7 @@ class Panier
         return $this->montant_total;
     }
 
-    public function setMontantTotal(float $montant_total): static
+    public function setMontantTotal(?float $montant_total): static
     {
         $this->montant_total = $montant_total;
 
@@ -100,7 +99,6 @@ class Panier
     public function removeHistoriqueAchat(HistoriqueAchat $historiqueAchat): static
     {
         if ($this->historiqueAchats->removeElement($historiqueAchat)) {
-            // set the owning side to null (unless already changed)
             if ($historiqueAchat->getPanier() === $this) {
                 $historiqueAchat->setPanier(null);
             }
@@ -130,7 +128,6 @@ class Panier
     public function removeLigneCommande(LigneCommande $ligneCommande): static
     {
         if ($this->ligneCommandes->removeElement($ligneCommande)) {
-            // set the owning side to null (unless already changed)
             if ($ligneCommande->getPanier() === $this) {
                 $ligneCommande->setPanier(null);
             }
