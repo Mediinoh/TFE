@@ -2,106 +2,130 @@
 
 namespace App\Controller;
 
+use App\Entity\HistoriqueAchat;
+use App\Entity\LigneCommande;
+use App\Entity\Panier;
 use App\Repository\ArticleRepository;
-use Stripe\Checkout\Session;
+use Doctrine\ORM\EntityManagerInterface;
+use Stripe\Checkout\Session as StripeSession;
 use Stripe\Stripe;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Asset\Packages;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class StripeController extends AbstractController
 {
-    public function __construct(
-        private ParameterBagInterface $params,
-        private Packages $assets,
-        private RequestStack $requestStack,
-        private ArticleRepository $articleRepository
-    ) {
-    }
+    private $entityManager;
 
-    #[Route('/stripe', name: 'stripe_index', methods: ['GET'])]
-    public function index(): Response
+    public function __construct(EntityManagerInterface $entityManager)
     {
-        return $this->render('pages/stripe/index.html.twig', [
-            'stripe_public' => $this->params->get('stripe_public'),
-        ]);
+        $this->entityManager = $entityManager;
     }
 
     #[Route('/create-checkout-session', name: 'stripe_checkout', methods: ['POST'])]
-    public function checkout(Request $request): Response
+    public function checkout(Request $request, SessionInterface $session, ArticleRepository $articleRepository): Response
     {
-        /** @var Utilisateur $utilisateur */
+        /** @var \App\Entity\Utilisateur $utilisateur */
         $utilisateur = $this->getUser();
-
-        if (!$utilisateur) {
-            return $this->redirectToRoute('security.login');
-        }
-
-        $session = $this->requestStack->getSession();
-        
-        if (!$session) {
-            return $this->redirectToRoute('security.login');
-        }
-
-        $userId = $utilisateur->getId();
         $panier = $session->get('panier', []);
+
         $lineItems = [];
+        $panierTotal = 0;
 
-        if (isset($panier[$userId])) {
-            $panierUtilisateur = $panier[$userId];
+        if (isset($panier[$utilisateur->getId()])) {
+            $panierUtilisateur = $panier[$utilisateur->getId()];
             foreach ($panierUtilisateur as $articleId => $quantite) {
-                $article = $this->articleRepository->find($articleId);
-
-                // Génération de l'URL de l'image en utilisant le même processus que dans les factures
-                $imagesArticlesPath = $this->params->get('images_articles_path');
-                $photoArticle = $this->getParameter('app.base_url') . $this->assets->getUrl($imagesArticlesPath . '/' . $article->getPhotoArticle());
-
-                // Vérification de l'URL de l'image
-                if (filter_var($photoArticle, FILTER_VALIDATE_URL) === false) {
-                    $photoArticle = null; // ou définir une URL par défaut ici
-                }
-
-                $lineItems[] = [
-                    'price_data' => [
-                        'currency' => 'eur',
-                        'product_data' => [
-                            'name' => $article->getTitre(),
-                            'images' => $photoArticle ? [$photoArticle] : [], // Ajout de l'image ici
+                $article = $articleRepository->find($articleId);
+                if ($article) {
+                    $lineItems[] = [
+                        'price_data' => [
+                            'currency' => 'eur',
+                            'product_data' => [
+                                'name' => $article->getTitre(),
+                                'images' => [$this->getParameter('app.base_url') . '/images/articles/' . $article->getPhotoArticle()],
+                            ],
+                            'unit_amount' => $article->getPrixUnitaire() * 100,
                         ],
-                        'unit_amount' => $article->getPrixUnitaire() * 100, // Convert to cents
-                    ],
-                    'quantity' => $quantite,
-                ];
+                        'quantity' => $quantite,
+                    ];
+                    $panierTotal += $article->getPrixUnitaire() * $quantite;
+                }
             }
         }
 
-        try {
-            Stripe::setApiKey($this->params->get('stripe_secret'));
+        Stripe::setApiKey($this->getParameter('stripe_secret'));
 
-            $checkout_session = Session::create([
-                'payment_method_types' => ['card'],
-                'line_items' => $lineItems,
-                'mode' => 'payment',
-                'success_url' => $this->generateUrl('stripe_success', [], UrlGeneratorInterface::ABSOLUTE_URL),
-                'cancel_url' => $this->generateUrl('stripe_error', [], UrlGeneratorInterface::ABSOLUTE_URL),
-            ]);
+        $checkoutSession = StripeSession::create([
+            'payment_method_types' => ['card'],
+            'line_items' => [$lineItems],
+            'mode' => 'payment',
+            'success_url' => $this->generateUrl('stripe_success', [], UrlGeneratorInterface::ABSOLUTE_URL),
+            'cancel_url' => $this->generateUrl('stripe_error', [], UrlGeneratorInterface::ABSOLUTE_URL),
+        ]);
 
-            return new JsonResponse(['id' => $checkout_session->id]);
-        } catch (\Exception $e) {
-            $this->addFlash('error', $e->getMessage());
-            return new JsonResponse(['error' => $e->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
-        }
+        return $this->json(['id' => $checkoutSession->id]);
     }
 
     #[Route('/stripe_success', name: 'stripe_success')]
-    public function success(): Response
+    public function success(SessionInterface $session, ArticleRepository $articleRepository): Response
     {
+        /** @var \App\Entity\Utilisateur $utilisateur */
+        $utilisateur = $this->getUser();
+        $panier = $session->get('panier', []);
+
+        if (isset($panier[$utilisateur->getId()])) {
+            $panierUtilisateur = $panier[$utilisateur->getId()];
+
+            // Créer un nouvel enregistrement Panier (qui sera lié à HistoriqueAchat)
+            $panierEntity = new Panier();
+            $panierEntity->setUtilisateur($utilisateur);
+            $panierEntity->setMontantTotal(0);  // Sera mis à jour plus tard
+
+            $this->entityManager->persist($panierEntity);
+            $this->entityManager->flush();
+
+            // Créer un nouvel enregistrement HistoriqueAchat
+            $historiqueAchat = new HistoriqueAchat();
+            $historiqueAchat->setUtilisateur($utilisateur);
+            $historiqueAchat->setMontantTotal(0);  // Sera mis à jour plus tard
+            $historiqueAchat->setPanier($panierEntity);
+
+            $this->entityManager->persist($historiqueAchat);
+            $this->entityManager->flush();
+
+            $montantTotal = 0;
+
+            foreach ($panierUtilisateur as $articleId => $quantite) {
+                $article = $articleRepository->find($articleId);
+                if ($article) {
+                    $prixTotalArticle = $article->getPrixUnitaire() * $quantite;
+                    $montantTotal += $prixTotalArticle;
+
+                    // Créer une nouvelle LigneCommande
+                    $ligneCommande = new LigneCommande();
+                    $ligneCommande->setArticle($article);
+                    $ligneCommande->setQuantite($quantite);
+                    $ligneCommande->setPrix($article->getPrixUnitaire());
+                    $ligneCommande->setPanier($panierEntity);
+
+                    $this->entityManager->persist($ligneCommande);
+                }
+            }
+
+            // Mise à jour des montants totaux
+            $panierEntity->setMontantTotal($montantTotal);
+            $historiqueAchat->setMontantTotal($montantTotal);
+
+            $this->entityManager->flush();
+
+            // Vider le panier pour cet utilisateur
+            unset($panier[$utilisateur->getId()]);
+            $session->set('panier', $panier);
+        }
+
         return $this->render('pages/stripe/success.html.twig');
     }
 
