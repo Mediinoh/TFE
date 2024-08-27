@@ -80,6 +80,9 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\InverseJoinColumn(name: 'article_id', referencedColumnName: 'id')]
     private Collection $favoris;
 
+    #[ORM\OneToMany(targetEntity: MessageReaction::class, mappedBy: 'utilisateur')]
+    private Collection $messageReactions;
+
     public function __construct()
     {
         $this->historiqueConnexions = new ArrayCollection();
@@ -90,6 +93,7 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
         $this->photo_profil = null;
         $this->bloque = false;
         $this->favoris = new ArrayCollection();
+        $this->messageReactions = new ArrayCollection();
     }
 
     public function getNom(): ?string
@@ -447,5 +451,35 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
     public function fullName(): ?string
     {
         return $this->prenom . ' ' . $this->nom;
+    }
+
+    /**
+     * @return Collection<int, MessageReaction>
+     */
+    public function getMessageReactions(): Collection
+    {
+        return $this->messageReactions;
+    }
+
+    public function addMessageReaction(MessageReaction $messageReaction): static
+    {
+        if (!$this->messageReactions->contains($messageReaction)) {
+            $this->messageReactions->add($messageReaction);
+            $messageReaction->setUtilisateur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMessageReaction(MessageReaction $messageReaction): static
+    {
+        if ($this->messageReactions->removeElement($messageReaction)) {
+            // set the owning side to null (unless already changed)
+            if ($messageReaction->getUtilisateur() === $this) {
+                $messageReaction->setUtilisateur(null);
+            }
+        }
+
+        return $this;
     }
 }

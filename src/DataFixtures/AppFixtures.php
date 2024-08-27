@@ -41,7 +41,7 @@ use Faker\Generator;
             }
             
             $articles_list = [
-                ['titre' => 'Illusions perdues', 'prix' => 12.75, 'description' => 'Livre intitulée "Illusions perdues" de Honoré de Balzac', 'categorie_id' => 2, 'photo_article' => '41pqcmRAH1L._SL500_.jpg'],
+                ['titre' => 'Illusions perdues', 'prix' => 12.75, 'description' => 'Livre intitulé "Illusions perdues" de Honoré de Balzac', 'categorie_id' => 2, 'photo_article' => '41pqcmRAH1L._SL500_.jpg'],
                 ['titre' => 'Ordinateur portable HP', 'prix' => 599, 'description' => 'Ordinateur Portable HP Laptop 15S-FQ5045NB 15.6" Intel Core i5 8 Go DDR4 512 Go SSD', 'categorie_id' => 4, 'photo_article' => 'HP-LAPTOP-15S-FQ5045NB-15-6-512-8-I5-1235U-INTEGRATED.jpg'],
                 ['titre' => 'MICROSYSTÈME HI-FI', 'prix' => 250, 'description' => 'MICROSYSTÈME HI-FI\r\nXL-B517D(BK)', 'categorie_id' => 3, 'photo_article' => 'microsysteme-hi-fi.jpeg'],
                 ['titre' => 'Casque Sans fil Steelplay', 'prix' => 29.99, 'description' => 'Steelplay Impulse Camo Bluetooth pour PS4/PS5', 'categorie_id' => 6, 'photo_article' => 'Casque-sans-fil-Steelplay-Impulse-Camo-Bluetooth-pour-PS5-PS4-Xbox-Series-XS-Xbox-One-Nintendo-Switch-PC-ordinateur-portable-et-Mac-Noir-et-Blanc.jpg'],

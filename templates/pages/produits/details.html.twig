@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'product_details'|trans({}, 'messages', app.request.locale) }}{% endblock %}
+
+{% block body %}
+    <!-- Section header -->
+    <section class="bg-dark py-5">
+        <div class="container px-4 px-lg-5 my-3">
+            <div class="text-center text-white">
+                <h1 class="display-4 fw-bolder mb-2">{{ 'what_you_choice'|trans({}, 'messages', app.request.locale) }}</h1>
+                <p class="lead fw-normal text-white-50 mb-0">{{ 'very_good_choice'|trans({}, 'messages', app.request.locale) }}</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-3">
+        <div class="container px-4 px-lg-5 mt-4">
+            <div class="row gx-4 gx-lg-5 align-items-center">
+                <div class="col-md-6">
+                    <img src="{{ imagesArticlesPath }}/{{ article.photoArticle }}" alt="{{ article.titre }}" class="img-fluid">
+                </div>
+                <div class="col-md-6">
+                    <div class="card-body">
+                        <h3 class="card-title">{{ article.titre }}</h3>
+                        <div class="card-text">
+                            <p><em>{{ 'category'|trans({}, 'messages', app.request.locale) }} :</em> {{ article.categorie.nomCategorie }}</p>
+                            <p><em>{{ 'price'|trans({}, 'messages', app.request.locale) }} :</em> {{ article.prixUnitaire }}&euro;</p>
+                            <p><em>{{ 'description'|trans({}, 'messages', app.request.locale) }} :</em> {{ article.description|nl2br }}</p>
+                        </div>
+                    </div>
+                    {% if app.user %}
+                        <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                            {{ form_start(formulaireAjoutPanier) }}
+                                <div class="form-group mb-3">
+                                    {{ form_label(formulaireAjoutPanier.quantite) }}
+                                    {{ form_widget(formulaireAjoutPanier.quantite) }}
+                                </div>
+                                <div class="form-group">
+                                    {{ form_widget(formulaireAjoutPanier.ajout_panier) }}
+                                </div>
+                            {{ form_end(formulaireAjoutPanier) }}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

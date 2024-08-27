@@ -21,13 +21,20 @@ class MessageRepository extends ServiceEntityRepository
         parent::__construct($registry, Message::class);
     }
 
-    public function recupererMessages(int $maxMessages = 10)
+    public function recupererMessages(int $maxMessages = 30)
     {
         return $this->createQueryBuilder('m')
-                    ->orderBy('m.date_message', 'DESC')
-                    ->setMaxResults($maxMessages)
-                    ->getQuery()
-                    ->getResult();
+            ->leftJoin('m.reactions', 'r')
+            ->addSelect('SUM(CASE WHEN r.reaction_type = :like THEN 1 ELSE 0 END) AS likeCount')
+            ->addSelect('SUM(CASE WHEN r.reaction_type = :dislike THEN 1 ELSE 0 END) AS dislikeCount')
+            ->Where('m.reponseA IS NULL')
+            ->groupBy('m.id')
+            ->setParameter('like', 'like')
+            ->setParameter('dislike', 'dislike')
+            ->orderBy('m.date_message', 'DESC')
+            ->setMaxResults($maxMessages)
+            ->getQuery()
+            ->getResult();
     }
 
 //    /**

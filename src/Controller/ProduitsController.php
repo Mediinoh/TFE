@@ -75,6 +75,34 @@ class ProduitsController extends AbstractController
         ]);
     }
 
+    #[Route('/produits/details/{id}', 'produits_details', methods: ['GET', 'POST'])]
+    public function produitDetails(int $id, ArticleRepository $articleRepository, Request $request): Response
+    {
+        /** @var Utilisateur $user */
+       $user = $this->getUser();
+       $formulaireAjoutPanier = null;
+
+       $article = $articleRepository->find($id);
+
+       if (!$article) {
+        return $this->redirectToRoute('produits.list');
+       }
+
+        if ($user) {
+            $formulaireAjoutPanier = $this->createForm(AjoutPanierType::class, null, [
+                'action' => $this->generateUrl('ajout_panier', ['id' => $article->getId()]),
+                'method' => 'POST',
+            ]);
+            $formulaireAjoutPanier->handleRequest($request);
+        }
+
+        return $this->render('pages/produits/details.html.twig', [
+            'article' => $article,
+            'formulaireAjoutPanier' => is_null($formulaireAjoutPanier) ? null : $formulaireAjoutPanier->createView(),
+            'imagesArticlesPath' => $this->imagesArticlesPath,
+        ]);
+    }
+
     #[Route('/ajout-panier/{id}', 'ajout_panier', methods: ['POST'])]
     public function ajoutPanier(int $id, ArticleRepository $articleRepository, Request $request, SessionInterface $session, TranslatorInterface $translator): Response
     {

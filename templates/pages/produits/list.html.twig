@@ -60,15 +60,17 @@
                                     {% set formulaireFavori = formulairesFavoris['article_' ~ article.id] %}
                                     {{ form(formulaireFavori) }}
                                 {% endif %}
-                                <img src="{{ imagesArticlesPath }}/{{ article.photoArticle }}" alt="{{ article.titre }}" class="card-img-top">
-                                <div class="card-body p-4">
-                                    <h5 class="card-title">{{ article.titre }}</h5>
-                                    <div class="card-text">
-                                        <p>{{ article.categorie.nomCategorie }}</p>
-                                        <p>{{ article.prixUnitaire }}&euro;</p>
-                                        <p>{{ article.description|nl2br }}</p>
+                                <a class="text-dark text-decoration-none" href="{{ path('produits_details', { id: article.id }) }}">
+                                    <img src="{{ imagesArticlesPath }}/{{ article.photoArticle }}" alt="{{ article.titre }}" class="card-img-top">
+                                    <div class="card-body p-4">
+                                        <h5 class="card-title">{{ article.titre }}</h5>
+                                        <div class="card-text">
+                                            <p>{{ article.categorie.nomCategorie }}</p>
+                                            <p>{{ article.prixUnitaire }}&euro;</p>
+                                            <p>{{ article.description|nl2br }}</p>
+                                        </div>
                                     </div>
-                                </div>
+                                </a>
                                 {% if app.user %}
                                     <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
                                         {{ form_start(formulaireAjoutPanier, {'attr': {'class': 'd-flex flex-column align-items-center'}}) }}

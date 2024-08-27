@@ -26,12 +26,13 @@ class PanierController extends AbstractController
             'total' => $panier['total'],
             'quantiteTotale' => $panier['quantiteTotale'],
             'imagesArticlesPath' => $this->getParameter('images_articles_path'),
-            'stripe_public' => $this->getParameter('stripe_public'), // Ajout de la clé publique Stripe
+            'stripe_public' => $this->getParameter('stripe_public'),
         ]);
     }
 
     private function getPanier(SessionInterface $session, ArticleRepository $articleRepository): array
     {
+        /** @var Utilisateur $user */
         $user = $this->getUser();
         if (!$user) {
             return $this->redirectToRoute('security.login');
@@ -115,12 +116,16 @@ class PanierController extends AbstractController
     public function suppressionPanier(int $id, ArticleRepository $articleRepository, SessionInterface $session, Request $request, TranslatorInterface $translator): Response
     {
         $locale = $request->getLocale();
+
+        /** @var Utilisateur $user */
         $user = $this->getUser();
+
         if (!$user) {
             return $this->redirectToRoute('security.login');
         }
 
         $article = $articleRepository->find($id);
+        
         if (!$article) {
             $this->addFlash('danger', $translator->trans('article_not_found', ['%id%' => $id], 'messages', $locale));
             return $this->redirectToRoute('panier.list');

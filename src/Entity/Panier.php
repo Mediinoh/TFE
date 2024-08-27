@@ -19,20 +19,21 @@ class Panier
     #[ORM\ManyToOne(inversedBy: 'paniers')]
     private ?Utilisateur $utilisateur = null;
 
-    #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
     private ?\DateTimeImmutable $date_achat = null;
 
-    #[ORM\Column(type: 'float', nullable: true)]
+    #[ORM\Column(type: 'float')]
     private ?float $montant_total = null;
 
     #[ORM\OneToMany(targetEntity: HistoriqueAchat::class, mappedBy: 'panier')]
     private Collection $historiqueAchats;
 
-    #[ORM\OneToMany(targetEntity: LigneCommande::class, mappedBy: 'panier', cascade: ['persist', 'remove'])]
+    #[ORM\OneToMany(targetEntity: LigneCommande::class, mappedBy: 'panier')]
     private Collection $ligneCommandes;
 
     public function __construct()
     {
+        $this->date_achat = new \DateTimeImmutable();
         $this->historiqueAchats = new ArrayCollection();
         $this->ligneCommandes = new ArrayCollection();
     }

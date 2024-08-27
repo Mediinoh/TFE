@@ -5,11 +5,13 @@ namespace App\Controller;
 use App\Entity\HistoriqueAchat;
 use App\Entity\LigneCommande;
 use App\Entity\Panier;
+use App\Entity\Utilisateur;
 use App\Repository\ArticleRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Stripe\Checkout\Session as StripeSession;
 use Stripe\Stripe;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Asset\Packages;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -18,37 +20,38 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class StripeController extends AbstractController
 {
-    private $entityManager;
-
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(private EntityManagerInterface $entityManager, private Packages $assets)
     {
-        $this->entityManager = $entityManager;
+
     }
 
     #[Route('/create-checkout-session', name: 'stripe_checkout', methods: ['POST'])]
     public function checkout(Request $request, SessionInterface $session, ArticleRepository $articleRepository): Response
     {
-        /** @var \App\Entity\Utilisateur $utilisateur */
+        /** @var Utilisateur $utilisateur */
         $utilisateur = $this->getUser();
+        $userId = $utilisateur->getId();
         $panier = $session->get('panier', []);
 
         $lineItems = [];
         $panierTotal = 0;
 
-        if (isset($panier[$utilisateur->getId()])) {
-            $panierUtilisateur = $panier[$utilisateur->getId()];
+        if (isset($panier[$userId])) {
+            $panierUtilisateur = $panier[$userId];
+            
             foreach ($panierUtilisateur as $articleId => $quantite) {
                 $article = $articleRepository->find($articleId);
+
                 if ($article) {
-                    // Encoder l'URL de l'image
-                    $imageUrl = $this->getParameter('app.base_url') . '/images/articles/' . urlencode($article->getPhotoArticle());
+                    $imageUrl = $this->assets->getUrl('images/articles/' . $article->getPhotoArticle());
+                    $absoluteImageUrl = $this->getParameter('app_base_url') . $imageUrl;
 
                     $lineItems[] = [
                         'price_data' => [
                             'currency' => 'eur',
                             'product_data' => [
                                 'name' => $article->getTitre(),
-                                'images' => [$imageUrl],
+                                'images' => [],
                             ],
                             'unit_amount' => $article->getPrixUnitaire() * 100,
                         ],
@@ -63,7 +66,7 @@ class StripeController extends AbstractController
 
         $checkoutSession = StripeSession::create([
             'payment_method_types' => ['card'],
-            'line_items' => [$lineItems],
+            'line_items' => $lineItems,
             'mode' => 'payment',
             'success_url' => $this->generateUrl('stripe_success', [], UrlGeneratorInterface::ABSOLUTE_URL),
             'cancel_url' => $this->generateUrl('stripe_error', [], UrlGeneratorInterface::ABSOLUTE_URL),
@@ -75,18 +78,17 @@ class StripeController extends AbstractController
     #[Route('/stripe_success', name: 'stripe_success')]
     public function success(SessionInterface $session, ArticleRepository $articleRepository): Response
     {
-        /** @var \App\Entity\Utilisateur $utilisateur */
+        /** @var Utilisateur $utilisateur */
         $utilisateur = $this->getUser();
+        $userId = $utilisateur->getId();
         $panier = $session->get('panier', []);
 
-        if (isset($panier[$utilisateur->getId()])) {
-            $panierUtilisateur = $panier[$utilisateur->getId()];
+        if (isset($panier[$userId])) {
+            $panierUtilisateur = $panier[$userId];
 
-            // Créer un nouvel enregistrement Panier (qui sera lié à HistoriqueAchat)
             $panierEntity = new Panier();
             $panierEntity->setUtilisateur($utilisateur);
-            $panierEntity->setDateAchat(new \DateTimeImmutable()); // Assurez-vous de définir la date d'achat
-            $panierEntity->setMontantTotal(0);  // Sera mis à jour plus tard
+            $panierEntity->setMontantTotal(0);
 
             $this->entityManager->persist($panierEntity);
             $this->entityManager->flush();
@@ -126,7 +128,7 @@ class StripeController extends AbstractController
             $this->entityManager->flush();
 
             // Vider le panier pour cet utilisateur
-            unset($panier[$utilisateur->getId()]);
+            unset($panier[$userId]);
             $session->set('panier', $panier);
         }
 

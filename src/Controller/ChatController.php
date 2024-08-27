@@ -3,8 +3,12 @@
 namespace App\Controller;
 
 use App\Entity\Message;
+use App\Entity\MessageReaction;
+use App\Entity\Utilisateur;
 use App\Form\ChatMessageType;
-use App\Form\ReplyMessageType; // Un formulaire distinct pour les réponses
+use App\Form\MessageReactionType;
+use App\Form\ReplyMessageType;
+use App\Repository\MessageReactionRepository;
 use App\Repository\MessageRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -16,13 +20,11 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class ChatController extends AbstractController
 {
     #[Route('/chat', name: 'chat.index', methods: ['GET', 'POST'])]
-    public function index(
-        MessageRepository $messageRepository,
-        Request $request,
-        EntityManagerInterface $manager,
-        TranslatorInterface $translator
-    ): Response {
+    public function index(MessageRepository $messageRepository, Request $request, EntityManagerInterface $manager, TranslatorInterface $translator): Response
+    {
         $locale = $request->getLocale();
+        
+        /** @var Utilisateur $user */
         $user = $this->getUser();
 
         if (!$user) {
@@ -48,20 +50,112 @@ class ChatController extends AbstractController
             return $this->redirectToRoute('chat.index');
         }
 
-        $messages = $messageRepository->recupererMessages();
-        $replyForms = [];
+        $replyTo = $request->query->get('replyTo');
+        
+        // Gestion des réponses
+        if (!is_null($replyTo)) {
+            $replyForm = $this->createForm(ReplyMessageType::class);
+            $replyForm->handleRequest($request);
 
-        foreach ($messages as $message) {
-            $replyForm = $this->createForm(ReplyMessageType::class, null, [
-                'action' => $this->generateUrl('chat.index', ['replyTo' => $message->getId()]),
+            if ($replyForm->isSubmitted() && $replyForm->isValid()) {
+                $formData = $replyForm->getData();
+                $replyMessage = new Message();
+                $replyMessage->setMessage($formData['message']);
+                $replyMessage->setUtilisateur($user);
+
+                $parentMessage = $messageRepository->find($replyTo);
+
+                if ($parentMessage) {
+                    $replyMessage->setReponseA($parentMessage);
+
+                    $manager->persist($replyMessage);
+                    $manager->flush();
+
+                    $this->addFlash('success', $translator->trans('reply_added', [], 'messages', $locale));
+                }
+
+                return $this->redirectToRoute('chat.index');
+            }
+        }
+
+        $messagesData = $messageRepository->recupererMessages();
+
+        $replyMessageForms = [];
+        $formLikes = [];
+        $formDislikes = [];
+
+        foreach ($messagesData as $message) {
+            $messageId = $message[0]->getId();
+
+            $replyMessageForm = $this->createForm(ReplyMessageType::class, null, [
+                'action' => $this->generateUrl('chat.index', ['replyTo' => $messageId]),
+                'method' => 'POST',
             ]);
-            $replyForms[$message->getId()] = $replyForm->createView();
+
+            $replyMessageForms[$messageId] = $replyMessageForm->createView();
+            
+            $formLike = $this->createForm(MessageReactionType::class, null, [
+                'action' => $this->generateUrl('chat.reaction', ['id' => $messageId, 'type' => 'like']),
+                'method' => 'POST',
+                'reactionCount' => $message['likeCount'],
+            ]);
+            $formLikes[$messageId] = $formLike->createView();
+            
+            $formDislike = $this->createForm(MessageReactionType::class, null, [
+                'action' => $this->generateUrl('chat.reaction', ['id' => $messageId, 'type' => 'dislike']),
+                'method' => 'POST',
+                'reaction' => 'dislike',
+                'reactionCount' => $message['dislikeCount'],
+            ]);
+            $formDislikes[$messageId] = $formDislike->createView();
         }
 
         return $this->render('pages/chat/list.html.twig', [
-            'messages' => $messages,
+            'messagesData' => $messagesData,
             'form' => $form->createView(),
-            'replyForms' => $replyForms,
+            'replyMessageForms' => $replyMessageForms,
+            'formLikes' => $formLikes,
+            'formDislikes' => $formDislikes,
         ]);
+    }
+
+    #[Route('/chat/reaction/{id}/{type}', 'chat.reaction', methods: ['POST'])]
+    public function chatReaction(int $id, string $type, MessageRepository $messageRepository, MessageReactionRepository $messageReactionRepository, EntityManagerInterface $manager): Response
+    {
+        /** @var Utilisateur $user */
+        $user = $this->getUser();
+
+        if (!$user) {
+            return $this->redirectToRoute('security.login');
+        }
+
+        $message = $messageRepository->find($id);
+
+        if (!$message) {
+            return $this->redirectToRoute('chat.index');
+        }
+
+        $messageReaction = $messageReactionRepository->findOneBy([
+            'message' => $message,
+            'utilisateur' => $user,
+        ]);
+
+        if ($messageReaction) {
+            if ($messageReaction->getReactionType() === $type) {
+                $manager->remove($messageReaction);
+            } else {
+                $messageReaction->setReactionType($type);
+                $manager->persist($messageReaction);
+            }
+        } else {
+            $reaction = new MessageReaction();
+            $reaction->setMessage($message)
+                     ->setUtilisateur($user)
+                     ->setReactionType($type);
+            $manager->persist($reaction);
+        }
+        $manager->flush();
+
+        return $this->redirectToRoute('chat.index');
     }
 }
