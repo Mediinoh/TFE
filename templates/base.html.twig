@@ -40,13 +40,20 @@
         {% block header %}
             {% include 'partials/_header.html.twig' %}
         {% endblock %}
+        
         <main role="main" tabindex="-1" class="container-fluid flex-grow-1">
             <div class="row">
                 {% block body %}{% endblock %}
             </div>
         </main>
+        
         {% block footer %}
             {% include 'partials/_footer.html.twig' %}
         {% endblock %}
+
+        <!-- Bouton de retour vers le haut -->
+        <a href="#main" class="btn btn-secondary position-fixed bottom-0 end-0 m-3 rounded-circle d-flex justify-content-center align-items-center" title="Revenir en haut de la page">
+            <span class="bi bi-arrow-up fs-3" aria-hidden="true"></span>
+        </a>
     </body>
 </html>
