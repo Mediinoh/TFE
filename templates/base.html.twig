@@ -3,50 +3,68 @@
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}{% endblock %} - Med-Shop</title>
+        
+        <!-- Favicon avec un SVG personnalisé -->
         <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">        
-        <!-- Bootstrap CSS -->
+        
+        <!-- Inclusion du fichier CSS de Bootstrap -->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-        <!-- Bootstrap icons -->
+        
+        <!-- Inclusion des icônes Bootstrap -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" integrity="sha512-dPXYcDub/aeb08c63jRq/k6GaKccl256JQy/AnOq7CAnEZ9FzSL9wSbcZkMp4R26vBsMLFYH4kQ67/bbV8XaCQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-        <!-- DataTables -->
+        
+        <!-- Inclusion des styles DataTables pour les tableaux dynamiques -->
         <link rel="stylesheet" href="https://cdn.datatables.net/2.0.8/css/dataTables.dataTables.css" />
 
+        <!-- Inclusion des icônes de drapeaux (Flag Icons) -->
         <link href="https://cdn.jsdelivr.net/npm/flag-icons/css/flag-icons.min.css" rel="stylesheet">
         
+        <!-- Inclusion des fichiers CSS générés par Webpack Encore -->
         {{ encore_entry_link_tags('app') }}
         
+        <!-- Bloc pour inclure des feuilles de styles spécifiques dans les pages enfants -->
         {% block stylesheets %}
         {% endblock %}
 
-        <!-- JQuery -->
+        <!-- Inclusion de JQuery -->
         <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-        <!-- Bootstrap core JS-->
+        
+        <!-- Inclusion du JS de Bootstrap -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-        <!-- DataTables -->
+        
+        <!-- Inclusion du JS pour DataTables -->
         <script src="https://cdn.datatables.net/2.0.8/js/dataTables.js"></script>
+        
+        <!-- Inclusion du fichier JS généré par Webpack Encore -->
         <!-- {{ encore_entry_script_tags('app') }} -->
         <script src="{{ asset('/bundles/assets/app.js') }}"></script>
         
+        <!-- Bloc pour inclure des scripts spécifiques dans les pages enfants -->
         {% block javascripts %}
         {% endblock %}
     </head>
     <body class="d-flex flex-column min-vh-100 max-vw-100 overflow-y-scroll">
+        
+        <!-- Navigation pour l'accessibilité (permet de sauter au contenu principal) --> 
         <ul id="a11y-nav" class="nav justify-content-center">
             <li class="nav-item">
                 <a href="#main" class="nav-link visually-hidden-focusable">Aller au contenu</a>
             </li>
         </ul>
 
+        <!-- Inclusion de l'en-tête de la page -->
         {% block header %}
             {% include 'partials/_header.html.twig' %}
         {% endblock %}
         
         <main role="main" tabindex="-1" class="container-fluid flex-grow-1">
             <div class="row">
+                <!-- Bloc pour le contenu principal de la page -->
                 {% block body %}{% endblock %}
             </div>
         </main>
         
+        <!-- Inclusion du pied de page -->
         {% block footer %}
             {% include 'partials/_footer.html.twig' %}
         {% endblock %}
