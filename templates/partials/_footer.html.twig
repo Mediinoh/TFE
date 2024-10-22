@@ -1,61 +1,73 @@
-<!-- Footer-->
+<!-- Début du footer -->
 <footer class="footer d-flex flex-column align-items-center bg-dark py-5" role="contentinfo" id="footer">
+    <!-- Conteneur principal -->
     <div class="container">
+        <!-- Début de la ligne contenant les sections du footer -->
         <div class="row text-center text-white">
-            <!-- Réseaux sociaux -->
+            <!-- Section des icônes des réseaux sociaux -->
             <div class="social-icons col-md-3">
-                <!-- Lien vers les réseaux sociaux -->
+                <!-- Lien vers Facebook avec icône -->
                 <a href="https://www.facebook.com/login" target="_blank" title="Facebook">
                     <span class="bi bi-facebook" aria-hidden="true"></span>
                 </a>
+                <!-- Lien vers Instagram avec icône -->
                 <a href="https://www.instagram.com/accounts/login/" target="_blank" title="Instagram">
                     <span class="bi bi-instagram" aria-hidden="true"></span>
                 </a>
+                <!-- Lien vers Twitter avec icône -->
                 <a href="https://twitter.com/login" target="_blank" title="Twitter">
                     <span class="bi bi-twitter" aria-hidden="true"></span>
                 </a>
+                <!-- Lien vers TikTok avec icône -->
                 <a href="https://www.tiktok.com/login" target="_blank" title="TikTok">
                     <span class="bi bi-tiktok" aria-hidden="true"></span>
                 </a>
             </div>
 
-            <!-- Newsletter -->
+            <!-- Section d'inscription à la newsletter -->
             <div class="col-md-3">
-                <h5>{{ 'newsletter_subscribe'|trans({}, 'messages', app.request.locale) }}</h5>
+                <!-- Titre de la section newsletter -->
+                <p><strong>{{ 'newsletter_subscribe'|trans({}, 'messages', app.request.locale) }}</strong></p>
+                <!-- Formulaire d'inscription à la newsletter -->
                 <form action="#" method="post">
                     <div class="form-group">
-                        <!-- Champ pour l'email -->
+                        <!-- Champ pour entrer l'email -->
                         <input type="email" class="form-control" placeholder="{{ 'newsletter_placeholder'|trans({}, 'messages', app.request.locale) }}">
                     </div>
-                    <!-- Bouton d'inscription -->
+                    <!-- Bouton d'envoi du formulaire -->
                     <button type="submit" class="btn btn-primary mt-2">
                         {{ 'newsletter_button'|trans({}, 'messages', app.request.locale) }}
                     </button>
                 </form>
             </div>
 
-            <!-- Contact -->
+            <!-- Section de contact -->
             <div class="col-md-3">
-                <h5>{{ 'contact_title'|trans({}, 'messages', app.request.locale) }}</h5>
-                <!-- Adresse -->
-                <p>{{ 'contact_address'|trans({}, 'messages', app.request.locale) }}</p>
-                <!-- Email -->
-                <p>{{ 'contact_email'|trans({}, 'messages', app.request.locale) }} <a href="mailto:contact@medshop.com" class="text-white">medshop@hotmail.com</a></p>
-                <!-- Téléphone -->
-                <p>{{ 'contact_phone'|trans({}, 'messages', app.request.locale) }} +32485/950/631</p>
+                <p><strong>{{ 'contact_title'|trans({}, 'messages', app.request.locale) }}</strong></p>
+                <address>
+                    <!-- Adresse de contact -->
+                    <p>{{ 'contact_address'|trans({}, 'messages', app.request.locale) }}</p>
+                    <!-- Email de contact avec un lien mailto -->
+                    <p>{{ 'contact_email'|trans({}, 'messages', app.request.locale) }} <a href="mailto:contact@medshop.com" class="text-white">medshop@hotmail.com</a></p>
+                    <!-- Numéro de téléphone de contact -->
+                    <p>{{ 'contact_phone'|trans({}, 'messages', app.request.locale) }} <a href="tel:+32485950631" class="text-white">+32485950631</a></p>
+                </address>
             </div>
 
-            <!-- Logos de Paiement -->
+            <!-- Section des modes de paiement acceptés -->
             <div class="col-md-3">
-                <h5>{{ 'payment_accepted'|trans({}, 'messages', app.request.locale) }}</h5>
-                <!-- Images des modes de paiement -->
+                <!-- Titre de la section modes de paiement -->
+                <p><strong>{{ 'payment_accepted'|trans({}, 'messages', app.request.locale) }}</strong></p>
+                <!-- Logos des différents modes de paiement -->
                 <img src="{{ asset('images/stripe.jpg') }}" alt="Stripe" height="30">
                 <img src="{{ asset('images/visa.jpg') }}" alt="Visa" height="30">
                 <img src="{{ asset('images/mastercard.jpg') }}" alt="MasterCard" height="30">
                 <img src="{{ asset('images/google.jpg') }}" alt="Google" height="30">
             </div>
         </div>
-        <!-- Copyright -->
+
+        <!-- Section des droits d'auteur -->
         <p class="m-0 text-center text-white mt-4">Copyright &copy; Mehdi Assam 2024</p>
     </div>
 </footer>
+<!-- Fin du footer -->

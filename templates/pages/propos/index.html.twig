@@ -1,12 +1,16 @@
+<!-- Hérite du modèle pour utiliser les styles et les scripts globaux -->
 {% extends 'base.html.twig' %}
 
+<!-- Définit le titre de la page -->
 {% block title %}{{ 'about'|trans({}, 'messages', app.request.locale) }}{% endblock %}
 
 {% block body %}
     <section class="bg-dark py-5">
         <div class="container px-4 px-lg-5 my-5">
             <div class="text-center text-white">
+                <!-- Titre principal -->
                 <h1 class="display-4 fw-bolder">{{ 'but_first'|trans({}, 'messages', app.request.locale) }}</h1>
+                <!-- Phrase d'accroche pour introduire la section -->
                 <p class="lead fw-normal text-white-50 mb-0">{{ 'who_are_we'|trans({}, 'messages', app.request.locale) }}</p>
             </div>
         </div>
@@ -31,11 +35,13 @@
             <div class="accordion" id="faqAccordion">
                 <div class="accordion-item">
                     <h2 class="accordion-header" id="headingOne">
+                        <!-- Un bouton d'accordéon pour afficher une question fréquente -->
                         <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
                             {{ 'what_products_can_you_buy'|trans({}, 'messages', app.request.locale) }}
                         </button>
                     </h2>
                     <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#faqAccordion">
+                        <!-- Corps de la réponse à la question -->
                         <div class="accordion-body">
                             {{ 'products_description'|trans({}, 'messages', app.request.locale) }}
                         </div>
@@ -83,6 +89,7 @@
 
     <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
         <div class="text-center">
+            <!-- Un bouton permettant aux utilisateurs de voir tous les produits -->
             <a class="btn btn-outline-dark mt-auto" href="{{ path('produits.list') }}">
                 {{ 'all_products'|trans({}, 'messages', app.request.locale) }}
             </a>

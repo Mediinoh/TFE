@@ -7,14 +7,14 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class ApiController extends AbstractController
+class TmdbController extends AbstractController
 {
     public function __construct(private TmdbApiService $tmdbApiService)
     {
 
     }
 
-    #[Route('/api/films', 'api_films', methods: ['GET'])]
+    #[Route('/tmdb/films', 'popular_movies', methods: ['GET'])]
     public function listFilms(): Response
     {
         try {
@@ -28,7 +28,7 @@ class ApiController extends AbstractController
         }
     }
 
-    #[Route('/api/tvshows', 'api_tvshows', methods: ['GET'])]
+    #[Route('/tmdb/tvshows', 'popular_series', methods: ['GET'])]
     public function listSeries(): Response
     {
         try {
@@ -42,7 +42,7 @@ class ApiController extends AbstractController
         }
     }
 
-    #[Route('/api/actors', 'api_actors', methods: ['GET'])]
+    #[Route('/tmdb/actors', 'popular_actors', methods: ['GET'])]
     public function listActors(): Response
     {
         try {

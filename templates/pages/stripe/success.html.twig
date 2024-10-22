@@ -1,11 +1,14 @@
+<!-- Hérite du modèle de base pour profiter des styles et des scripts globaux -->
 {% extends 'base.html.twig' %}
 
-{% block title %}Stripe success{% endblock %}
+<!-- Définit le titre de la page -->
+{% block title %}{{ 'stripe_success'|trans({}, 'messages', app.request.locale) }}{% endblock %}
 
 {% block body %}
     <section class="py-5">
         <div class="container px-4 px-lg-5 my-5">
             <div class="text-center">
+                <!-- Affiche un message de succès lorsque le paiement est approuvé -->
                 <h1>{{ 'congratulations_payment_approved'|trans({}, 'messages', app.request.locale) }}</h1> 
             </div>
         </div>
@@ -13,6 +16,7 @@
 
     <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
         <div class="text-center">
+            <!-- Bouton pour rediriger vers la liste des achats de l'utilisateur -->
             <a class="btn btn-outline-dark mt-auto" href="{{ path('list_achats_utilisateur') }}">
                 {{ 'my_purchases'|trans({}, 'messages', app.request.locale) }}
             </a>

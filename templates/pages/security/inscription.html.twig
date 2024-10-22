@@ -1,16 +1,21 @@
+<!-- Hérite du modèle de base pour réutiliser les styles et les scripts globaux -->
 {% extends 'base.html.twig' %}
 
+<!-- Définit le titre de la page -->
 {% block title %}{{ 'sign_up'|trans({}, 'messages', app.request.locale) }}{% endblock %}
 
 {% block body %}
     <div class="container">
         <section class="py-5">
+            <!-- Titre de la section d'inscription avec une icône représentant l'ajout d'un utilisateur -->
             <h1 class="mt-4">
                 <span class="bi bi-person-add" aria-hidden="true"></span> {{ 'registration_form'|trans({}, 'messages', app.request.locale) }}
             </h1>
 
+            <!-- Affiche le formulaire d'inscription qui a été passé à la vue -->
             {{ form(form) }}
 
+            <!-- Lien pour rediriger les utilisateurs vers la page de connexion s'ils ont déjà un compte -->
             <a href="{{ path('security.login') }}" class="btn btn-link mt-3">{{ 'already_have_account'|trans({}, 'messages', app.request.locale) }}</a>
         </section>
     </div>

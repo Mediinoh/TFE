@@ -1,12 +1,16 @@
+<!-- Hérite du modèle de base pour utiliser les styles et scripts globaux -->
 {% extends 'base.html.twig' %}
 
+<!-- Définit le titre de la page en fonction de la langue actuelle -->
 {% block title %}{{ 'current_popular_series'|trans({}, 'messages', app.request.locale) }}{% endblock %}
 
 {% block body %}
     <section class="bg-dark py-5">
         <div class="container px-4 px-lg-5 my-5">
             <div class="text-center text-white">
+                <!-- Totre principal de la section -->
                 <h1 class="display-4 fw-bolder">{{ 'current_popular_series'|trans({}, 'messages', app.request.locale) }}</h1>
+                <!-- Sous-titre pour donner un aperçu de la section -->
                 <p class="lead fw-normal text-white-50 mb-0">{{ 'must_see'|trans({}, 'messages', app.request.locale) }}</p>
             </div>
         </div>
@@ -15,18 +19,25 @@
     <section class="py-5">
         <div class="container px-4 px-lg-5 mt-5">
             <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+                <!-- Vérification si la liste des séries télévisées est vide -->
                 {% if tvShows is empty %}
+                    <!-- Message affiché lorsque aucune série populaire est trouvé -->
                     <p class="text-center">{{ 'no_popular_series'|trans({}, 'messages', app.request.locale) }}</p>
                 {% else %}
+                    <!-- Boucle pour afficher chaque série dans la liste -->
                     {% for tvShow in tvShows %}
                         <div class="col mb-5">
                             <div class="card h-100 text-center">
+                                <!-- Affichage de l'affiche de la série -->
                                 <img src="{{ tmdb_images_url }}/{{ tvShow.poster_path }}" alt="{{ tvShow.name }}" class="card-img-top">
                                 <div class="card-body p-4">
-                                    <h5 class="card-title">{{ tvShow.name }}</h5>
+                                    <!-- Titre de la série -->
+                                    <p class="card-title"><strong>{{ tvShow.name }}</strong></p>
                                     <div class="card-text">
+                                        <!-- Description de la série -->
                                         <p>{{ tvShow.overview|nl2br }}</p>
-                                        <p>{{ 'first_air_date'|trans({}, 'messages', app.request.locale) }} : {{ tvShow.first_air_date|date('d/m/Y') }}</p>
+                                        
+              <!-- Date de première diffusion formatée -->                          <p>{{ 'first_air_date'|trans({}, 'messages', app.request.locale) }} : {{ tvShow.first_air_date|date('d/m/Y') }}</p>
                                     </div>
                                 </div>
                             </div>

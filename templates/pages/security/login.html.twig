@@ -1,35 +1,48 @@
+<!-- Hérite du modèle de base pour utiliser les styles et les scripts globaux -->
 {% extends 'base.html.twig' %}
 
+<!-- Définit le titre de la page -->
 {% block title %}{{ 'login'|trans({}, 'messages', app.request.locale) }}{% endblock %}
 
 {% block body %}
     <div class="container">
         <section class="py-5">
+            <!-- Affiche le titre du formulaire de connexion -->
             <h1 class="mt-4">{{ 'login_form'|trans({}, 'messages', app.request.locale) }}</h1>
 
             {% if error %}
+                <!-- Affiche un message d'erreur si la connexion échoue -->
                 <div class="alert alert-danger">
                     {{ error.messageKey|trans(error.messageData, 'security') }}
                 </div>
             {% endif %}
 
             <form action="{{ path('security.login') }}" method="post" name="login">
+                
                 <div class="form-group">
+                    <!-- Étiquette pour le champ email -->
                     <label for="username" class="form-label mt-4">{{ 'email_address'|trans({}, 'messages', app.request.locale) }}</label>
+                    <!-- Champ pour saisir l'email, prérempli avec le dernier email saisi -->
                     <input type="email" class="form-control" id="username" name="_username" value="{{ last_username }}" autocomplete="email" required>
                 </div>
+
                 <div class="form-group">
+                    <!-- Étiquette pour le champ "mot de passe" -->
                     <label for="password" class="form-label mt-4">{{ 'password'|trans({}, 'messages', app.request.locale) }}</label>
+                    <!-- Champ pour saisir le mot de passe -->
                     <input type="password" class="form-control" id="password" name="_password" autocomplete="current-password" required>
                 </div>
 
+                <!-- Bouton de soumission du formulaire, avec une icône et un texte traduit -->
                 <button type="submit" class="btn btn-primary mt-4">
                     <span class="bi bi-person-check" aria-hidden="true"></span> {{ 'login_btn'|trans({}, 'messages', app.request.locale) }}
                 </button>
             </form>
 
+            <!-- Lien vers la page de récupération de mot de passe -->
             <a href="{{ path('security.forgot_password') }}" class="btn btn-link mt-3">{{ 'forgot_password'|trans({}, 'messages', app.request.locale) }}</a>
 
+            <!-- Lien vers la page d'inscription pour les nouveaux utilisateurs -->
             <a href="{{ path('security.inscription') }}" class="btn btn-link mt-3">{{ 'no_account'|trans({}, 'messages', app.request.locale) }}</a>
         </section>
     </div>

@@ -6,11 +6,18 @@ use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
+use Twig\Environment;
 
 class LocaleListener
 {
-    public function __construct(private RequestStack $requestStack, private string $defaultLocale = 'fr')
+    private array $locales = [
+        'en' => ['name' => 'English', 'flag' => 'gb'],
+        'fr' => ['name' => 'Français', 'flag' => 'fr'],
+    ];
+
+    public function __construct(private RequestStack $requestStack, private string $defaultLocale = 'fr', private Environment $twig)
     {
+
     }
 
     public function onKernelRequest(RequestEvent $event)
@@ -26,6 +33,10 @@ class LocaleListener
         $request->setLocale($locale);
 
         // dd($locale, $this->defaultLocale);
+
+        // Passe les langues disponibles et la locale actuelle à twig
+        $this->twig->addGlobal('locales', $this->locales);
+        $this->twig->addGlobal('current_locale', $locale);
     }
 
     public function onKernelResponse(ResponseEvent $event)

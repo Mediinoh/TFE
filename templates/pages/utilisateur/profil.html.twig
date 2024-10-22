@@ -1,13 +1,18 @@
 {% extends 'base.html.twig' %}
 
+<!-- Bloc pour définir le titre de la page -->
 {% block title %}{{ 'my_profile'|trans({}, 'messages', app.request.locale) }}{% endblock %}
 
+<!-- Bloc pour le corps de la page -->
 {% block body %}
     <section class="py-5">
         <div class="container">
+            <!-- Titre de la page -->
             <h1>{{ 'edit_profile'|trans({}, 'messages', app.request.locale) }}</h1>
 
+            <!-- Boucle pour afficher les messages de flash (succès, avertissements, erreurs) -->
             {% for label, messages in app.flashes(['success', 'warning', 'danger']) %}
+                <!-- Affiche chaque message de flash dans une alerte -->
                 {% for message in messages %}
                     <div class="alert alert-{{ label }} mt-4" role="alert">
                         {{ message }}
@@ -15,49 +20,73 @@
                 {% endfor %}
             {% endfor %}
 
+            <!-- Début du formulaire d'édition du profil utilisateur -->
             {{ form_start(form) }}
+                
+                <!-- Champ pour le nom -->
                 <div class="form-group mb-3 me-3">
                     {{ form_label(form.nom) }}
                     {{ form_widget(form.nom) }}
                 </div>
+
+                <!-- Champ pour le prénom -->
                 <div class="form-group mb-3 me-3">
                     {{ form_label(form.prenom) }}
                     {{ form_widget(form.prenom) }}
                 </div>
+
+                <!-- Champ pour l'adresse -->
                 <div class="form-group mb-3 me-3">
                     {{ form_label(form.adresse) }}
                     {{ form_widget(form.adresse) }}
                 </div>
+
+                <!-- Champ pour le code postal -->
                 <div class="form-group mb-3 me-3">
                     {{ form_label(form.code_postal) }}
                     {{ form_widget(form.code_postal) }}
                 </div>
+
+                <!-- Champ pour l'email -->
                 <div class="form-group mb-3 me-3">
                     {{ form_label(form.email) }}
                     {{ form_widget(form.email) }}
                 </div>
+
+                <!-- Champ pour la date de naissance -->
                 <div class="form-group mb-3 me-3">
                     {{ form_label(form.date_naissance) }}
                     {{ form_widget(form.date_naissance) }}
                 </div>
+
+                <!-- Champ pour le pseudo -->
                 <div class="form-group mb-3 me-3">
                     {{ form_label(form.pseudo) }}
                     {{ form_widget(form.pseudo) }}
                 </div>
+
+                <!-- Champ pour le mot de passe -->
                 <div class="form-group mb-3 me-3">
                     {{ form_label(form.plainPassword) }}
                     {{ form_widget(form.plainPassword) }}
                 </div>
+
+                <!-- Champ pour la photo de profil -->
                 <div class="form-group mb-3 me-3">
                     {{ form_label(form.photo_profil) }}
                     {{ form_widget(form.photo_profil) }}
                 </div>
+
+                <!-- Bouton de soumission du formulaire et lien pour supprimer le profil -->
                 <div class="form-group mb-3 me-3 d-flex align_items-center">
                     {{ form_widget(form.submit) }}
+                    <!-- Si l'utilisateur n'a pas le rôle administrateur, affiche le lien pour supprimer le profil --> 
                     {% if not is_granted('ROLE_ADMIN')  %}
                         <a href="{{ path('utilisateur.profil.delete', { id: userId }) }}" class="btn btn-danger ms-2">{{ 'remove_profile'|trans({}, 'messages', app.request.locale) }}</a>
                     {% endif %}
                 </div>
+            
+            <!-- Fin du formulaire -->
             {{ form_end(form) }}
         </div>
     </section>

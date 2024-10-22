@@ -1,5 +1,7 @@
+<!-- Hérite du modèle de base pour bénéficier des styles et scripts communs -->
 {% extends 'base.html.twig' %}
 
+<!-- Définit le titre de la page -->
 {% block title %}Stripe{% endblock %}
 
 {% block body %}
@@ -7,6 +9,7 @@
         <div class="container px-4 px-lg-5 my-5">
             <div class="text-center">
                 <h1>Stripe</h1>
+                <!-- Bouton pour initier le processus d'achat -->
                 <button id="checkout-button">Acheter</button>  
             </div>
         </div>
@@ -14,16 +17,20 @@
 {% endblock %}
 
 {% block javascripts %}
-    <!-- Stripe -->
+    <!-- Intégration de la bibliothèque Stripe -->
     <script src="https://js.stripe.com/v3/"></script>
 
     <script type="text/javascript">
         document.addEventListener('DOMContentLoaded', () => {
-            var stripe = Stripe("{{ stripe_public }}");
+            // Crée une instance de Stripe avec la clé publique
+            let stripe = Stripe("{{ stripe_public }}");
 
-            var checkoutButton = document.getElementById('checkout-button');
+            // Récupère le bouton d'achat
+            let checkoutButton = document.getElementById('checkout-button');
 
+            // Ajoute un événement au clic sur le bouton
             checkoutButton.addEventListener('click', () => {
+                // Effectue une requête POST vers le chemin pour le checkout -->
                 fetch("{{ path('stripe_checkout') }}", {
                     method: 'POST',
                     headers: {
@@ -31,18 +38,20 @@
                     },
                 })
                 .then((response) => {
-                    return response.json();
+                    return response.json(); // Convertit la réponse en JSON
                 })
                 .then((session) => {
+                    // Redirige l'utilisateur vers la page de paiement de Stripe
                     return stripe.redirectToCheckout({ sessionId: session.id });
                 })
                 .then((result) => {
+                    // Gère les erreurs de redirection
                     if (result.error) {
-                        alert(result.error.message);
+                        alert(result.error.message); // Affiche un message d'erreur
                     }
                 })
                 .catch((error) => {
-                    console.error('Error :', error);
+                    console.error('Error :', error); // Affiche les erreurs dans la console
                 });
             });
         });
