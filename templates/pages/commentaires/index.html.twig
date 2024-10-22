@@ -1,21 +1,28 @@
+<!-- Hérite du modèle de base pour utiliser les styles et les scripts globaux -->
 {% extends 'base.html.twig' %}
 
+<!-- Définit le titre de la page -->
 {% block title %}{{ 'comments'|trans({}, 'messages', app.request.locale) }}{% endblock %}
 
 {% block body %}
     <section class="bg-dark py-5">
         <div class="container px-4 px-lg-5 my-5">
             <div class="text-center text-white">
+                <!-- Titre principal -->
                 <h1 class="display-4 fw-bolder">{{ 'article_comments'|trans({}, 'messages', app.request.locale) }}</h1>
+                <!-- Phrase d'accroche -->
                 <p class="lead fw-normal text-white-50 mb-0">{{ 'your_thoughts'|trans({}, 'messages', app.request.locale) }}</p>
             </div>
         </div>
     </section>
 
     <section class="py-5">
+        <!-- Vérifie s'il y a des commentaires -->
         {% if commentaires is empty %}
+            <!-- Message affiché si aucun commentaire n'est présent pour cet article -->
             <p class="text-center">{{ 'no_comments_for_article'|trans({}, 'messages', app.request.locale) }}</p>
         {% else %}
+            <!-- Tableau pour lister les commentaires -->
             <table class="table table-hover" id="dataTable">
                 <thead>
                     <tr>
@@ -25,10 +32,14 @@
                     </tr>
                 </thead>
                 <tbody>
+                    <!-- Boucle pour afficher chaque commentaire -->
                     {% for commentaire in commentaires %}
                         <tr>
+                            <!-- Affiche le pseudo de l'utilisateur qui a posté le commentaire -->
                             <td>{{ commentaire.utilisateur.pseudo }}</td>
+                            <!-- Affiche le contenu du commentaire -->
                             <td>{{ commentaire.commentaire|nl2br }}</td>
+                            <!-- Affiche la date et l'heure formatée -->
                             <td>{{ commentaire.dateCommentaire|date('d/m/Y H:i') }}</td>
                         </tr>
                     {% endfor %}
@@ -36,12 +47,16 @@
             </table>
         {% endif %}
 
+        <!-- Si l'utilisateur est connecté, affiche le formulaire pour ajouter un commentaire -->
         {% if app.user %}
+            <!-- Démarre le formulaire d'ajout de commentaire -->
             {{ form_start(form) }}
+                <!-- Champ pour entrer le commentaire -->
                 <div class="form-group mb-3">
                     {{ form_label(form.commentaire) }}
                     {{ form_widget(form.commentaire) }}
                 </div>
+                <!-- Bouton pour soumettre le commentaire -->
                 <div class="form-group mb-3">
                     {{ form_widget(form.submit) }}
                 </div>
@@ -51,6 +66,7 @@
 
     <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
         <div class="text-center">
+            <!-- Bouton en bas de page pour rediriger vers la liste des newsletters/blog -->
             <a class="btn btn-outline-dark mt-auto" href="{{ path('blog.list') }}">{{ 'blog_newsletters'|trans({}, 'messages', app.request.locale) }}</a>
         </div>
     </div>

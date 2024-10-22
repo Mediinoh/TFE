@@ -1,12 +1,16 @@
+<!-- Hérite du modèle de base pour utiliser les styles et les scripts globaux -->
 {% extends 'base.html.twig' %}
 
+<!-- Définit le titre de la page -->
 {% block title %}{{ 'my_favorites'|trans({}, 'messages', app.request.locale) }}{% endblock %}
 
 {% block body %}
     <section class="bg-dark py-5">
         <div class="container px-4 px-lg-5 my-5">
             <div class="text-center text-white">
+                <!-- Titre principal -->
                 <h1 class="display-4 fw-bolder">{{ 'favorite_products'|trans({}, 'messages', app.request.locale) }}</h1>
+                <!-- Phrase d'accroche -->
                 <p class="lead fw-normal text-white-50 mb-0">{{ 'everything_you_love'|trans({}, 'messages', app.request.locale) }}</p>
             </div>
         </div>
@@ -16,21 +20,28 @@
         <div class="container px-4 px-lg-5 mt-5">
             <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
                 {% if articles is empty %}
+                    <!-- Si l'utilisateur n'a pas de produits favoris, un message est affiché pour indiquer qu'il n'y en a pas. -->
                     <p class="text-center">{{ 'no_favorites'|trans({}, 'messages', app.request.locale) }}</p>
                 {% else %}
                     {% for article in articles %}
                         <div class="col mb-5">
                             <div class="card h-100 text-center">
                                 {% if app.user %}
+                                    <!-- Si l'utilisateur est connecté, affiche le formulaire de gestion des favoris pour chaque article. -->
                                     {% set formulaireFavori = formulairesFavoris['article_' ~ article.id] %}
                                     {{ form(formulaireFavori) }}
                                 {% endif %}
+                                <!-- Affiche l'image du produit avec un chemin dynamique -->
                                 <img src="{{ imagesArticlesPath }}/{{ article.photoArticle }}" alt="{{ article.titre }}" class="card-img-top">
                                 <div class="card-body p-4">
-                                    <h5 class="card-title">{{ article.titre }}</h5>
+                                    <!-- Titre du produit affiché dynamiquement -->
+                                    <p class="card-title"><strong>{{ article.titre }}</strong></p>
                                     <div class="card-text">
+                                        <!-- Affiche la catégorie du produit -->
                                         <p>{{ article.categorie.nomCategorie }}</p>
+                                        <!-- Affiche le prix du produit en euros -->
                                         <p>{{ article.prixUnitaire }}&euro;</p>
+                                        <!-- Affiche la descroption du produit -->
                                         <p>{{ article.description|nl2br }}</p>
                                     </div>
                                 </div>

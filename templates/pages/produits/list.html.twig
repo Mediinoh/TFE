@@ -1,20 +1,26 @@
+<!-- Hérite du modèle de base pour utiliser les styles et les scripts globaux -->
 {% extends 'base.html.twig' %}
 
+<!-- Définit le titre de la page -->
 {% block title %}{{ 'product_list'|trans({}, 'messages', app.request.locale) }}{% endblock %}
 
 {% block body %}
     <section class="bg-dark py-5">
         <div class="container px-4 px-lg-5 my-5">
             <div class="text-center text-white">
+                <!-- Titre principal -->
                 <h1 class="display-4 fw-bolder">{{ 'tech_frenzy'|trans({}, 'messages', app.request.locale) }}</h1>
+                <!-- Phrase d'accroche -->
                 <p class="lead fw-normal text-white-50 mb-0">{{ 'its_happening_here'|trans({}, 'messages', app.request.locale) }}</p>
             </div>
         </div>
     </section>
 
+    <!-- Section de recherche et de filtre -->
     <section class="py-5">
         <div class="row">
             {% for label, messages in app.flashes(['success', 'warning', 'danger']) %}
+                <!-- Affiche les messages flash s'ils existent -->
                 {% for message in messages %}
                     <div class="alert alert-{{ label }} mt-4" role="alert">
                         {{ message }}
@@ -22,6 +28,7 @@
                 {% endfor %}
             {% endfor %}
 
+            <!-- Formulaire de recherche avec filtres sur la catégorie et mot-clé -->
             {{ form_start(searchForm, {'attr': {'class': 'd-flex align-items-center justify-content-end'}}) }}
 
                 <div class="form-group mb-3 me-3 d-flex align_items-center">
@@ -46,24 +53,30 @@
         </div>
     </section>
 
+    <!-- Section affichant la liste des produits -->
     <section class="py-5">
         <div class="container px-4 px-lg-5 mt-5">
             <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
                 {% if articles is empty %}
+                    <!-- Affiche un message si aucun article ne correspond à la recherche -->
                     <p class="text-center">{{ 'no_matching_items'|trans({}, 'messages', app.request.locale) }}</p>
                 {% else %}
+                    <!-- Boucle sur chaque article pour afficher ses informations -->
                     {% for article in articles %}
                         <div class="col mb-5">
                             <div class="card h-100 text-center">
                                 {% if app.user %}
+                                    <!-- Formulaire de favoris et panier uniquement si l'utilisateur est connecté -->
                                     {% set formulaireAjoutPanier = formulairesAjoutPanier['article_' ~ article.id] %}
                                     {% set formulaireFavori = formulairesFavoris['article_' ~ article.id] %}
                                     {{ form(formulaireFavori) }}
                                 {% endif %}
+
+                                <!-- Image du produit et lien vers les détails du produit -->
                                 <a class="text-dark text-decoration-none" href="{{ path('produits_details', { id: article.id }) }}">
                                     <img src="{{ imagesArticlesPath }}/{{ article.photoArticle }}" alt="{{ article.titre }}" class="card-img-top">
                                     <div class="card-body p-4">
-                                        <h5 class="card-title">{{ article.titre }}</h5>
+                                        <p class="card-title"><strong>{{ article.titre }}</strong></p>
                                         <div class="card-text">
                                             <p>{{ article.categorie.nomCategorie }}</p>
                                             <p>{{ article.prixUnitaire }}&euro;</p>
@@ -71,7 +84,9 @@
                                         </div>
                                     </div>
                                 </a>
+
                                 {% if app.user %}
+                                    <!-- Formulaire pour ajouter l'article au panier si l'utilisateur est connecté -->
                                     <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
                                         {{ form_start(formulaireAjoutPanier, {'attr': {'class': 'd-flex flex-column align-items-center'}}) }}
                                             <div class="form-group mb-3">

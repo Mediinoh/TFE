@@ -1,5 +1,7 @@
+<!-- Hérite du modèle de base pour utiliser les styles et les scripts globaux -->
 {% extends 'base.html.twig' %}
 
+<!-- Définit le titre de la page -->
 {% block title %}{{ 'blog_newsletters'|trans({}, 'messages', app.request.locale) }}{% endblock %}
 
 {% block body %}
@@ -7,12 +9,15 @@
     <section class="bg-dark py-5">
         <div class="container px-4 px-lg-5 my-5">
             <div class="text-center text-white">
+                <!-- Titre principal -->
                 <h1 class="display-4 fw-bolder">{{ 'blog_newsletters'|trans({}, 'messages', app.request.locale) }}</h1>
+                <!-- Phrase d'accroche -->
                 <p class="lead fw-normal text-white-50 mb-0">{{ 'all_news_live'|trans({}, 'messages', app.request.locale) }}</p>
             </div>
         </div>
     </section>
 
+    <!-- Section pour afficher les messages flash -->
     <div class="container">
         {% for label, messages in app.flashes(['success', 'warning', 'danger']) %}
             {% for message in messages %}
@@ -25,27 +30,39 @@
 
     <section class="py-5">
         <div class="container">
+            <!-- Titre de bienvenue et description de la page -->
             <h2>{{ 'welcome_news_page'|trans({}, 'messages', app.request.locale) }}</h2>
+            <!-- Invitation à découvrir tous les articles et commentaires -->
             <p>{{ 'find_all_articles_comments'|trans({}, 'messages', app.request.locale) }}</p>
+            <!-- Rappel pour ajouter un commentaire de manière respectueuse -->
             <p>{{ 'add_comment_reminder'|trans({}, 'messages', app.request.locale) }} : <em>"{{ 'respect_is_key_here'|trans({}, 'messages', app.request.locale) }}"</em></p>
             <q>{{ 'information_exchange_powerful'|trans({}, 'messages', app.request.locale) }}</q>
 
+            <!-- Section affichant les articles du blog avec leurs détails -->
             <div class="container px-4 px-lg-5 mt-5">
                 <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+                    <!-- Boucle pour afficher chaque article du blog -->
                     {% for article in articles %}
                         <div class="col mb-5">
                             <div class="card h-100">
+                                <!-- Image de l'article -->
                                 <img src="{{ asset (imagesArticlesPath ~ '/' ~ article.photoArticle) }}" alt="{{ article.titre }}" class="card-img-top">
+                                <!-- Corps de la carte affichant les informations de l'article -->
                                 <div class="card-body p-4">
                                     <div class="text-center">
-                                        <h4>{{ article.categorie.nomCategorie }}</h4>
-                                        <h5 class="fw-bolder">{{ article.titre }}</h5>
+                                        <!-- Nom de la catégorie de l'article -->
+                                        <p><strong>{{ article.categorie.nomCategorie }}</strong></p>
+                                        <!-- Titre de l'article -->
+                                        <p class="fw-bolder">{{ article.titre }}</p>
+                                        <!-- Prix de l'article -->
                                         <p>{{ article.prixUnitaire }}&euro;</p>
+                                        <!-- Description de l'article -->
                                         <p>{{ article.description|nl2br }}</p>
                                     </div>
                                 </div>
                                 <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
                                     <div class="text-center">
+                                        <!-- Bouton pour voir les commentaires de l'article -->
                                         <a href="{{ path('commentaires.article', {'id': article.id}) }}" class="btn btn-outline-dark mt-0">{{ 'view_comments'|trans({}, 'messages', app.request.locale) }}</a>
                                     </div>
                                 </div>

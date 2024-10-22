@@ -1,11 +1,15 @@
+<!-- Hérite du modèle de base pour utiliser les styles et les scripts globaux -->
 {% extends 'base.html.twig' %}
 
+<!-- Définit le titre de la page -->
 {% block title %}{{ 'home'|trans({}, 'messages', app.request.locale) }}{% endblock %}
 
 {% block body %}
+    <!-- Section d'introduction avec une image de fond -->
     <section class="bg-dark py-5 position-relative overflow-hidden">
         <div class="container px-4 px-lg-5 my-5">
             <div class="text-center text-white">
+                <!-- Boucle pour afficher les messages flash -->
                 {% for label, messages in app.flashes(['success', 'warning', 'danger']) %}
                     {% for message in messages %}
                         <div class="alert alert-{{ label }} mt-4" role="alert">
@@ -13,10 +17,13 @@
                         </div>
                     {% endfor %}
                 {% endfor %}
+                <!-- Titre principal avec un gros effet visuel -->
                 <h1 class="display-4 fw-bolder">{{ 'smart_shopping'|trans({}, 'messages', app.request.locale) }}</h1>
+                <!-- Phrase d'accroche -->
                 <p class="lead fw-normal text-white-50 mb-0">{{ 'buy_new_discounted'|trans({}, 'messages', app.request.locale) }}</p>
             </div>
         </div>
+        <!-- Image de fond occupant toute la section -->
         <img src="{{ asset('images/accueil.jpg') }}" class="img-fluid object-fit-cover h-100 w-100" alt="">
     </section>
 {% endblock %}

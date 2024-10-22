@@ -1,35 +1,48 @@
+<!-- Hérite le modèle de base pour utiliser les styles et les scripts globaux -->
 {% extends 'base.html.twig' %}
 
+<!-- Définit le titre de la page -->
 {% block title %}{{ 'best_sellers_list'|trans({}, 'messages', app.request.locale) }}{% endblock %}
 
 {% block body %}
     <section class="bg-dark py-5">
         <div class="container px-4 px-lg-5 my-5">
             <div class="text-center text-white">
+                <!-- Titre principal -->
                 <h1 class="display-4 fw-bolder">{{ 'because_you_decided'|trans({}, 'messages', app.request.locale) }}</h1>
+                <!-- Phrase d'accroche -->
                 <p class="lead fw-normal text-white-50 mb-0">{{ 'best_sellers_here'|trans({}, 'messages', app.request.locale) }}</p>
             </div>
         </div>
     </section>
 
+    <!-- Section de présentation des meilleures ventes -->
     <section class="py-5">
         <div class="container px-4 px-lg-5 mt-5">
+            <!-- Grille responsive pour l'affichage des articles -->
             <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
                 {% if articles is empty %}
+                    <!-- Message affiché si la liste est vide -->
                     <p class="tetx-center">{{ 'no_matching_items'|trans({}, 'messages', app.request.locale) }}</p>
                 {% else %}
+                    <!-- Boucle sur la liste des articles, ici chaque "article" est une paire [Article, total_ventes] --> 
                     {% for article in articles %}
                         <div class="col mb-5">
                             <div class="card h-100 text-center">
+                                <!-- Image du produit -->
                                 <img src="{{ imagesArticlesPath }}/{{ article[0].photoArticle }}" alt="{{ article[0].titre }}" class="card-img-top">
                                 <div class="card-body p-4">
-                                    <h5 class="card-title">{{ article[0].titre }}</h5>
+                                    <!-- Titre de l'article -->
+                                    <p class="card-title"><strong>{{ article[0].titre }}</strong></p>
                                     <div class="card-text">
+                                        <!-- Catégorie, prix, description de l'article -->
                                         <p>{{ article[0].categorie.nomCategorie }}</p>
                                         <p>{{ article[0].prixUnitaire }}&euro;</p>
                                         <p>{{ article[0].description|nl2br }}</p>
                                     </div>
                                 </div>
+                                
+                                <!-- Pied de la carte affichant le nombre d'exemplaires vendus -->
                                 <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
                                     <p>{{ 'sold_copies'|trans({'%count%': article.total_ventes ?? 0}, 'messages', app.request.locale) }}</p>
                                 </div>

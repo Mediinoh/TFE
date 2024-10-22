@@ -1,13 +1,16 @@
+<!-- Hérite du modèle de base pour utiliser les styles et les scripts globaux -->
 {% extends 'base.html.twig' %}
 
+<!-- Définit le titre de la page -->
 {% block title %}{{ 'product_details'|trans({}, 'messages', app.request.locale) }}{% endblock %}
 
 {% block body %}
-    <!-- Section header -->
     <section class="bg-dark py-5">
         <div class="container px-4 px-lg-5 my-3">
             <div class="text-center text-white">
+                <!-- Titre principal -->
                 <h1 class="display-4 fw-bolder mb-2">{{ 'what_you_choice'|trans({}, 'messages', app.request.locale) }}</h1>
+                <!-- Phrase d'accroche -->
                 <p class="lead fw-normal text-white-50 mb-0">{{ 'very_good_choice'|trans({}, 'messages', app.request.locale) }}</p>
             </div>
         </div>
@@ -17,27 +20,40 @@
         <div class="container px-4 px-lg-5 mt-4">
             <div class="row gx-4 gx-lg-5 align-items-center">
                 <div class="col-md-6">
+                    <!-- Affichage de l'image du produit avec un chemin dynamique -->
                     <img src="{{ imagesArticlesPath }}/{{ article.photoArticle }}" alt="{{ article.titre }}" class="img-fluid">
                 </div>
                 <div class="col-md-6">
                     <div class="card-body">
-                        <h3 class="card-title">{{ article.titre }}</h3>
+                        <!-- Titre du produit affiché dynamiquement -->
+                        <h2 class="card-title">{{ article.titre }}</h2>
                         <div class="card-text">
+                            <!-- Affiche la catégorie du produit -->
                             <p><em>{{ 'category'|trans({}, 'messages', app.request.locale) }} :</em> {{ article.categorie.nomCategorie }}</p>
+                            <!-- Affiche le prix du produit en euros -->
                             <p><em>{{ 'price'|trans({}, 'messages', app.request.locale) }} :</em> {{ article.prixUnitaire }}&euro;</p>
+                            <!-- Affiche la description du produit -->
                             <p><em>{{ 'description'|trans({}, 'messages', app.request.locale) }} :</em> {{ article.description|nl2br }}</p>
                         </div>
                     </div>
                     {% if app.user %}
+                        <!-- Vérifie si un utilisateur est connecté avant d'afficher le formulaire d'ajout au panier -->
                         <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                            <!-- Début du formulaire pour ajouter le produit au panier -->
                             {{ form_start(formulaireAjoutPanier) }}
+
+                                <!-- Affiche le label et le champ de saisie pour la quantité du produit -->
                                 <div class="form-group mb-3">
                                     {{ form_label(formulaireAjoutPanier.quantite) }}
                                     {{ form_widget(formulaireAjoutPanier.quantite) }}
                                 </div>
+
+                                <!-- Affiche le bouton pour ajouter le produit au panier -->
                                 <div class="form-group">
                                     {{ form_widget(formulaireAjoutPanier.ajout_panier) }}
                                 </div>
+                            
+                            <!-- Fin du formulaire d'ajout au panier -->
                             {{ form_end(formulaireAjoutPanier) }}
                         </div>
                     {% endif %}

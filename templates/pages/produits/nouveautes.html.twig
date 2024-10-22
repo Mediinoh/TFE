@@ -1,30 +1,40 @@
+<!-- Hérite du modèle de base pour utiliser les styles et les scripts globaux -->
 {% extends 'base.html.twig' %}
 
+<!-- Définit le titre de la page -->
 {% block title %}{{ 'new_arrivals_list'|trans({}, 'messages', app.request.locale) }}{% endblock %}
 
 {% block body %}
     <section class="bg-dark py-5">
         <div class="container px-4 px-lg-5 my-5">
             <div class="text-center text-white">
+                <!-- Titre principal -->
                 <h1 class="display-4 fw-bolder">{{ 'all_new_arrivals'|trans({}, 'messages', app.request.locale) }}</h1>
+                <!-- Phrase d'accroche -->
                 <p class="lead fw-normal text-white-50 mb-0">{{ 'latest_exclusives'|trans({}, 'messages', app.request.locale) }}</p>
             </div>
         </div>
     </section>
 
+    <!-- Section principale de la page contenant la liste des nouveautés -->
     <section class="py-5">
         <div class="container px-4 px-lg-5 mt-5">
+            <!-- Grille responsive pour afficher les articles -->
             <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
                 {% if articles is empty %}
+                    <!-- Message affiché si la liste est vide -->
                     <p class="text-center">{{ 'no_matching_items'|trans({}, 'messages', app.request.locale) }}</p>
                 {% else %}
                     {% for article in articles %}
                         <div class="col mb-5">
                             <div class="card h-100 text-center">
+                                <!-- Image de l'article -->
                                 <img src="{{ imagesArticlesPath }}/{{ article.photoArticle }}" alt="{{ article.titre }}" class="card-img-top">
                                 <div class="card-body p-4">
-                                    <h5 class="card-title">{{ article.titre }}</h5>
+                                    <!-- Titre de l'article -->
+                                    <p class="card-title"><strong>{{ article.titre }}</strong></p>
                                     <div class="card-text">
+                                        <!-- Catégorie, prix et description de l'article -->
                                         <p>{{ article.categorie.nomCategorie }}</p>
                                         <p>{{ article.prixUnitaire }}&euro;</p>
                                         <p>{{ article.description|nl2br }}</p>
