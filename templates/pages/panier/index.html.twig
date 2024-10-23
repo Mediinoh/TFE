@@ -6,7 +6,9 @@
     <section class="bg-dark py-5">
         <div class="container px-4 px-lg-5 my-5">
             <div class="text-center text-white">
+                <!-- Titre principal -->
                 <h1 class="display-4 fw-bolder">{{ 'my_cart'|trans({}, 'messages', app.request.locale) }}</h1>
+                <!-- Phrase d'accroche -->
                 <p class="lead fw-normal text-white-50 mb-0">{{ 'what_you_order'|trans({}, 'messages', app.request.locale) }}</p>
             </div>
         </div>
@@ -14,6 +16,7 @@
 
     <section class="py-5">
         <div class="container">
+            <!-- Boucle pour afficher les messages flash -->
             {% for label, messages in app.flashes(['success', 'warning', 'danger']) %}
                 {% for message in messages %}
                     <div class="alert alert-{{ label }} mt-4" role="alert">
@@ -22,9 +25,11 @@
                 {% endfor %}
             {% endfor %}
 
+            <!-- Si le panier est vide, affiche un message -->
             {% if articlesPanier is empty %}
                 <p class="text-center">{{ 'your_cart_is_empty'|trans({}, 'messages', app.request.locale) }}</p>
             {% else %}
+                <!-- Si le panier contient des articles, afficher un tableau listant ces derniers -->
                 <table id="dataTable" class="table">
                     <thead>
                         <tr>
@@ -37,19 +42,28 @@
                         </tr>
                     </thead>
                     <tbody>
+                        <!-- Boucle pour afficher chaque article dans une ligne du tableau -->
                         {% for item in articlesPanier %}
+                            <!-- Formulaire pour supprimer ou modifier un article du panier -->
                             {{ form_start(item.suppressionArticlePanierForm, {'attr': {'id': item.article.id}}) }}
                                 <tr>
+                                    <!-- Colonne avec la photo de l'article -->
                                     <td><img src="{{ imagesArticlesPath }}/{{ item.article.photoArticle }}" alt="{{ item.article.titre }}" class="img-thumbail"></td>
+                                    <!-- Colonne avec le titre de l'article -->
                                     <td>{{ item.article.titre }}</td>
+                                    <!-- Colonne avec le prix unitaire de l'article -->
                                     <td>{{ item.article.prixUnitaire }}</td>
+                                    <!-- Colonne avec la quantité d'articles (modifiable) -->
                                     <td>{{ form_widget(item.suppressionArticlePanierForm.quantite) }}</td>
+                                    <!-- Colonne avec le prix total pour cet article -->
                                     <td>{{ item.prix_total }}&euro;</td>
+                                    <!-- Colonne avec l'action pour supprimer l'article du panier -->
                                     <td>{{ form_widget(item.suppressionArticlePanierForm.suppression_panier) }}</td>
                                 </tr>
                             {{ form_end(item.suppressionArticlePanierForm) }}
                         {% endfor %}
                     </tbody>
+                    <!-- Pied de tableau affichant les totaux : quantité totale et prix total -->
                     <tfoot>
                         <tr>
                             <td colspan="3">Total</td>
@@ -58,7 +72,9 @@
                         </tr>
                     </tfoot>
                 </table>
+
                 <div class="d-flex justify-content-end">
+                    <!-- Bouton pour procéder au paiement -->
                     <button id="checkout-button" class="btn btn-primary">{{ 'Payer'|trans({}, 'messages', app.request.locale) }}</button>
                 </div>
             {% endif %}
@@ -67,20 +83,21 @@
 
     <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
         <div class="text-center">
+            <!-- Bouton pour retourner à la liste des produits -->
             <a class="btn btn-outline-dark mt-auto" href="{{ path('produits.list') }}">{{ 'product_list'|trans({}, 'messages', app.request.locale) }}</a>
         </div>
     </div>
 {% endblock %}
 
 {% block javascripts %}
-    <!-- Stripe -->
+    <!-- Inclusion de la bibliothèque Stripe pour gérer le paiement -->
     <script src="https://js.stripe.com/v3/"></script>
 
     <script type="text/javascript">
         document.addEventListener('DOMContentLoaded', () => {
             var stripe = Stripe("{{ stripe_public }}");
 
-            var checkoutButton = document.getElementById('checkout-button');
+            let checkoutButton = document.getElementById('checkout-button');
 
             checkoutButton.addEventListener('click', () => {
                 fetch("{{ path('stripe_checkout') }}", {

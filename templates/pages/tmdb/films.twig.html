@@ -1,9 +1,7 @@
 {% extends 'base.html.twig' %}
 
-<!-- Bloc pour définir le titre de la page -->
 {% block title %}{{ 'current_popular_movies'|trans({}, 'messages', app.request.locale) }}{% endblock %}
 
-<!-- Bloc pour le corps de la page -->
 {% block body %}
     <section class="bg-dark py-5">
         <div class="container px-4 px-lg-5 my-5">

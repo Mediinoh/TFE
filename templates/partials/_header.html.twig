@@ -3,7 +3,7 @@
     <nav role="navigation" class="navbar navbar-expand-lg navbar-light bg-light fixed-top" aria-label="Menu principal de la page">
         <div class="container px-4 px-lg-5">
             <!-- Logo du site et lien vers la page d'accueil -->
-            <a class="navbar-brand" href="{{ path('home.index') }}"><img src="{{ asset('images/med-shop_logo.jpg') }}" alt="Med-Shop" height="75"></a>
+            <a class="navbar-brand" href="{{ path('home.index') }}"><img src="{{ asset('images/med-shop_logo.jpg') }}" alt="Logo de Med-Shop" height="75"></a>
             <!-- Bouton hamburger pour basculer la navigation sur mobile -->
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
             <!-- Menu de navigation principal -->
@@ -66,7 +66,7 @@
                             </li>
                             <!-- Lien vers les séries populaires -->
                             <li>
-                                <a class="dropdown-item" href="{{ path('popular_tvshows') }}">{{ 'popular_series'|trans({}, 'messages', app.request.locale) }}</a>
+                                <a class="dropdown-item" href="{{ path('popular_series') }}">{{ 'popular_series'|trans({}, 'messages', app.request.locale) }}</a>
                             </li>
                             <!-- Lien vers les acteurs populaires -->
                             <li>

@@ -6,7 +6,9 @@
     <section class="bg-dark py-5">
         <div class="container px-4 px-lg-5 my-5">
             <div class="text-center text-white">
+                <!-- Titre principal -->
                 <h1 class="display-4 fw-bolder">{{ 'my_cart'|trans({}, 'messages', app.request.locale) }}</h1>
+                <!-- Phrase d'accroche -->
                 <p class="lead fw-normal text-white-50 mb-0">{{ 'what_you_order'|trans({}, 'messages', app.request.locale) }}</p>
             </div>
         </div>
@@ -14,6 +16,7 @@
     
     <section class="py-5">
         <div class="container">
+            <!-- Boucle qui affiche les messages flash -->
             {% for label, messages in app.flashes(['success', 'warning', 'danger']) %}
                 {% for message in messages %}
                     <div class="alert alert-{{ label }} mt-4" role="alert">
@@ -23,6 +26,7 @@
             {% endfor %}
 
             <div class="d-flex justify-content-end">
+                <!-- Formulaire avec un bouton pour procéder au paiement -->
                 <form action="{{ path('stripe_checkout') }}" method="post">
                     <button type="submit" class="btn btn-primary">{{ 'pay_with_stripe'|trans({}, 'messages', app.request.locale) }}</button>
                 </form>

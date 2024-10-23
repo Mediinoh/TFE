@@ -1,18 +1,41 @@
 <!DOCTYPE HTML>
-<html lang="fr">
+<html lang="{{ app.request.locale }}">
     <head>
+        <!-- Spécifie l'encodage des caractères et permet une bonne adaptation sur les appareils mobiles -->
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- Titre de la page -->
         <title>{{ 'invoice_paid_by'|trans({'%date%': historiqueAchat.dateAchat|date('d/m/Y à H:i'), '%user%': historiqueAchat.utilisateur.fullName}, 'messages', app.request.locale) }}</title>
+        <!-- Lien vers la feuille de style Bootstrap pour le design réactif -->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-        <!-- Bootstrap icons -->
+        <!-- Lien vers les icônes Bootstrap pour les éléments graphiques comme les boutons, logos, etc. -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" integrity="sha512-dPXYcDub/aeb08c63jRq/k6GaKccl256JQy/AnOq7CAnEZ9FzSL9wSbcZkMp4R26vBsMLFYH4kQ67/bbV8XaCQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-        <!-- DataTables -->
+        <!-- Lien vers les styles de DataTables pour un tableau interactif et organisé -->
         <link rel="stylesheet" href="https://cdn.datatables.net/2.0.8/css/dataTables.dataTables.css" />
     </head>
     <body>
+        <!-- Header avec le logo, le titre et la date du jour -->
+        <header class="container my-4" role="banner" id="header">
+            <div class="row align-items-center">
+                <!-- Colonne pour le logo aligné à gauche -->
+                <div class="col text-start">
+                    <img src="{{ absolute_url ('/images/med-shop_logo') }}" alt="Logo de Med-Shop" height="75">
+                </div>
+                <!-- Colonne pour le titre aligné au centre -->
+                <div class="col text-center">
+                    <!-- Titre principal de la facture, avec les informations de l'utilisateur et la date d'achat -->
+                    <h1>{{ 'invoice_paid_by'|trans({'%date%': historiqueAchat.dateAchat|date('d/m/Y H:i'), '%user%': historiqueAchat.utilisateur.fullName}, 'messages', app.request.locale) }}</h1>
+                </div>
+                <!-- Colonne pour la date alignée à droite -->
+                <div class="col text-end text-muted">
+                    <p>{{ date('d/m/Y') }}</p>
+                </div>
+            </div>
+        </header>
+
+        <!-- Section principale du corps de la page -->
         <main role="main" id="main">
-            <h1>{{ 'invoice_paid_by'|trans({'%date%': historiqueAchat.dateAchat|date('d/m/Y H:i'), '%user%': historiqueAchat.utilisateur.fullName}, 'messages', app.request.locale) }}</h1>
+            <!-- Tableau qui liste les articles achetés -->
             <table class="table text-center align-middle" id="dataTable">
                 <thead>
                     <tr class="border-bottom">
@@ -24,20 +47,33 @@
                     </tr>
                 </thead>
                 <tbody>
+                    <!-- Variable pour calculer la quantité totale des articles -->
                     {% set quantiteTotale = 0 %}
+
+                    <!-- Boucle pour afficher chaque ligne du tableau avec les détails des achats -->
                     {% for detail_achat in details_achat %}
+                        <!-- Mise à jour de la quantité totale en fonction des articles -->
                         {% set quantiteTotale = quantiteTotale + detail_achat.quantite %}
                         <tr class="border-bottom">
-                            <td><img src="{{ absolute_url (imagesArticlesPath ~ '/' ~ detail_achat.photo_article) }}" alt="{{ detail_achat.titre }}" class="img-thumbail"></td>
+                            <!-- Affichage de l'image de l'article -->
+                            <td>
+                                <img src="{{ absolute_url (imagesArticlesPath ~ '/' ~ detail_achat.photo_article) }}" alt="{{ detail_achat.titre }}" class="img-thumbail">
+                            </td>
+                            <!-- Affichage du titre de l'article -->
                             <td>{{ detail_achat.titre }}</td>
+                            <!-- Affichage du prix unitaire -->
                             <td>{{ detail_achat.prix_unitaire }}</td>
+                            <!-- Affichage de la quantité achetée -->
                             <td>{{ detail_achat.quantite }}</td>
+                            <!-- Affichage du prix total pour cet article -->
                             <td>{{ detail_achat.prix_total }}
                         </tr>
                     {% endfor %}
                 </tbody>
+                <!-- Pied de tableau qui affiche le total des quantités et le montant total -->
                 <tfoot>
                     <tr class="border-bottom">
+                        <!-- Colspan permet d'étendre la cellule sur plusieurs colonnes pour mieux organiser les données -->
                         <td colspan="3">Total</td>
                         <td>{{ quantiteTotale }}</td>
                         <td>{{ historiqueAchat.montantTotal }}&euro;</td>
@@ -45,6 +81,8 @@
                 </tfoot>
             </table>
         </main>
+
+        <!-- Inclusion des scripts JavaScript pour le fonctionnement de Bootstrap et DataTables -->
         <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.js"></script>
         <script src="https://cdn.datatables.net/2.0.8/js/dataTables.js"></script>

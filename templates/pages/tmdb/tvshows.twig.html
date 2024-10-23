@@ -1,7 +1,5 @@
-<!-- Hérite du modèle de base pour utiliser les styles et scripts globaux -->
 {% extends 'base.html.twig' %}
 
-<!-- Définit le titre de la page en fonction de la langue actuelle -->
 {% block title %}{{ 'current_popular_series'|trans({}, 'messages', app.request.locale) }}{% endblock %}
 
 {% block body %}
