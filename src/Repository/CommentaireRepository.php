@@ -1,7 +1,9 @@
 <?php
 
+// Déclaration de l'espace de noms pour le dépôt Commentaire
 namespace App\Repository;
 
+// Importation des classes nécessaires
 use App\Entity\Commentaire;
 use App\Entity\Utilisateur;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -10,6 +12,8 @@ use Doctrine\Persistence\ManagerRegistry;
 /**
  * @extends ServiceEntityRepository<Commentaire>
  *
+ * La classe CommentaireRepository étend ServiceEntityRepository pour gérer les opérations liées à l'entité Commentaire.
+ * 
  * @method Commentaire|null find($id, $lockMode = null, $lockVersion = null)
  * @method Commentaire|null findOneBy(array $criteria, array $orderBy = null)
  * @method Commentaire[]    findAll()
@@ -17,46 +21,30 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class CommentaireRepository extends ServiceEntityRepository
 {
+    // Constructeur de la classe qui initialise le dépôt avec le registre de gestion
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Commentaire::class);
     }
 
+    /**
+     * Méthode pour récupérer les commentaires faits par un utilisateur spécifique.
+     * 
+     * @param Utilisateur $utilisateur L'utilisateur dont on veut récupérer les commentaires
+     * @param int $maxCommentaires Le nombre maximum de commentaires à récupérer (par défaut : 15)
+     * @return array Un tableau contenant les commentaires de l'utilisateur avec des détails sur les articles associés
+     */
     public function recupererCommentairesUtilisateur(Utilisateur $utilisateur, int $maxCommentaires = 15)
     {
-        return $this->createQueryBuilder('c')
-                    ->select('c AS commentaire, a.photo_article, a.titre')
-                    ->leftJoin('c.article', 'a')
-                    ->where('c.utilisateur = :utilisateur')
-                    ->setParameter('utilisateur', $utilisateur)
-                    ->orderBy('c.date_commentaire', 'DESC')
-                    ->setMaxResults($maxCommentaires)
-                    ->getQuery()
-                    ->getResult();
+        // Utilisation de QueryBuilder pour construire la requête
+        return $this->createQueryBuilder('c') // 'c' est un alias pour Commentaire
+                    ->select('c AS commentaire, a.photo_article, a.titre') // Sélection des commentaires et des détails des articles
+                    ->leftJoin('c.article', 'a') // Jointure avec l'entité Article pour accéder aux détails de l'article
+                    ->where('c.utilisateur = :utilisateur') // Filtre les commentaires par utilisateur
+                    ->setParameter('utilisateur', $utilisateur) // Définit le paramètre utilisateur
+                    ->orderBy('c.date_commentaire', 'DESC') // Tri par date de commentaire (du plus récent au plus ancien)
+                    ->setMaxResults($maxCommentaires) // Limite le nombre de résultats à $maxCommentaires
+                    ->getQuery() // Génère la requête finale
+                    ->getResult(); // Exécute la requête et retourne les résultats
     }
-
-//    /**
-//     * @return Commentaire[] Returns an array of Commentaire objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('c')
-//            ->andWhere('c.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('c.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
-
-//    public function findOneBySomeField($value): ?Commentaire
-//    {
-//        return $this->createQueryBuilder('c')
-//            ->andWhere('c.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
 }

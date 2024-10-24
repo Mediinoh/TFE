@@ -6,7 +6,9 @@
     <section class="bg-dark py-5">
         <div class="container px-4 px-lg-5 my-5">
             <div class="text-center text-white">
+                <!-- Titre principal -->
                 <h1 class="display-4 fw-bolder">{{ 'user_list'|trans({}, 'messages', app.request.locale) }}</h1>
+                <!-- Phrase d'accroche -->
                 <p class="lead fw-normal text-white-50 mb-0">{{ 'your_thoughts'|trans({}, 'messages', app.request.locale) }}</p>
             </div>
         </div>
@@ -14,8 +16,10 @@
 
     <section class="py-5">
         {% if infosUtilisateurs is empty %}
+            <!-- Message indiquant qu'il n'y a pas d'utilisateurs dans la base de données -->
             <p class="text-center">{{ 'no_user_in_db'|trans({}, 'messages', app.request.locale) }}</p>
         {% else %}
+            <!-- Tableau qui affiche la liste des utilisateurs -->
             <table class="table table-hover" id="dataTable">
                 <thead>
                     <tr>
@@ -35,6 +39,7 @@
                     </tr>
                 </thead>
                 <tbody>
+                    <!-- Boucle pour afficher les informations de chaque utilisateur -->
                     {% for infosUtilisateur in infosUtilisateurs %}
                         <tr>
                             <td col="row">{{ infosUtilisateur['utilisateur'].id }}</td>
@@ -51,14 +56,18 @@
                             <td>{{ infosUtilisateur['nbConnexionsSemaine'] }}</td>
                             <td>
                                 <div class="btn-group">
+                                    <!-- Bouton pour voir les commentaires de l'utilisateur -->
                                     <a class="btn text-primary" href="{{ path('admin_commentaires_utilisateur', { id: infosUtilisateur['utilisateur'].id }) }}">
                                         <span class="bi bi-eye" aria-hidden="true"></span> {{ 'view_comments'|trans({}, 'messages', app.request.locale) }}
                                     </a>
+                                    <!-- Bouton pour voir les achats de l'utilisateur -->
                                     <a class="btn text-secundary" href="{{ path('admin_achats_utilisateur', { id: infosUtilisateur['utilisateur'].id }) }}">
                                         <span class="bi bi-eye" aria-hidden="true"></span> {{ 'view_purchases'|trans({}, 'messages', app.request.locale) }}
                                     </a>
                                     {% if infosUtilisateur['utilisateur'] is not same as(app.user) %}
+                                        <!-- Formulaire pour bloquer/débloquer l'utilisateur -->
                                         {{ form(infosUtilisateur['bloqueUtilisateurForm']) }}
+                                        <!-- Bouton pour supprimer l'utilisateur -->
                                         <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{ infosUtilisateur['utilisateur'].id }}">
                                           <span class="bi bi-trash" aria-hidden="true"></span> {{ 'delete'|trans({}, 'messages', app.request.locale) }}
                                         </button>
@@ -67,18 +76,24 @@
                             </td>
                         </tr>
 
+                        <!-- Modal de confirmation de suppression qui apparaît lorsque l'utilisateur clique sur le bouton de suppression -->
                         <div class="modal fade" id="deleteModal{{ infosUtilisateur['utilisateur'].id }}" tabindex="-1" aria-labbelledby="deleteModalLabel{{ infosUtilisateur['utilisateur'].id }}" aria-hidden="true">
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header">
+                                        <!-- Titre du modal pour la confirmation de suppression -->
                                         <p class="modal-title" id="deleteModalLabel{{ infosUtilisateur['utilisateur'].id }}">{{ 'delete_confirmation'|trans({}, 'messages', app.request.locale) }}</p>
+                                        <!-- Bouton pour fermer la modal -->
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{{ 'close'|trans({}, 'messages', app.request.locale) }}"></button>
                                     </div>
                                     <div class="modal-body">
+                                        <!-- Message demandant une confirmation pour la suppression de l'utilisateur -->
                                         {{ 'confirm_delete_user'|trans({}, 'messages', app.request.locale) }}
                                     </div>
                                     <div class="modal-footer">
+                                        <!-- Boutons pour confirmer ou annuler l'action -->
                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ 'no'|trans({}, 'messages', app.request.locale) }}</button>
+                                        
                                         <form method="post" action="{{ path('admin_supprimer_utilisateur', { id: infosUtilisateur['utilisateur'].id }) }}">
                                             <button type="submit" class="btn btn-danger">
                                                 {{ 'yes'|trans({}, 'messages', app.request.locale) }}

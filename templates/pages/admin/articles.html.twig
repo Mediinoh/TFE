@@ -6,18 +6,32 @@
     <section class="bg-dark py-5">
         <div class="container px-4 px-lg-5 my-5">
             <div class="text-center text-white">
+                <!-- Titre principal -->
                 <h1 class="display-4 fw-bolder">{{ 'product_list'|trans({}, 'messages', app.request.locale) }}</h1>
+                <!-- Phrase d'accroche -->
                 <p class="lead fw-normal text-white-50 mb-0">{{ 'what_you_created'|trans({}, 'messages', app.request.locale) }}</p>
             </div>
         </div>
     </section>
 
     <section class="py-5">
-        <p><a href="{{ path('admin_categories') }}" class="btn btn-warning"><span class="bi bi-tags" aria-hidden="true"></span> {{ 'add_new_category'|trans({}, 'messages', app.request.locale) }}</a></p>
+        <div>
+            <!-- Lien pour accéder à la gestion des catégories avec une icône -->
+            <a href="{{ path('admin_categories') }}" class="btn btn-warning">
+                <span class="bi bi-tags" aria-hidden="true"></span> {{ 'add_new_category'|trans({}, 'messages', app.request.locale) }}
+            </a>
+            <!-- Lien pour accéder au formulaire d'ajout d'un article avec une icône -->
+            <a href="#form_ajout_article" class="btn btn-primary">
+                <span class="bi bi-plus-circle" aria-hidden="true"></span> {{ 'add_article'|trans({}, 'messages', app.request.locale) }}
+            </a>
+        </div>
 
+        <!-- Vérification si la liste des articles est vide -->
         {% if articles is empty %}
+            <!-- Si aucun article n'est présent, afficher un message d'information -->
             <p class="text-center">Aucun article dans la base de données !</p>
         {% else %}
+            <!-- Tabeau affichant les détails des articles présents dans la base de données -->
             <table class="table table-hover" id="dataTable">
                 <thead>
                     <tr>
@@ -31,18 +45,27 @@
                     </tr>
                 </thead>
                 <tbody>
+                    <!-- Boucle pour afficher chaque article de la liste -->
                     {% for article in articles %}
                         <tr>
+                            <!-- Colonne affichant l'identifiant de l'article -->
                             <td col="row">{{ article.id }}</td>
+                            <!-- Colonne affichant la photo de l'article avec chemin dynamique -->
                             <td><img src="{{ asset (imagesArticlesPath ~ '/' ~ article.photoArticle) }}" alt="{{ article.titre }}"></td>
+                            <!-- Colonne affichant le titre de l'article -->
                             <td>{{ article.titre }}</td>
+                            <!-- Colonne affichant le nom de la catégorie de l'article -->
                             <td>{{ article.categorie.nomCategorie }}</td>
+                            <!-- Colonne affichant le prix unitaire de l'article -->
                             <td>{{ article.prixUnitaire }}</td>
+                            <!-- Colonne affichant la description de l'article -->
                             <td>{{ article.description|nl2br }}</td>
                             <td>
                                 {% if article.supprime %}
+                                    <!-- Si l'article est supprimé, afficher un message indiquant cela -->
                                     <p class="text-center">{{ 'article_already_deleted'|trans({}, 'messages', app.request.locale) }}</p>
                                 {% endif %}
+                                <!-- Formulaire pour gérer la suppression de l'article -->
                                 {{ form(formulairesSupprimerArticle[article.id]) }}
                             </td>
                         </tr>
@@ -52,29 +75,36 @@
         {% endif %}
     </section>
 
-    <section class="py-5 container-fluid">
+    <section id="form_ajout_article" class="py-5 container-fluid">
         <h2>{{ 'add_article_form'|trans({}, 'messages', app.request.locale) }} :</h2>
+        <!-- Début du formulaire pour ajouter un nouvel article -->
         {{ form_start(form) }}
+            <!-- Champ pour le titre de l'article -->
             <div class="form-group mb-3">
                 {{ form_label(form.titre) }}
                 {{ form_widget(form.titre) }}
             </div>
+            <!-- Champ pour le prix unitaire de l'article -->
             <div class="form-group mb-3">
                 {{ form_label(form.prix_unitaire) }}
                 {{ form_widget(form.prix_unitaire) }}
             </div>
+            <!-- Champ pour la sélection de la catégorie de l'article -->
             <div class="form-group mb-3">
                 {{ form_label(form.categorie) }}
                 {{ form_widget(form.categorie) }}
             </div>
+            <!-- Champ pour la description de l'article -->
             <div class="form-group mb-3">
                 {{ form_label(form.description) }}
                 {{ form_widget(form.description) }}
             </div>
+            <!-- Champ pour télécharger une photo pour l'article -->
             <div class="form-group mb-3">
                 {{ form_label(form.photo_article) }}
                 {{ form_widget(form.photo_article) }}
             </div>
+            <!-- Bouton pour soumettre le formulaire -->
             <div class="form-group mb-3">
                 {{ form_widget(form.submit) }}
             </div>

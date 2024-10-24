@@ -33,6 +33,11 @@
                     {% if messagesData is empty %}
                         <p class="text-center">{{ 'no_messages_to_display'|trans({}, 'messages', app.request.locale) }}</p>
                     {% else %}
+                        <!-- Lien vers le formulaire d'ajout d'un message dans le chat -->
+                        <p><a href="#ajout_message_chat">
+                            <span class="bi bi-plus-circle" aria-hidden="true"></span> {{ 'add_new_message'|trans({}, 'messages', app.request.locale) }}
+                        </a></p>
+
                         <!-- Boucle pour afficher chaque message du chat -->
                         {% for messageData in messagesData %}
                             {% set message = messageData[0] %}
@@ -94,21 +99,23 @@
                 </div>
             </div>
 
-            <!-- Si l'utilisateur est bloqué, affiche un message l'informant qu'il ne peut pas participer au chat -->
-            {% if app.user.isBloque %}
-                <p>{{ 'blocked_from_chat'|trans({}, 'messages', app.request.locale) }}</p>
-            {% else %}
-                <!-- Formulaire pour ajouter un nouveau message dans le chat -->
-                {{ form_start(form) }}
-                    <div class="mb-3">
-                        {{ form_label(form.message) }}
-                        {{ form_widget(form.message) }}
-                    </div>
-                    <div class="mb-3">
-                        {{ form_widget(form.submit) }}
-                    </div>
-                {{ form_end(form) }}
-            {% endif %}
+            <div id="ajout_message_chat">
+                <!-- Si l'utilisateur est bloqué, affiche un message l'informant qu'il ne peut pas participer au chat -->
+                {% if app.user.isBloque %}
+                    <p>{{ 'blocked_from_chat'|trans({}, 'messages', app.request.locale) }}</p>
+                {% else %}
+                    <!-- Formulaire pour ajouter un nouveau message dans le chat -->
+                    {{ form_start(form) }}
+                        <div class="mb-3">
+                            {{ form_label(form.message) }}
+                            {{ form_widget(form.message) }}
+                        </div>
+                        <div class="mb-3">
+                            {{ form_widget(form.submit) }}
+                        </div>
+                    {{ form_end(form) }}
+                {% endif %}
+            </div>
         </div>
     </section>
 {% endblock %}

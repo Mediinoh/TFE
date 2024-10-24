@@ -95,28 +95,36 @@
 
     <script type="text/javascript">
         document.addEventListener('DOMContentLoaded', () => {
-            var stripe = Stripe("{{ stripe_public }}");
+            // Initialisation de Stripe avec la clé publique fournie par le serveur
+            let stripe = Stripe("{{ stripe_public }}");
 
+            // Récupération de l'élément bouton avec l'ID 'checkout-button' (le bouton de paiement)
             let checkoutButton = document.getElementById('checkout-button');
 
+            // Ajout d'un écouteur d'événement 'click' sur le bouton de paiement
             checkoutButton.addEventListener('click', () => {
+                // Lorsque l'utilisateur clique sur le bouton, on fait un appel POST vers la route 'stripe_checkout' pour obtenir une session Stripe
                 fetch("{{ path('stripe_checkout') }}", {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json',
+                        'Content-Type': 'application/json', // Spécifie que l'on envoie du JSON au serveur
                     },
                 })
+                // Le serveur renvoie une réponse que l'on convertit en JSON
                 .then((response) => {
                     return response.json();
                 })
+                // Une fois que la session Stripe est obtenue, on redirige l'utilisateur vers la page de paiement de Stripe en utilisant l'ID de la session
                 .then((session) => {
                     return stripe.redirectToCheckout({ sessionId: session.id });
                 })
                 .then((result) => {
+                    // Si la redirection vers Stripe échoue, on affiche une alerte avec l'erreur
                     if (result.error) {
                         alert(result.error.message);
                     }
                 })
+                // Si une erreur survient lors de l'appel au serveur ou dans la logique, elle est capturée et affichée dans la console
                 .catch((error) => {
                     console.error('Error :', error);
                 });

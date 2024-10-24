@@ -6,7 +6,9 @@
     <section class="bg-dark py-5">
         <div class="container px-4 px-lg-5 my-5">
             <div class="text-center text-white">
+                <!-- Titre principal -->
                 <h1 class="display-4 fw-bolder">{{ 'user_comments'|trans({}, 'messages', app.request.locale) }}</h1>
+                <!-- Phrase d'accroche -->
                 <p class="lead fw-normal text-white-50 mb-0">{{ 'your_thoughts'|trans({}, 'messages', app.request.locale) }}</p>
             </div>
         </div>
@@ -15,18 +17,24 @@
     <section class="py-5 container--fluid">
         <div class="container px-4 px-lg-5 mt-5">
             {% if commentaires_utilisateur is empty %}
+                <!-- Si l'utilisateur n'a pas fait de commentaires, un message est affiché -->
                 <p class="text-center">{{ 'no_comments_yet'|trans({}, 'messages', app.request.locale) }}</p>
             {% else %}
+                <!-- Boucle pour afficher les commentaires de l'utilisateur -->
                 {% for commentaire_utilisateur in commentaires_utilisateur %}
                      <div class="col mb-5">
                         <div class="card text-center">
+                            <!-- Image de l'article commenté par l'utilisateur -->
                             <img src="{{ asset (imagesArticlesPath ~ '/' ~ commentaire_utilisateur.photo_article) }}" alt="{{ commentaire_utilisateur.titre }}" class="card-img-top img-fluid">
                             <div class="card-header d-flex justify-content-between">
+                                <!-- Titre de l'article -->
                                 <p>{{ commentaire_utilisateur.titre }}</p>
+                                <!-- Date du commentaire formatée -->
                                 <p>{{ commentaire_utilisateur.commentaire.dateCommentaire|date('d/m/Y H:i') }}</p>
                             </div>
                             <div class="card-body p-4">
                                 <div class="card-text">
+                                    <!-- Contenu du commentaire de l'utilisateur -->
                                     <p>{{ commentaire_utilisateur.commentaire.commentaire }}</p>
                                 </div>
                             </div>
@@ -39,6 +47,7 @@
 
     <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
         <div class="text-center">
+            <!-- Bouton pour rediriger vers la liste des utilisateurs -->
             <a class="btn btn-outline-dark mt-auto" href="{{ path('admin_utilisateurs') }}">{{ 'user_list'|trans({}, 'messages', app.request.locale) }}</a>
         </div>
     </div>

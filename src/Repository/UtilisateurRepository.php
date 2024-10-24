@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+// Importation des classes nécessaires pour le repository et la gestion des utilisateurs
 use App\Entity\Utilisateur;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -20,47 +21,28 @@ use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
  */
 class UtilisateurRepository extends ServiceEntityRepository implements PasswordUpgraderInterface
 {
+    // Constructeur qui appelle le constructeur parent avec le registre d'entités et la classe 
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Utilisateur::class);
     }
 
     /**
-     * Used to upgrade (rehash) the user's password automatically over time.
+     * Utilisé pour mettre à jour (rehacher) le mot de passe de l'utilisateur automatiquement au fil du temps.
      */
     public function upgradePassword(PasswordAuthenticatedUserInterface $user, string $newHashedPassword): void
     {
+        // Vérifie que l'utilisateur est une instance de Utilisateur
         if (!$user instanceof Utilisateur) {
+            // Lance une exception si l'utilisateur n'est pas supporté
             throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', $user::class));
         }
 
+        // Met à jour le mot de passe l'utilisateur
         $user->setPassword($newHashedPassword);
+        // Persiste les modifications de l'utilisateur dans l'entité
         $this->getEntityManager()->persist($user);
+        // Enregistre les modifications dans la base de données
         $this->getEntityManager()->flush();
     }
-
-//    /**
-//     * @return Utilisateur[] Returns an array of Utilisateur objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('u')
-//            ->andWhere('u.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('u.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
-
-//    public function findOneBySomeField($value): ?Utilisateur
-//    {
-//        return $this->createQueryBuilder('u')
-//            ->andWhere('u.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
 }

@@ -1,7 +1,9 @@
 <?php
 
+//  Déclaration de l'espace de noms pour le dépôt Panier
 namespace App\Repository;
 
+// Importation des classes nécessaires
 use App\Entity\Panier;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -9,6 +11,8 @@ use Doctrine\Persistence\ManagerRegistry;
 /**
  * @extends ServiceEntityRepository<Panier>
  *
+ * La classe PanierRepository étend ServiceEntityRepository pour fournir des méthodes de recherche pour l'entité Panier.
+ * 
  * @method Panier|null find($id, $lockMode = null, $lockVersion = null)
  * @method Panier|null findOneBy(array $criteria, array $orderBy = null)
  * @method Panier[]    findAll()
@@ -16,49 +20,28 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class PanierRepository extends ServiceEntityRepository
 {
+    // Constructeur de la classe qui initialise le dépôt avec le registre de gestion
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Panier::class);
     }
 
+    // Méthode pour trouver le dernier panier qui n'est pas dans l'historique des achats d'un utilisateur
     public function findLastPanierNotInHistoriqueAchats($utilisateurId)
     {
+        // Création d'une requête pour obtenir le dernier panier d'un utilisateur
         $qb = $this->createQueryBuilder('p')
-            ->leftJoin('p.historiqueAchats', 'ha')
-            ->leftJoin('p.ligneCommandes', 'lc') // Joindre les lignes de commande
-            ->leftJoin('lc.article', 'a') // Joindre les articles associés aux lignes de commande
-            ->addSelect('lc', 'a') // Sélectionner les lignes de commande et les articles
-            ->where('p.utilisateur = :utilisateur')
-            ->andWhere('ha.id IS NULL')
-            ->setParameter('utilisateur', $utilisateurId)
-            ->orderBy('p.createdAt', 'DESC') // Assurez-vous que vous avez un champ `createdAt` dans votre table Panier
-            ->setMaxResults(1);
+            ->leftJoin('p.historiqueAchats', 'ha') // Jointure avec l'historique des achats
+            ->leftJoin('p.ligneCommandes', 'lc') // Jointure les lignes de commande
+            ->leftJoin('lc.article', 'a') // Jointure avec les articles associés aux lignes de commande
+            ->addSelect('lc', 'a') // Sélection des lignes de commande et des articles
+            ->where('p.utilisateur = :utilisateur') // Filtre par utilisateur
+            ->andWhere('ha.id IS NULL') // S'assure que le panier n'est pas dans l'historique d'achats
+            ->setParameter('utilisateur', $utilisateurId) // Définit le paramètre utilisateur
+            ->orderBy('p.createdAt', 'DESC') // Trie par date de création (s'assurer que le champ createAt existe)
+            ->setMaxResults(1); // Limite le résultat à un seul panier
 
+        // Exécute la requête et retourne le résultat
         return $qb->getQuery()->getOneOrNullResult();
     }
-
-//    /**
-//     * @return Panier[] Returns an array of Panier objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('p')
-//            ->andWhere('p.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('p.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
-
-//    public function findOneBySomeField($value): ?Panier
-//    {
-//        return $this->createQueryBuilder('p')
-//            ->andWhere('p.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
 }

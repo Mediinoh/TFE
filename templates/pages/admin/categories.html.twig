@@ -6,16 +6,25 @@
     <section class="bg-dark py-5">
         <div class="container px-4 px-lg-5 my-5">
             <div class="text-center text-white">
+                <!-- Titre principal -->
                 <h1 class="display-4 fw-bolder">{{ 'category_list'|trans({}, 'messages', app.request.locale) }}</h1>
+                <!-- Phrase d'accroche -->
                 <p class="lead fw-normal text-white-50 mb-0">{{ 'what_you_sorted'|trans({}, 'messages', app.request.locale) }}</p>
             </div>
         </div>
     </section>
 
     <section class="py-5 container-fluid">
+        <!-- Lien pour accéder au formulaire d'ajout d'une catégorie avec une icône -->
+        <a href="#form_ajout_categorie" class="btn btn-primary">
+            <span class="bi bi-plus-circle" aria-hidden="true"></span> {{ 'add_category'|trans({}, 'messages', app.request.locale) }}
+        </a>
+
         {% if categories is empty %}
+            <!-- Si la liste des catégories est vide, un message est affiché -->
             <p class="text-center">{{ 'no_category_in_db'|trans({}, 'messages', app.request.locale) }}</p>
         {% else %}
+            <!-- Affichage d'un tableau listant les catégories disponibles -->
             <table class="table table-hover" id="dataTable">
                 <thead>
                     <tr>
@@ -24,9 +33,11 @@
                     </tr>
                 </thead>
                 <tbody>
+                    <!-- Boucle sur toutes les catégories récupérées pour les afficher dans le tableau -->
                     {% for categorie in categories %}
                         <tr>
                             <td scope="row">{{ categorie.id }}</td>
+                            <!-- Affiche le nom de chaque catégorie -->
                             <td>{{ categorie.nomCategorie }}</td>
                         </tr>
                     {% endfor %}
@@ -35,12 +46,15 @@
         {% endif %}
     </section>
 
-    <section class="py-5 container-fluid">
+    <section id="form_ajout_categorie" class="py-5 container-fluid">
+        <!-- Formulaire d'ajout d'une nouvelle catégorie -->
         {{ form_start(form) }}
+            <!-- Champ de saisie pour le nom de la nouvelle catégorie -->
             <div class="form-group mb-3">
                 {{ form_label(form.nom_categorie) }}
                 {{ form_widget(form.nom_categorie) }}
             </div>
+            <!-- Bouton pour soumettre le formulaire -->
             <div class="form-group mb-3">
                 {{ form_widget(form.ajout_categorie) }}
             </div>
@@ -49,6 +63,7 @@
 
     <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
         <div class="text-center">
+            <!-- Bouton pour retourner à la liste des produits -->
             <a class="btn btn-outline-dark mt-auto" href="{{ path('admin_articles') }}">{{ 'product_list'|trans({}, 'messages', app.request.locale) }}</a>
         </div>
     </div>
