@@ -138,10 +138,10 @@
                         <!-- Menu déroulant pour la sélection de la langue -->
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle btn d-flex align-items-center me-2" href="#" id="languageDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <span class="fi fi-{{ locales[current_locale].flag }}" aria-hidden="true"></span> {{ locales[current_locale].name }}
+                                <span class="fi fi-{{ app.request.locales[current_locale].flag }}" aria-hidden="true"></span> {{ locales[current_locale].name }}
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="languageDropdown">
-                                {% for locale, details in locales %}
+                                {% for locale, details in app.request.locales %}
                                     {% if locale != current_locale %}
                                         <li>
                                             <a class="dropdown-item" href="{{ path('changeLocale', {'locale': locale}) }}">
