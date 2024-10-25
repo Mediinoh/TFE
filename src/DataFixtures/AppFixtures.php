@@ -2,42 +2,50 @@
 
     namespace App\DataFixtures;
 
-use App\Entity\Article;
-use App\Entity\Categorie;
-use App\Entity\Utilisateur;
-use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\Persistence\ObjectManager;
-use Faker\Factory;
-use Faker\Generator;
+    // Importation des classes nécessaires
+    use App\Entity\Article;
+    use App\Entity\Categorie;
+    use App\Entity\Utilisateur;
+    use Doctrine\Bundle\FixturesBundle\Fixture;
+    use Doctrine\Persistence\ObjectManager;
+    use Faker\Factory;
+    use Faker\Generator;
 
+    // La classe AppFixtures étend Fixture pour fournir des données de test.
     class AppFixtures extends Fixture
     {
         /**
-         * @var Generator
+         * @var Generator Instance de Faker pour générer des données fictives en français
          */
         private Generator $faker;
 
+        // Constructeur qui initialiser Faker avec la localisation 'fr-FR'
         public function __construct()
         {
             $this->faker = Factory::create('fr-FR');
         }
 
+        // Méthode principale appelée par Doctrice pour charger les fixtures dans la base de données
         public function load(ObjectManager $manager) : void
         {
+            // Création d'un compte administrateur avec des rôles 'ROLE_USER' et 'ROLE_ADMIN'
             $admin = new Utilisateur();
             $admin->setPrenom('Admin')->setNom('Admin')->setAdresse('Admin')->setCodePostal('Admin')
                 ->setEmail('admin@admin.admin')->setDateNaissance(new \DateTimeImmutable('2005-02-20'))
                 ->setPseudo('admin')->setPlainPassword('admin')->setRoles(['ROLE_USER', 'ROLE_ADMIN']);
+            
+            // Persistance de l'administrateur
             $manager->persist($admin);
 
-            $categories_list = ['informatique', 'livre', 'hi-fi', 'Ordinateur', 'Téléphone', 'Accessoire', 'Jeux', 'Console'];
-            $categories = [];
-
-            // Récupérer le nombre d'utilisateurs à générer depuis l'argument
+            // Détermine le nombre d'utilisateurs à créer, par défaut 100, modifiable par une variable d'environnement 'NB_USERS'
             $nbUsers = intval(getenv('NB_USERS') ?: 100);
 
+            // Boucle pour générer des utilisateurs fictifs
             for ($i = 1; $i <= $nbUsers; $i++) {
-                $dateNaissance = $this->faker->dateTimeBetween('-60 years', '-18 years'); // Utilisateur entre 18 et 60 ans
+                // Génère une date de naissance entre 18 et 60 ans dans le passé
+                $dateNaissance = $this->faker->dateTimeBetween('-60 years', '-18 years');
+                
+                // Instancie un nouvel utilisateur
                 $user = new Utilisateur();
                 $user->setPrenom($this->faker->firstName())
                      ->setNom($this->faker->lastName())
@@ -49,9 +57,15 @@ use Faker\Generator;
                     ->setPlainPassword('user')
                     ->setRoles(['ROLE_USER']);
                 
+                // Persistance de l'utilisateur
                 $manager->persist($user);
             }
+
+            // Création d'une liste de noms de catégories prédéfinis et tableau pour stocker les objets catégorie
+            $categories_list = ['informatique', 'livre', 'hi-fi', 'Ordinateur', 'Téléphone', 'Accessoire', 'Jeux', 'Console'];
+            $categories = [];
             
+            // Boucle pour créer et persister chaque catégorie en utilisant la liste prédéfinie
             foreach($categories_list as $nom_categorie) {
                 $categorie = new Categorie();
                 $categorie->setNomCategorie($nom_categorie);
@@ -59,6 +73,7 @@ use Faker\Generator;
                 $categories[] = $categorie;
             }
             
+            // Liste d'articles avec leurs caractéristiques (titre, prix, description, catégorie, et image)
             $articles_list = [
                 ['titre' => 'Illusions perdues', 'prix' => 12.75, 'description' => 'Livre intitulé "Illusions perdues" de Honoré de Balzac', 'categorie_id' => 2, 'photo_article' => 'illusions_perdues.jpg'],
                 ['titre' => 'Ordinateur portable HP', 'prix' => 599, 'description' => 'Ordinateur Portable HP Laptop 15S-FQ5045NB 15.6" Intel Core i5 8 Go DDR4 512 Go SSD', 'categorie_id' => 4, 'photo_article' => 'HP-LAPTOP-15S-FQ5045NB-15-6-512-8-I5-1235U-INTEGRATED.jpg'],
@@ -89,14 +104,19 @@ use Faker\Generator;
                 ['titre' => 'Jeux PS4 "CyberPunk"', 'prix' => 26.98, 'description' => 'Jeux CyberPunk PS4', 'categorie_id' => 7, 'photo_article' => 'cyberpunk.jpg'],
             ];
             
+            // Boucle de création et persistance des articles
             foreach($articles_list as $article_item) {
                 $article = new Article();
                 $categorie = $categories[$article_item['categorie_id'] - 1];
                 $article->setTitre($article_item['titre'])->setPrixUnitaire($article_item['prix'])
                         ->setDescription($article_item['description'])->setPhotoArticle($article_item['photo_article'])->setCategorie($categorie);
+                
+                // Ajoute l'article à la catégorie et persiste l'article
                 $categorie->addArticle($article);
                 $manager->persist($article);
             }
+
+            // Sauvegarde toutes les entités créées en base de données
             $manager->flush();
         }
     }
