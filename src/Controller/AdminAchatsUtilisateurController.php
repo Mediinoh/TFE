@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+// Importation des classes nécessaires
 use App\Entity\Utilisateur;
 use App\Repository\HistoriqueAchatRepository;
 use App\Repository\UtilisateurRepository;

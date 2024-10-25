@@ -2,17 +2,18 @@
 
     namespace App\Controller;
 
-use App\Entity\Utilisateur;
-use App\Form\BloqueUtilisateurType;
-use App\Repository\HistoriqueConnexionRepository;
+    // Importation des classes nécessaires
+    use App\Entity\Utilisateur;
+    use App\Form\BloqueUtilisateurType;
+    use App\Repository\HistoriqueConnexionRepository;
     use App\Repository\UtilisateurRepository;
-use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Contracts\Translation\TranslatorInterface;
+    use Doctrine\ORM\EntityManagerInterface;
+    use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+    use Symfony\Component\HttpFoundation\Request;
+    use Symfony\Component\HttpFoundation\RequestStack;
+    use Symfony\Component\HttpFoundation\Response;
+    use Symfony\Component\Routing\Annotation\Route;
+    use Symfony\Contracts\Translation\TranslatorInterface;
 
     class AdminUtilisateursController extends AbstractController
     {
