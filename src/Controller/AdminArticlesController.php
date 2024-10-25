@@ -21,50 +21,63 @@ class AdminArticlesController extends AbstractController
     #[Route('/admin/articles', 'admin_articles', methods: ['GET', 'POST'])]
     public function index(ArticleRepository $articleRepository, Request $request, EntityManagerInterface $manager): Response
     {
+        // Récupération de l'utilisateur actuellement connecté
         /** @var Utilisateur $user */
         $user = $this->getUser();
 
+        // Redirection vers la page de connexion si l'utilisateur n'est pas authentifié
         if (!$user) {
             return $this->redirectToRoute('security.login');
         }
 
+        // Redirection vers la page d'accueil si l'utilisateur n'a pas le rôle ADMIN
         if (!$this->isGranted('ROLE_ADMIN')) {
             return $this->redirectToRoute('home.index');
         }
 
+        // Création et gestion du formulaire pour ajouter un nouvel article
         $form = $this->createForm(AjoutArticleType::class);
         $form->handleRequest($request);
 
+        // Vérifie si le formulaire a été soumis et est valide
         if ($form->isSubmitted() && $form->isValid()) {
+            // Récupération des données du formulaire
             $article = $form->getData();
 
+            // Gestion de l'upload de l'image associée à l'article
             $photoArticle = $form->get('photo_article')->getData();
+            
             if (!is_null($photoArticle) && $photoArticle instanceof UploadedFile) {
                $nomFichier = uniqid() . '_' . date('Ymd_His') . '.png';
                $photoArticle->move($this->getParameter('images_articles_directory'), $nomFichier);
                $article->setPhotoArticle($nomFichier);
             }
 
+            // Enregistrement de l'article de la base de données
             $manager->persist($article);
             $manager->flush();
 
+            // Redirection vers la liste des articles après l'ajout
             return $this->redirectToRoute('admin_articles');
         }
 
+        // Récupération de tous les articles pour affichage
         $articles = $articleRepository->findBy([], ['id' => 'ASC']);
 
+        // Création des formulaires de suppression pour chaque article
         $formulairesSupprimerArticle = [];
-foreach ($articles as $article) {
-    $supprimerArticleForm = $this->createForm(SupprimeArticleType::class, null, [
-        'action' => $this->generateUrl('admin_supprimer_article', ['id' => $article->getId()]),
-        'method' => 'POST',
-        'supprime' => !$article->isSupprime(),
-    ]);
-    $supprimerArticleForm->handleRequest($request);
-    $formulairesSupprimerArticle[$article->getId()] = $supprimerArticleForm->createView();
-}
+        
+        foreach ($articles as $article) {
+            $supprimerArticleForm = $this->createForm(SupprimeArticleType::class, null, [
+                'action' => $this->generateUrl('admin_supprimer_article', ['id' => $article->getId()]),
+                'method' => 'POST',
+                'supprime' => !$article->isSupprime(),
+            ]);
+            $supprimerArticleForm->handleRequest($request);
+            $formulairesSupprimerArticle[$article->getId()] = $supprimerArticleForm->createView();
+        }
 
-
+        // Rendu de la vue avec la liste des articles et les formulaires
         return $this->render('pages/admin/articles.html.twig', [
             'articles' => $articles,
             'form' => $form->createView(),
@@ -76,33 +89,43 @@ foreach ($articles as $article) {
     #[Route('/supprimer_article/{id}', 'admin_supprimer_article', methods: ['POST'])]
     public function supprimerArticle(int $id, ArticleRepository $articleRepository, EntityManagerInterface $manager, TranslatorInterface $translator, RequestStack $requestStack): Response
     {
+        // Récupération de la locale de la requête
         $locale = $requestStack->getCurrentRequest()->getLocale();
 
-       /** @var Utilisateur $user */
-       $user = $this->getUser();
+        // Récupération de l'utilisateur actuellement connecté
+        /** @var Utilisateur $user */
+        $user = $this->getUser();
        
-       if (!$user) {
-        return $this->redirectToRoute('security.login');
-       }
+        // Redirection vers la page de connexion si l'utilisateur n'est pas authentifié
+        if (!$user) {
+            return $this->redirectToRoute('security.login');
+        }
 
-       if (!$this->isGranted('ROLE_ADMIN')) {
-        return $this->redirectToRoute('home.index');
-    }
+        // Redirection vers la page d'accueil si l'utilisateur n'a pas le rôle ADMIN
+        if (!$this->isGranted('ROLE_ADMIN')) {
+            return $this->redirectToRoute('home.index');
+        }
 
-       $article = $articleRepository->find($id);
+        // Récupération de l'article à supprimer
+        $article = $articleRepository->find($id);
 
-       if (!$article) {
-        $this->addFlash('danger', $translator->trans('article_not_found', ['%id%' => $id], 'messages', $locale));
-        return $this->redirectToRoute('admin_articles');    
-       }
+        // Vérification si l'article n'existe pas
+        if (!$article) {
+            $this->addFlash('danger', $translator->trans('article_not_found', ['%id%' => $id], 'messages', $locale));
+            return $this->redirectToRoute('admin_articles');    
+        }
 
+        // Marque l'article comme supprimé ou le réactive
         $article->setSupprime(!$article->isSupprime());
 
+        // Enregistrement des modifications dans la base de données
         $manager->persist($article);
         $manager->flush();
 
+        // Message de confirmation
         $this->addFlash('success', $translator->trans('article_removed_from_cart', [], 'messages', $locale));
 
+        // Redirection vers la liste des articles après la suppression
         return $this->redirectToRoute('admin_articles');
     }
 }
