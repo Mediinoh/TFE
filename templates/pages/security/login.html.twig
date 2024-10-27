@@ -1,15 +1,18 @@
 {% extends 'base.html.twig' %}
-<!-- Hérite du modèle de base pour utiliser les styles et les scripts globaux -->
-
-<!-- Définit le titre de la page -->
 {% block title %}{{ 'login'|trans({}, 'messages', app.request.locale) }}{% endblock %}
 
 {% block body %}
+    <section class="bg-dark py-5">
+        <div class="container px-4 px-lg-5 my-5">
+            <div class="text-center text-white">
+                <!-- Titre principal -->
+                <h1 class="mt-4">{{ 'login_form'|trans({}, 'messages', app.request.locale) }}</h1>
+            </div>
+        </div>
+    </section>
+    
     <div class="container">
         <section class="py-5">
-            <!-- Affiche le titre du formulaire de connexion -->
-            <h1 class="mt-4">{{ 'login_form'|trans({}, 'messages', app.request.locale) }}</h1>
-
             {% if error %}
                 <!-- Affiche un message d'erreur si la connexion échoue -->
                 <div class="alert alert-danger">
