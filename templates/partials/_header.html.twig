@@ -5,7 +5,9 @@
             <!-- Logo du site et lien vers la page d'accueil -->
             <a class="navbar-brand" href="{{ path('home.index') }}"><img src="{{ asset('images/med-shop_logo.jpg') }}" alt="Logo de Med-Shop" height="75"></a>
             <!-- Bouton hamburger pour basculer la navigation sur mobile -->
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon" aria-hidden="true"></span>
+            </button>
             <!-- Menu de navigation principal -->
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
@@ -137,20 +139,29 @@
                         {% endif %}
                         <!-- Menu déroulant pour la sélection de la langue -->
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle btn d-flex align-items-center me-2" href="#" id="languageDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <span class="fi fi-{{ app.request.locales[current_locale].flag }}" aria-hidden="true"></span> {{ locales[current_locale].name }}
-                            </a>
-                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="languageDropdown">
-                                {% for locale, details in app.request.locales %}
-                                    {% if locale != current_locale %}
-                                        <li>
-                                            <a class="dropdown-item" href="{{ path('changeLocale', {'locale': locale}) }}">
-                                                <span class="fi fi-{{ details.flag }}" aria-hidden="true"></span> {{ details.name }}
-                                            </a>
-                                        </li>
-                                    {% endif %}
-                                {% endfor %}
-                            </ul>
+                            {% if app.request.locale == 'en' %}
+                                <a class="nav-link dropdown-toggle btn d-flex align-items-center me-2" href="#" id="languageDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <span class="fi fi-gb" aria-hidden="true"></span> English
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="languageDropdown">
+                                    <li>
+                                        <a class="dropdown-item" href="{{ path('changeLocale', {'locale': 'fr'}) }}">
+                                            <span class="fi fi-fr" aria-hidden="true"></span> Français
+                                        </a>
+                                    </li>
+                                </ul>
+                            {% elseif app.request.locale == 'fr' %}
+                                <a class="nav-link dropdown-toggle btn d-flex align-items-center me-2" href="#" id="languageDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <span class="fi fi-fr" aria-hidden="true"></span> Français
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="languageDropdown">
+                                    <li>
+                                        <a class="dropdown-item" href="{{ path('changeLocale', {'locale': 'en'}) }}">
+                                            <span class="fi fi-gb" aria-hidden="true"></span> English
+                                        </a>
+                                    </li>
+                                </ul>
+                            {% endif %}
                         </li>
                     </ul>
                 </div>

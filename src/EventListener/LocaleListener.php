@@ -21,7 +21,7 @@ class LocaleListener
     ];
 
     // Constructeur de la classe injectant les dépendances
-    public function __construct(private RequestStack $requestStack, private Environment $twig, private string $defaultLocale = 'fr')
+    public function __construct(private RequestStack $requestStack, private string $defaultLocale = 'fr', private Environment $twig)
     {
 
     }
