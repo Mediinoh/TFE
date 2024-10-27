@@ -6,11 +6,13 @@
         <div class="container px-4 px-lg-5 my-5">
             <div class="text-center text-white">
                 <!-- Titre principal -->
-                <h1 class="mt-4">{{ 'login_form'|trans({}, 'messages', app.request.locale) }}</h1>
+                <h1 class="mt-4">
+                    <span class="bi bi-person-check" aria-label="true"></span> {{ 'login_form'|trans({}, 'messages', app.request.locale) }}
+                </h1>
             </div>
         </div>
     </section>
-    
+
     <div class="container">
         <section class="py-5">
             {% if error %}
@@ -20,8 +22,8 @@
                 </div>
             {% endif %}
 
-            <form action="{{ path('security.login') }}" method="post" name="login">
-                
+            <!-- Formulaire de connexion -->
+            <form action="{{ path('security.login') }}" method="post" name="login">  
                 <div class="form-group">
                     <!-- Étiquette pour le champ email -->
                     <label for="username" class="form-label mt-4">{{ 'email_address'|trans({}, 'messages', app.request.locale) }}</label>
