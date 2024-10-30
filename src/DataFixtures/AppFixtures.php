@@ -37,8 +37,8 @@
             // Persistance de l'administrateur
             $manager->persist($admin);
 
-            // Détermine le nombre d'utilisateurs à créer, par défaut 100, modifiable par une variable d'environnement 'NB_USERS'
-            $nbUsers = intval(getenv('NB_USERS') ?: 100);
+            // Détermine le nombre d'utilisateurs à créer, par défaut 0, modifiable par une variable d'environnement 'NB_USERS'
+            $nbUsers = intval(getenv('NB_USERS') ?: 0);
 
             // Boucle pour générer des utilisateurs fictifs
             for ($i = 1; $i <= $nbUsers; $i++) {
