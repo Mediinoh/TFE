@@ -214,9 +214,84 @@ newsletter_subscribe: "Subscribe to the Newsletter"
 newsletter_placeholder: "Your email"
 newsletter_button: "Subscribe"
 contact_title: "Contact"
-contact_address: "Address: ICC, Brussels"
+contact_address: "Address"
 contact_email: "Email:"
 contact_phone: "Phone:"
 payment_accepted: "We accept"
 what_you_choice: "What you choice !"
 very_good_choice: "Very good choice"
+title_condition: "Terms and Conditions of Sale"
+intro: "Welcome to our site. By accessing our services, you agree to the terms and conditions below."
+terms: "1. Identification of the Seller
+Company name: MedShop S.A.
+Address: Rue de l'Électronique, 123, 1000 Brussels, Belgium
+Company number (BCE): BE0123.456.789
+VAT number: BE0123.456.789
+Contact: support@medshop.be / +32 2 123 45 67
+
+2. Purpose of the General Terms and Conditions of Sale (GTC)
+These GTC define the rights and obligations of MedShop and the customer for the sale of digital products (video games, software) and physical products (screens, controllers, consoles, etc.).
+
+3. Products and Availability
+All products are offered subject to availability. In the event of unavailability, MedShop will inform the customer as soon as possible.
+
+Physical products: delivered according to available stock.
+Digital products: downloadable immediately after payment.
+4. Prices and VAT
+Prices are in euros (€), VAT included. MedShop may change prices, but products are billed according to the rates in effect at the time of ordering.
+
+5. Order and Acceptance of the T&Cs
+Placing an order implies acceptance of these T&Cs. The customer must be of legal age and have legal capacity.
+
+6. Payment Terms
+Payments are made by credit card (Visa, MasterCard) or via PayPal, and are debited upon validation of the order.
+
+7. Delivery
+Physical products: delivery in 3 to 5 working days, subject to availability. Delivery costs are specified when ordering.
+Digital products: download link available after payment.
+
+8. Right of Withdrawal
+The customer has 14 days to return physical products in their original condition and packaging.
+
+Exceptions: the right of withdrawal does not apply to digital products after the start of the download, with the customer's agreement.
+
+9. Warranty and After-Sales Service
+Physical products benefit from a 2-year legal warranty. Contact the after-sales service: support@medshop.be.
+
+10. Privacy Policy
+MedShop protects the confidentiality of its customers' personal data, used for order management. In accordance with the GDPR, the customer can access, rectify or delete their data via customer service.
+
+11. Use of Cookies
+Cookies are used to improve the user experience and analyze traffic. The customer can manage their preferences via the consent banner.
+
+12. Limitation of Liability
+MedShop declines all liability for indirect damages related to the use of the site or products.
+
+13. Intellectual Property
+All content of the site (texts, images, logos) is protected and cannot be reproduced without prior authorization.
+
+14. Disputes and Applicable Law
+In the event of a dispute, the parties will seek an amicable solution. If no agreement is reached, the courts of Brussels will have jurisdiction. These General Terms and Conditions are governed by Belgian law.
+
+Legal Notices
+Company name: MedShop S.A.
+Registered office: Rue de l'Électronique, 123, 1000 Brussels, Belgium
+Company number: BE0123.456.789
+VAT number: BE0123.456.789
+Contact: support@medshop.be / +32 2 123 45 67
+
+Privacy and Data Protection Policy
+MedShop complies with the GDPR regulations for data protection. The information is strictly reserved for order management.
+
+Cookie Policy
+When visiting the site, cookies may be placed on the browser. The user's prior consent is required for certain cookies.
+
+Right of Withdrawal
+The customer has 14 days to return physical products. This does not apply to digital products.
+
+Guarantees
+Legal guarantee: The products benefit from a 2-year guarantee.
+Commercial guarantee: Some products may have additional guarantees, indicated on their sheet.
+
+General Conditions of Sale
+The GTC must be consulted and accepted before confirming each order." 

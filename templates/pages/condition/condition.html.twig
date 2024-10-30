@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Conditions Générales de Vente{% endblock %}
+
+{% block body %}
+    <section class="bg-dark py-5">
+        <div class="container px-4 px-lg-5 my-5">
+            <div class="text-center text-white">
+                <h1 class="display-4 fw-bolder">{{ 'title_condition'|trans({}, 'messages', app.request.locale) }}</h1>
+                <p class="lead fw-normal text-white-50 mb-0">{{ 'intro'|trans({}, 'messages', app.request.locale) }}</p>
+            </div>
+        </div>
+    </section>
+    
+    <section class="py-5">
+        <div class="container">
+            <p>{{ 'terms'|trans({}, 'messages', app.request.locale) }}</p>
+        </div>
+    </section>
+{% endblock %}

@@ -214,9 +214,84 @@ newsletter_subscribe: "S'inscrire à la Newsletter"
 newsletter_placeholder: "Votre email"
 newsletter_button: "S'inscrire"
 contact_title: "Contact"
-contact_address: "Adresse : ICC , Bruxelles"
+contact_address: "Adresse :"
 contact_email: "Email :"
 contact_phone: "Téléphone :"
 payment_accepted: "Nous acceptons"
 what_you_choice: "Ce que vous avez choisi !"
 very_good_choice: "Très bon choix"
+title_condition: "Conditions Générales de Vente"
+intro: "Bienvenue sur notre site. En accédant à nos services, vous acceptez les conditions générales ci-dessous."
+terms: "1. Identification du Vendeur
+Nom de l'entreprise : MedShop S.A.
+Adresse : Rue de l'Électronique, 123, 1000 Bruxelles, Belgique
+Numéro d'entreprise (BCE) : BE0123.456.789
+Numéro de TVA : BE0123.456.789
+Contact : support@medshop.be / +32 2 123 45 67
+
+2. Objet des Conditions Générales de Vente (CGV)
+Les présentes CGV définissent les droits et obligations de MedShop et du client pour la vente de produits numériques (jeux vidéo, logiciels) et de produits physiques (écrans, manettes, consoles, etc.).
+
+3. Produits et Disponibilité
+Tous les produits sont proposés sous réserve de disponibilité. En cas d’indisponibilité, MedShop en informera le client au plus tôt.
+
+Produits physiques : livrés selon le stock disponible.
+Produits numériques : téléchargeables immédiatement après le paiement.
+4. Prix et TVA
+Les prix sont en euros (€), TVA incluse. MedShop peut modifier les prix, mais les produits sont facturés selon les tarifs en vigueur au moment de la commande.
+
+5. Commande et Acceptation des CGV
+Passer une commande implique l’acceptation des présentes CGV. Le client doit être majeur et avoir la capacité juridique.
+
+6. Modalités de Paiement
+Les paiements sont effectués par carte bancaire (Visa, MasterCard) ou via PayPal, et sont débités à la validation de la commande.
+
+7. Livraison
+Produits physiques : livraison en 3 à 5 jours ouvrables, sous réserve de disponibilité. Les frais de livraison sont précisés lors de la commande.
+Produits numériques : lien de téléchargement disponible après le paiement.
+
+8. Droit de Rétractation
+Le client dispose de 14 jours pour retourner les produits physiques dans leur état et emballage d'origine.
+
+Exceptions : le droit de rétractation ne s'applique pas aux produits numériques après le début du téléchargement, avec accord du client.
+
+9. Garantie et Service Après-Vente
+Les produits physiques bénéficient d’une garantie légale de 2 ans. Contactez le SAV : support@medshop.be.
+
+10. Politique de Confidentialité
+MedShop protège la confidentialité des données personnelles de ses clients, utilisées pour la gestion des commandes. Conformément au RGPD, le client peut accéder, rectifier ou supprimer ses données via le service client.
+
+11. Utilisation des Cookies
+Des cookies sont utilisés pour améliorer l'expérience utilisateur et analyser le trafic. Le client peut gérer ses préférences via le bandeau de consentement.
+
+12. Limitation de Responsabilité
+MedShop décline toute responsabilité pour des dommages indirects liés à l’utilisation du site ou des produits.
+
+13. Propriété Intellectuelle
+Tout le contenu du site (textes, images, logos) est protégé et ne peut être reproduit sans autorisation préalable.
+
+14. Litiges et Droit Applicable
+En cas de litige, les parties chercheront une solution amiable. Si aucun accord n'est trouvé, les tribunaux de Bruxelles seront compétents. Les présentes CGV sont régies par la loi belge.
+
+Mentions Légales
+Nom de l'entreprise : MedShop S.A.
+Siège social : Rue de l'Électronique, 123, 1000 Bruxelles, Belgique
+Numéro d'entreprise : BE0123.456.789
+Numéro de TVA : BE0123.456.789
+Contact : support@medshop.be / +32 2 123 45 67
+
+Politique de Confidentialité et de Protection des Données
+MedShop respecte la réglementation RGPD pour la protection des données. Les informations sont strictement réservées à la gestion des commandes.
+
+Politique de Cookies
+Lors de la visite du site, des cookies peuvent être placés sur le navigateur. Le consentement préalable de l’utilisateur est requis pour certains cookies.
+
+Droit de Rétractation
+Le client dispose d’un délai de 14 jours pour retourner les produits physiques. Cela ne s'applique pas aux produits numériques.
+
+Garanties
+Garantie légale : Les produits bénéficient d’une garantie de 2 ans.
+Garantie commerciale : Certains produits peuvent disposer de garanties supplémentaires, indiquées sur leur fiche.
+
+Conditions Générales de Vente
+Les CGV doivent être consultées et acceptées avant la confirmation de chaque commande."
