@@ -3,9 +3,8 @@
 namespace App\Form;
 
 use App\Entity\Article;
-use App\Entity\Categorie;
-use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -23,6 +22,16 @@ class PayerType extends AbstractType
         $locale = $this->requestStack->getCurrentRequest()->getLocale();
         
         $builder
+            ->add('conditions', CheckboxType::class, [
+                'attr' => [
+                    'class' => 'form-control',
+                ],
+                'label' => $this->translator->trans('conditions', [], 'messages', $locale),
+                'label_attr' => [
+                    'class' => 'form-label',
+                ],
+                'required' => true,
+            ])
             ->add('payer', SubmitType::class, [
                 'attr' => [
                     'class' => 'btn btn-primary',
