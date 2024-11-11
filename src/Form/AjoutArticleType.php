@@ -9,6 +9,7 @@ use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -94,6 +95,20 @@ class AjoutArticleType extends AbstractType
                 ],
                 'constraints' => [
                     new Assert\NotBlank(),
+                ],
+            ])
+            ->add('stock', IntegerType::class, [
+                'attr' => [
+                    'class' => 'form-control',
+                ],
+                'label' => 'Stock',
+                'label_attr' => [
+                    'class' => 'form-label',
+                ],
+                'data' => 30,
+                'constraints' => [
+                    new Assert\NotBlank(),
+                    new Assert\Positive(),
                 ],
             ])
             ->add('photo_article', FileType::class, [

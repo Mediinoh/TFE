@@ -163,6 +163,7 @@ class InscriptionType extends AbstractType
                 ],
                 'invalid_message' => $this->translator->trans('password_mismatch', [], 'messages', $locale),
                 'constraints' => [
+                    new Assert\NotBlank(),
                     new Assert\Length(['min'=> 8, 'minMessage' => $this->translator->trans('password_length', [], 'messages', $locale)]),
                 ],
             ])

@@ -61,6 +61,9 @@
                             <!-- Colonne affichant la description de l'article -->
                             <td>{{ article.description|nl2br }}</td>
                             <td>
+                                <p class="text-center">Stock : {{ article.stock }}</p>
+                                <!-- Formulaire pour gérer le stock de l'article -->
+                                {{ form(formulairesStockArticle[article.id]) }}
                                 {% if article.supprime %}
                                     <!-- Si l'article est supprimé, afficher un message indiquant cela -->
                                     <p class="text-center">{{ 'article_already_deleted'|trans({}, 'messages', app.request.locale) }}</p>
@@ -98,6 +101,11 @@
             <div class="form-group mb-3">
                 {{ form_label(form.description) }}
                 {{ form_widget(form.description) }}
+            </div>
+            <!-- Champ pour le stock de l'article -->
+            <div class="form-group mb-3">
+                {{ form_label(form.stock) }}
+                {{ form_widget(form.stock) }}
             </div>
             <!-- Champ pour télécharger une photo pour l'article -->
             <div class="form-group mb-3">

@@ -68,14 +68,18 @@
                         <tr>
                             <td colspan="3">Total</td>
                             <td>{{ quantiteTotale }}</td>
-                            <td colspan="2">{{ total }}&euro;</td>
+                            <td colspan="2">{{ total }}&euro; TTC</td>
                         </tr>
                     </tfoot>
                 </table>
 
-                <div class="d-flex justify-content-end">
+                <div class="d-flex flex-column justify-content-end align-items-end">
                     <!-- Bouton pour procéder au paiement -->
-                    <button id="checkout-button" class="btn btn-primary">{{ 'pay'|trans({}, 'messages', app.request.locale) }}</button>
+                    <button id="checkout-button" class="btn btn-primary">{{ 'pay'|trans({}, 'messages', app.request.locale) }}</button><br>
+                    <p>🛍 Retour gratuit sous 30j</p>
+                    <p>🚚 Livraison gratuite à partir de 50€</p>
+                    <p>🔒 Paiement sécurisé</p>
+                    <p>💶 Prix TTC</p>
                 </div>
             {% endif %}
         </div>

@@ -31,6 +31,9 @@ class Article
     #[ORM\Column(type: 'string', length: 255)]
     private ?string $photo_article = null;
 
+    #[ORM\Column(type: 'integer')]
+    private ?int $stock = null;
+
     #[ORM\Column(type: 'boolean')]
     private ?bool $supprime = null;
 
@@ -44,6 +47,7 @@ class Article
     {
         $this->commentaires = new ArrayCollection();
         $this->ligneCommandes = new ArrayCollection();
+        $this->stock = 30;
         $this->supprime = false;
     }
 
@@ -108,6 +112,18 @@ class Article
     public function setPhotoArticle(string $photo_article): static
     {
         $this->photo_article = $photo_article;
+
+        return $this;
+    }
+
+    public function getStock (): ?int
+    {
+        return $this->stock;
+    }
+
+    public function setStock(?int $stock): static
+    {
+        $this->stock = $stock;
 
         return $this;
     }

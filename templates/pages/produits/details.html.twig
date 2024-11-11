@@ -30,6 +30,7 @@
                             <p><em>{{ 'category'|trans({}, 'messages', app.request.locale) }} :</em> {{ article.categorie.nomCategorie }}</p>
                             <!-- Affiche le prix du produit en euros -->
                             <p><em>{{ 'price'|trans({}, 'messages', app.request.locale) }} :</em> {{ article.prixUnitaire }}&euro;</p>
+                            <p class="small fst-italic">{{ 'tva_message' | trans({}, 'messages', app.request.locale) }}</p>
                             <!-- Affiche la description du produit -->
                             <p><em>{{ 'description'|trans({}, 'messages', app.request.locale) }} :</em> {{ article.description|nl2br }}</p>
                         </div>
