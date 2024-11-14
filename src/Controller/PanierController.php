@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-// Importation des classes nécessaires
 use App\Entity\Utilisateur;
 use App\Form\SuppressionArticlePanierType;
 use App\Repository\ArticleRepository;
@@ -24,13 +23,21 @@ class PanierController extends AbstractController
         // Récupération des informations du panier pour l'utilisateur actuel
         $panier = $this->getPanier($session, $articleRepository);
 
+        // Frais de livraison fixes
+        $fraisLivraison = 2.99; // Frais de livraison fixes pour chaque commande
+
+        // Calcul du total avec les frais de livraison
+        $totalAvecFrais = $panier['total'] + $fraisLivraison;
+
         // Rendu de la vue avec les articles du panier
         return $this->render('pages/panier/index.html.twig', [
             'articlesPanier' => $panier['articlesPanier'],
             'total' => $panier['total'],
             'quantiteTotale' => $panier['quantiteTotale'],
+            'totalAvecFrais' => $totalAvecFrais, // Total avec frais de livraison
             'imagesArticlesPath' => $this->getParameter('images_articles_path'),
             'stripe_public' => $this->getParameter('stripe_public'),
+            'fraisLivraison' => $fraisLivraison, // Passer les frais de livraison à la vue
         ]);
     }
 
@@ -102,12 +109,20 @@ class PanierController extends AbstractController
             return $this->redirectToRoute('stripe_checkout');
         }
 
+        // Frais de livraison fixes
+        $fraisLivraison = 2.99; // Frais de livraison fixes pour chaque commande
+
+        // Calcul du total avec les frais de livraison
+        $totalAvecFrais = $panierData['total'] + $fraisLivraison;
+
         // Rendu de la vue de validation du panier
         return $this->render('pages/panier/validation.html.twig', [
             'articlesPanier' => $panierData['articlesPanier'],
             'total' => $panierData['total'],
             'quantiteTotale' => $panierData['quantiteTotale'],
+            'totalAvecFrais' => $totalAvecFrais, // Total avec frais de livraison
             'imagesArticlesPath' => $this->getParameter('images_articles_path'),
+            'fraisLivraison' => $fraisLivraison, // Passer les frais de livraison à la vue
         ]);
     }
 

@@ -224,7 +224,15 @@ what_you_choice: "What you choice !"
 very_good_choice: "Very good choice"
 conditions: "Please accept terms and conditions of sale"
 title_condition: "Terms and conditions of sale"
+delivery: "Shipping fees"
+total_with_shipping: "Total with shipping"
 intro_condition: "Welcome to our site. By accessing our services, you agree to the terms and conditions below."
+free_returns: "Free returns within 30 days"
+delivery_fee: "Delivery fee of €2.99"
+secure_payment: "Secure payment"
+prices_inclusive_of_vat: "Prices inclusive of VAT"
+accepted_payment: "Accepted"
+terms_conditions_link: "terms and conditions of sale"
 terms: "1. Identification of the Seller
 Company name: MedShop S.A.
 Address: Rue de l'Électronique, 123, 1000 Brussels, Belgium
@@ -298,3 +306,5 @@ Commercial guarantee: Some products may have additional guarantees, indicated on
 
 General Conditions of Sale
 The GTC must be consulted and accepted before confirming each order." 
+
+

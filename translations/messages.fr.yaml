@@ -225,6 +225,12 @@ very_good_choice: "Très bon choix"
 conditions: "Veuillez accepter les conditions générales de vente !"
 title_condition: "Conditions générales de vente"
 intro_condition: "Bienvenue sur notre site. En accédant à nos services, vous acceptez les conditions générales ci-dessous."
+free_returns: "Retour gratuit sous 30j"
+delivery_fee: "Frais de livraison à 2.99€"
+secure_payment: "Paiement sécurisé"
+prices_inclusive_of_vat: "Prix TTC"
+accepted_payment: "Veuillez accepter les "
+terms_conditions_link: "conditions générale de vente."
 terms: "1. Identification du Vendeur
 Nom de l'entreprise : MedShop S.A.
 Adresse : Rue de l'Électronique, 123, 1000 Bruxelles, Belgique

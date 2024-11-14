@@ -32,7 +32,7 @@ class ArticleRepository extends ServiceEntityRepository
      * @param int $maxResults Nombre maximum de résultats à retourner (par défaut : 15)
      * @return array Liste des articles correspondant
      */
-    public function recupererNouveautes(int $maxResults = 15)
+    public function recupererNouveautes(int $maxResults = 25)
     {
         return $this->createQueryBuilder('a') // 'a' est un alias pour Article
                     ->Where('a.supprime = 0') // Filtre pour ne sélectionner que les articles non supprimés
