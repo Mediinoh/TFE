@@ -98,7 +98,7 @@ class AdminArticlesController extends AbstractController
     }
 
     #[Route('/ajout_stock/{id}', 'admin_ajout_stock', methods: ['POST'])]
-    public function ajoutStock($id, ArticleRepository $articleRepository, EntityManagerInterface $manager, TranslatorInterface $translator, RequestStack $requestStack, Request $request): Response
+    public function ajoutStock(int $id, ArticleRepository $articleRepository, EntityManagerInterface $manager, TranslatorInterface $translator, RequestStack $requestStack, Request $request): Response
     {
         // Récupération de la locale de la requête
         $locale = $requestStack->getCurrentRequest()->getLocale();

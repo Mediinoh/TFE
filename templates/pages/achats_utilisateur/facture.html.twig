@@ -1,151 +1,122 @@
 <!DOCTYPE HTML>
 <html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Facture - {{ historiqueAchat.utilisateur.fullName }} - {{ historiqueAchat.dateAchat|date('d/m/Y à H:i') }}</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-        }
-        .container {
-            max-width: 100%;
-        }
-        .header, .footer {
-            text-align: center;
-        }
-        .footer {
-            font-size: 12px;
-            margin-top: 30px;
-        }
-        .facture-table td, .facture-table th {
-            text-align: center;
-            vertical-align: middle;
-        }
-        .facture-table {
-            margin-bottom: 30px;
-        }
-        .footer-info {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 20px;
-        }
-        .footer-info div {
-            width: 48%;
-        }
-        .footer-info div p {
-            margin: 0;
-            line-height: 1.6; /* Espacement entre les lignes */
-        }
-
-        /* Ajustements du footer MedShop S.A. */
-        .footer-medshop {
-            line-height: 1.4; /* Espacement plus serré entre les lignes */
-            font-size: 14px; /* Taille légèrement réduite pour compenser */
-        }
-
-        .footer-medshop p {
-            margin-bottom: 5px;
-        }
-
-        .footer-info h5, .footer-medshop h5 {
-            margin-bottom: 10px;
-            font-size: 16px;
-            font-weight: bold;
-        }
-
-        .footer-info p, .footer-medshop p {
-            font-size: 14px;
-            margin-bottom: 5px;
-        }
-    </style>
-</head>
-<body>
-    <header class="container my-4">
-        <div class="row align-items-center">
-            <div class="col text-start">
-                <img src="{{ absolute_url('/images/med-shop_logo.jpg') }}" alt="Logo de Med-Shop" style="height: 150px;">
+    <head>
+        <meta charset="UTF-8">
+        <!-- Spécifie l'encodage des caractères et permet une bonne adaptation sur les appareils mobiles -->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+         <!-- Titre de la page -->
+        <title>{{ 'invoice'|trans({}, 'messages', app.request.locale) }} - {{ historiqueAchat.utilisateur.fullName }} - {{ historiqueAchat.dateAchat|date('d/m/Y à H:i') }}</title>
+        <!-- Lien vers la feuille de style Bootstrap pour le design réactif -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+        <!-- Lien vers les icônes Bootstrap pour les éléments graphiques comme les boutons, logos, etc. -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" integrity="sha512-dPXYcDub/aeb08c63jRq/k6GaKccl256JQy/AnOq7CAnEZ9FzSL9wSbcZkMp4R26vBsMLFYH4kQ67/bbV8XaCQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <!-- Lien vers les styles de DataTables pour un tableau interactif et organisé -->
+        <link rel="stylesheet" href="https://cdn.datatables.net/2.0.8/css/dataTables.dataTables.css" />
+    </head>
+    <body>
+        <!-- Header avec le logo, le titre et la date du jour -->
+        <header class="container my-4">
+            <div class="row align-items-center">
+                 <!-- Colonne pour le logo aligné à gauche -->
+                <div class="col text-start">
+                    <img src="{{ absolute_url('/images/med-shop_logo.jpg') }}" alt="Logo de Med-Shop" height="150">
+                </div>
+                <!-- Colonne pour le titre aligné au centre -->
+                <div class="col text-center">
+                     <!-- Titre principal de la facture, avec les informations de l'utilisateur et la date d'achat -->
+                     <h1>{{ 'invoice_paid_by'|trans({'%user%': historiqueAchat.utilisateur.fullName}, 'messages', app.request.locale) }}</h1>
+                    <p class="text-muted">{{ 'purchase_date'|trans({}, 'messages', app.request.locale) }} : {{ historiqueAchat.dateAchat|date('d/m/Y H:i') }}</p>
+                </div>
+                 <!-- Colonne pour la date du jour alignée à droite -->
+                <div class="col text-end text-muted">
+                    <p>{{ 'purchase_date'|trans({}, 'messages', app.request.locale) }} : {{ "now"|date('d/m/Y') }}</p>
+                </div>
             </div>
-            <div class="col text-center">
-                <h1>Facture payée par : {{ historiqueAchat.utilisateur.fullName }}</h1>
-                <p>Date d'achat : {{ historiqueAchat.dateAchat|date('d/m/Y H:i') }}</p>
-            </div>
-            <div class="col text-end text-muted">
-                <p>Date : {{ "now"|date('d/m/Y') }}</p>
-            </div>
-        </div>
-    </header>
+        </header>
 
-    <main role="main" class="container">
-        <table class="table facture-table">
-            <thead>
-                <tr class="border-bottom">
-                    <th>Photo article</th>
-                    <th>Produit</th>
-                    <th>Prix Unitaire</th>
-                    <th>Quantité</th>
-                    <th>Prix Total</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% set quantiteTotale = 0 %}
-                {% for detail_achat in details_achat %}
-                    {% set quantiteTotale = quantiteTotale + detail_achat.quantite %}
+        <!-- Section principale du corps de la page -->
+        <main role="main" class="container" tabindex="-1">
+            <!-- Tableau qui liste les articles achetés -->
+            <table class="table text-center align-middle">
+                <thead>
                     <tr class="border-bottom">
-                        <td><img src="{{ absolute_url(imagesArticlesPath ~ '/' ~ detail_achat.photo_article) }}" alt="{{ detail_achat.titre }}" class="img-thumbnail" style="height: 75px;"></td>
-                        <td>{{ detail_achat.titre }}</td>
-                        <td>{{ detail_achat.prix_unitaire }}&euro;</td>
-                        <td>{{ detail_achat.quantite }}</td>
-                        <td>{{ detail_achat.prix_total }}&euro;</td>
+                        <th>{{ 'picture_photo'|trans({}, 'messages', app.request.locale) }}</th>
+                        <th>{{ 'title'|trans({}, 'messages', app.request.locale) }}</th>
+                        <th>{{ 'unit_price'|trans({}, 'messages', app.request.locale) }}</th>
+                        <th>{{ 'quantity'|trans({}, 'messages', app.request.locale) }}</th>
+                        <th>{{ 'total_price'|trans({}, 'messages', app.request.locale) }}</th>
                     </tr>
-                {% endfor %}
-            </tbody>
-            <tfoot>
-                <tr class="border-bottom">
-                    <td colspan="3" class="text-start"><strong>Total articles</strong></td>
-                    <td>{{ quantiteTotale }}</td>
-                    <td>{{ historiqueAchat.montantTotal }}&euro;</td>
-                </tr>
-                <tr class="border-bottom">
-                    <td colspan="4" class="text-start"><strong>Frais de livraison</strong></td>
-                    <td>2.99&euro;</td>
-                </tr>
-                <tr class="border-bottom">
-                    <td colspan="4" class="text-start"><strong>Total à payer</strong></td>
-                    <td><strong>{{ historiqueAchat.montantTotal + 2.99 }}&euro;</strong></td>
-                </tr>
-            </tfoot>
-        </table>
+                </thead>
+                <tbody>
+                    <!-- Variable pour calculer la quantité totale des articles -->
+                    {% set quantiteTotale = 0 %}
+                    {% for detail_achat in details_achat %}
+                        <!-- Mise à jour de la quantité totale en fonction des articles -->
+                        {% set quantiteTotale = quantiteTotale + detail_achat.quantite %}
+                        
+                        <tr class="border-bottom">
+                            <!-- Affichage de l'image de l'article -->
+                            <td><img src="{{ absolute_url(imagesArticlesPath ~ '/' ~ detail_achat.photo_article) }}" alt="{{ detail_achat.titre }}" height="75"></td>
+                            <!-- Affichage du titre de l'article -->
+                            <td>{{ detail_achat.titre }}</td>
+                            <!-- Affichage du prix unitaire -->
+                            <td>{{ detail_achat.prix_unitaire }}&euro;</td>
+                            <!-- Affichage de la quantité achetée -->
+                            <td>{{ detail_achat.quantite }}</td>
+                            <!-- Affichage du prix total pour cet article -->
+                            <td>{{ detail_achat.prix_total }}&euro;</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+                 <!-- Pied de tableau qui affiche le total des quantités et le montant total -->
+                <tfoot>
+                    <tr class="border-bottom">
+                        <!-- Colspan permet d'étendre la cellule sur plusieurs colonnes pour mieux organiser les données -->
+                        <td colspan="3" class="text-start fw-bold">{{ 'total'|trans({}, 'messages', app.request.locale) }}</td>
+                        <td>{{ quantiteTotale }}</td>
+                        <td>{{ historiqueAchat.montantTotal }}&euro;</td>
+                    </tr>
+                    <tr class="border-bottom">
+                        <td colspan="4" class="text-start">{{ 'delivery'|trans({}, 'messages', app.request.locale) }}</td>
+                        <td>2.99&euro;</td>
+                    </tr>
+                    <tr class="border-bottom">
+                        <td colspan="4" class="text-start fw-bold">{{ 'total_to_pay'|trans({}, 'messages', app.request.locale) }}</td>
+                        <td class="fw-bold">{{ historiqueAchat.montantTotal + 2.99 }}&euro;</td>
+                    </tr>
+                </tfoot>
+            </table>
 
-        <div class="footer-info">
-            <div>
-                <p><strong>Droit de rétractation : </strong> Vous disposez d'un droit de rétractation de 14 jours après réception de votre commande.</p>
-                <p><strong>Numéro de facture :</strong> {{ historiqueAchat.id }}</p>
-                <p><strong>Numéro de commande :</strong> 123456</p>
+            <div class="row">
+                <div class="col-6">
+                    <p>{{ 'right_of_withdrawal'|trans({}, 'messages', app.request.locale) }}</p>
+                    <p><strong>{{ 'invoice_number'|trans({}, 'messages', app.request.locale) }}</strong> : {{ historiqueAchat.id }}</p>
+                    <p><strong>{{ 'order_number'|trans({}, 'messages', app.request.locale) }}</strong> : 123456</p>
+                </div>
+                <div class="col-6">
+                    <h2>{{ 'bank_details'|trans({}, 'messages', app.request.locale) }}</h2>
+                    <p><strong>{{ 'recipient'|trans({}, 'messages', app.request.locale) }}</strong> : MedShop S.A.</p>
+                    <p><strong>{{ 'bank'|trans({}, 'messages', app.request.locale) }}</strong> : Banque XYZ</p>
+                    <p><strong>{{ 'iban'|trans({}, 'messages', app.request.locale) }}</strong> : BE00 0000 0000 0000</p>
+                    <p><strong>{{ 'bic'|trans({}, 'messages', app.request.locale) }}</strong> : XYZBEBB</p>
+                </div>
             </div>
-            <div>
-           
-                <h5>Coordonnées bancaires</h5>
-                <p><strong>Destinataire :</strong> MedShop S.A.</p>
-                <p><strong>Banque :</strong> Banque XYZ</p>
-                <p><strong>IBAN :</strong> BE00 0000 0000 0000</p>
-                <p><strong>BIC :</strong> XYZBEBB</p>
-            </div>
-        </div>
-    </main>
+        </main>
 
-    <footer class="footer footer-medshop">
-        <div class="container">
-            <h5>MedShop S.A.</h5>
-            <p>Rue de l'Électronique, 123, 1000 Bruxelles, Belgique</p>
-            <p><strong>Contact :</strong> <a href="mailto:support@medshop.be">support@medshop.be</a> | <a href="tel:+3221234567">+32 2 123 45 67</a></p>
-            <p><strong>Numéro d'entreprise :</strong> BE0123.456.789</p>
-            <p><strong>Numéro de TVA :</strong> BE0123.456.789</p>
-        </div>
-    </footer>
+        <footer role="contentinfo" class="footer container text-center mt-4">
+            <h2>{{ 'contact_title'|trans({}, 'messages', app.request.locale) }}</h2>
+            <address>
+                <p>{{ 'contact_address'|trans({}, 'messages', app.request.locale) }} Rue de l'Électronique, 123, 1000 Bruxelles, Belgique</p>
+                <p>{{ 'contact_email'|trans({}, 'messages', app.request.locale) }} <a href="mailto:support@medshop.be">medshop@hotmail.com</a></p>
+                <p>{{ 'contact_phone'|trans({}, 'messages', app.request.locale) }} <a href="tel:+32485950631">+32485950631</a></p>
+                <p>{{ 'company_name'|trans({}, 'messages', app.request.locale) }} : MedShop S.A.</p>
+                <p>{{ 'company_number'|trans({}, 'messages', app.request.locale) }} : BE0123.456.789</p>
+                <p>{{ 'VAT_number'|trans({}, 'messages', app.request.locale) }} : BE0123.456.789</p>
+            </address>
+        </footer>
 
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.js"></script>
-</body>
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.js"></script>
+        <script src="https://cdn.datatables.net/2.0.8/js/dataTables.js"></script>
+    </body>
 </html>

@@ -34,8 +34,12 @@ class ArticleRepository extends ServiceEntityRepository
      */
     public function recupererNouveautes(int $maxResults = 25)
     {
+
         return $this->createQueryBuilder('a') // 'a' est un alias pour Article
                     ->Where('a.supprime = 0') // Filtre pour ne sélectionner que les articles non supprimés
+                    ->andWhere('a.date_creation BETWEEN :debut AND :fin') // Filtre par date de création
+                    ->setParameter('debut', new \DateTimeImmutable('-1 month')) // Date d'il y a un mois
+                    ->setParameter('fin', new \DateTimeImmutable()) // Date actuelle
                     ->orderBy('a.id', 'DESC') // Trie par ID décroissant (du plus récent au plus ancien)
                     ->setMaxResults($maxResults) // Limite les résultats à $maxResults
                     ->getQuery() // Génère la requête finale

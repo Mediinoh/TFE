@@ -2,11 +2,12 @@
 
 namespace App\Controller;
 
+// Importation des classes nécessaires
 use App\Entity\Utilisateur;
+use App\Form\PayerType;
 use App\Form\SuppressionArticlePanierType;
 use App\Repository\ArticleRepository;
 use App\Repository\HistoriqueAchatRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,6 +17,14 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class PanierController extends AbstractController
 {
+    // Frais de livraison fixes pour chaque commande
+    public const FRAIS_LIVRAISON = 2.99;
+
+    public function __construct()
+    {
+        
+    }
+
     // Route pour afficher la liste des articles dans le panier
     #[Route('/panier', name: 'panier.list', methods: ['GET', 'POST'])]
     public function list(SessionInterface $session, ArticleRepository $articleRepository): Response
@@ -23,21 +32,21 @@ class PanierController extends AbstractController
         // Récupération des informations du panier pour l'utilisateur actuel
         $panier = $this->getPanier($session, $articleRepository);
 
-        // Frais de livraison fixes
-        $fraisLivraison = 2.99; // Frais de livraison fixes pour chaque commande
-
         // Calcul du total avec les frais de livraison
-        $totalAvecFrais = $panier['total'] + $fraisLivraison;
+        $totalAvecFrais = $panier['total'] + self::FRAIS_LIVRAISON;
+
+        $form = $this->createForm(PayerType::class);
 
         // Rendu de la vue avec les articles du panier
         return $this->render('pages/panier/index.html.twig', [
             'articlesPanier' => $panier['articlesPanier'],
             'total' => $panier['total'],
             'quantiteTotale' => $panier['quantiteTotale'],
-            'totalAvecFrais' => $totalAvecFrais, // Total avec frais de livraison
-            'imagesArticlesPath' => $this->getParameter('images_articles_path'),
+            'totalAvecFrais' => $totalAvecFrais,
+            'fraisLivraison' => self::FRAIS_LIVRAISON,
             'stripe_public' => $this->getParameter('stripe_public'),
-            'fraisLivraison' => $fraisLivraison, // Passer les frais de livraison à la vue
+            'form' => $form->createView(),
+            'imagesArticlesPath' => $this->getParameter('images_articles_path'),
         ]);
     }
 
@@ -109,20 +118,17 @@ class PanierController extends AbstractController
             return $this->redirectToRoute('stripe_checkout');
         }
 
-        // Frais de livraison fixes
-        $fraisLivraison = 2.99; // Frais de livraison fixes pour chaque commande
-
         // Calcul du total avec les frais de livraison
-        $totalAvecFrais = $panierData['total'] + $fraisLivraison;
+        $totalAvecFrais = $panierData['total'] + self::FRAIS_LIVRAISON;
 
         // Rendu de la vue de validation du panier
         return $this->render('pages/panier/validation.html.twig', [
             'articlesPanier' => $panierData['articlesPanier'],
             'total' => $panierData['total'],
             'quantiteTotale' => $panierData['quantiteTotale'],
-            'totalAvecFrais' => $totalAvecFrais, // Total avec frais de livraison
+            'totalAvecFrais' => $totalAvecFrais,
+            'fraisLivraison' => self::FRAIS_LIVRAISON,
             'imagesArticlesPath' => $this->getParameter('images_articles_path'),
-            'fraisLivraison' => $fraisLivraison, // Passer les frais de livraison à la vue
         ]);
     }
 

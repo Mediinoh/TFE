@@ -43,7 +43,7 @@ class ProduitsController extends AbstractController
         // Vérifie si le formulaire a été soumis et est valide
         if ($searchForm->isSubmitted() && $searchForm->isValid()) {
             $data = $searchForm->getData(); // Récupération des données du formulaire
-            $articles = $articleRepository->filtrerArticlesPar($data['categorie'], $data['mot_cle']); // Filtrage des articles
+            $articles = $articleRepository->filtrerArticlesPar($data['categorie']?->getId() ?? '', $data['mot_cle'] ?? ''); // Filtrage des articles
         }
 
         // Initialisation des formulaires pour l'ajout au panier et les favoris
@@ -55,12 +55,13 @@ class ProduitsController extends AbstractController
        if ($user) {
             foreach($articles as $article) {
                 // Création du formulaire pour ajouter un article au panier
-                $ajoutPanierForm = $this->createForm(AjoutPanierType::class, null, [
-                    'action' => $this->generateUrl('ajout_panier', ['id' => $article->getId()]), // URL de l'action
+                $formulaireAjoutPanier = $this->createForm(AjoutPanierType::class, null, [
+                    'action' => $this->generateUrl('ajout_panier', ['id' => $article->getId()]),
                     'method' => 'POST',
+                    'stock' => $article->getStock(),
                 ]);
-                $ajoutPanierForm->handleRequest($request); // Gestion de la requête pour le formulaire
-                $formulairesAjoutPanier['article_' . $article->getId()] = $ajoutPanierForm->createView(); // Récupération de la vue du formulaire
+                $formulaireAjoutPanier->handleRequest($request); // Gestion de la requête du formulaire
+                $formulairesAjoutPanier['article_' . $article->getId()] = $formulaireAjoutPanier->createView(); // Récupération de la vue du formulaire
 
                 // Vérification si l'article est déjà dans les favoris
                 $isFavorite = $user->getFavoris()->contains($article);
@@ -106,6 +107,7 @@ class ProduitsController extends AbstractController
             $formulaireAjoutPanier = $this->createForm(AjoutPanierType::class, null, [
                 'action' => $this->generateUrl('ajout_panier', ['id' => $article->getId()]),
                 'method' => 'POST',
+                'stock' => $article->getStock(),
             ]);
             $formulaireAjoutPanier->handleRequest($request); // Gestion de la requête du formulaire
         }
@@ -113,7 +115,7 @@ class ProduitsController extends AbstractController
         // Rendu de la vue avec les détails de l'article
         return $this->render('pages/produits/details.html.twig', [
             'article' => $article,
-            'formulaireAjoutPanier' => is_null($formulaireAjoutPanier) ? null : $formulaireAjoutPanier->createView(),
+            'formulaireAjoutPanier' => $formulaireAjoutPanier?->createView() ?? null,
             'imagesArticlesPath' => $this->imagesArticlesPath,
         ]);
     }

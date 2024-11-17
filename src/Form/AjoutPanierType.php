@@ -21,13 +21,16 @@ class AjoutPanierType extends AbstractType
     {
         $locale = $this->requestStack->getCurrentRequest()->getLocale();
 
+        $quantity = min($options['quantiteMax'], $options['stock']); 
+        $quantityMin = intval($quantity > 0);
+
         $builder
             ->add('quantite', ChoiceType::class, [
                 'attr' => [
                     'class' => 'form-select',
                 ],
                 'label' => $this->translator->trans('quantity', [], 'messages', $locale),
-                'choices' => array_combine(range(1, $options['quantiteMax']), range(1, $options['quantiteMax'])),
+                'choices' => array_combine(range($quantityMin, $quantity), range($quantityMin, $quantity)),
                 'label_attr' => [
                     'class' => 'form-label',
                 ],
@@ -37,6 +40,7 @@ class AjoutPanierType extends AbstractType
                 'label_html' => true,
                 'attr' => [
                     'class' => 'btn btn-primary',
+                    'disabled' => !$quantityMin,
                 ],
             ]);
     }
@@ -45,6 +49,7 @@ class AjoutPanierType extends AbstractType
     {
         $resolver->setDefaults([
             'quantiteMax' => 10,
+            'stock' => 10,
             'csrf_protection' => true,
         ]);
     }

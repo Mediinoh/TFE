@@ -46,16 +46,15 @@
                 <p><strong>{{ 'contact_title'|trans({}, 'messages', app.request.locale) }}</strong></p>
                 <address>
                     <!-- Adresse de contact -->
-                    <p>{{ 'contact_address'|trans({}, 'messages', app.request.locale) }} Rue de l’Électronique, 123, 1000 Bruxelles, Belgique</p>
+                    <p>{{ 'contact_address'|trans({}, 'messages', app.request.locale) }} Rue de l'Électronique, 123, 1000 Bruxelles, Belgique</p>
                     <!-- Email de contact avec un lien mailto -->
                     <p>{{ 'contact_email'|trans({}, 'messages', app.request.locale) }} <a href="mailto:support@medshop.be" class="text-white">medshop@hotmail.com</a></p>
                     <!-- Numéro de téléphone de contact -->
                     <p>{{ 'contact_phone'|trans({}, 'messages', app.request.locale) }} <a href="tel:+32485950631" class="text-white">+32485950631</a></p>
                     <!-- Informations supplémentaires -->
-                    <p>Nom de l’entreprise : MedShop S.A.</p>
-                    <p>Numéro d’entreprise (BCE) : BE0123.456.789</p>
-                    <p>Numéro de TVA : BE0123.456.789</p>
-                    <p>Contact : support@medshop.be / +32 2 123 45 67</p>
+                    <p>{{ 'company_name'|trans({}, 'messages', app.request.locale) }} : MedShop S.A.</p>
+                    <p>{{ 'company_number'|trans({}, 'messages', app.request.locale) }} : BE0123.456.789</p>
+                    <p>{{ 'VAT_number'|trans({}, 'messages', app.request.locale) }} : BE0123.456.789</p>
                 </address>
             </div>
 

@@ -1,25 +1,24 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ 'user_purchase_list'|trans({}, 'messages', app.request.locale) }}{% endblock %}
+{% block title %}{{ 'purchase_management'|trans({}, 'messages', app.request.locale) }}{% endblock %}
 
 {% block body %}
     <section class="bg-dark py-5">
         <div class="container px-4 px-lg-5 my-5">
             <div class="text-center text-white">
                 <!-- Titre principal -->
-                <h1 class="display-4 fw-bolder">{{ 'user_purchases'|trans({}, 'messages', app.request.locale) }}</h1>
+                <h1 class="display-4 fw-bolder">{{ 'users_purchases'|trans({}, 'messages', app.request.locale) }}</h1>
                 <!-- Phrase d'accroche -->
-                <p class="lead fw-normal text-white-50 mb-0">{{ 'what_you_buy'|trans({}, 'messages', app.request.locale) }}</p>
+                <p class="lead fw-normal text-white-50 mb-0">{{ 'all_purchases'|trans({}, 'messages', app.request.locale) }}</p>
             </div>
         </div>
     </section>
 
     <section class="py-5">
-        {% if achats_utilisateur is empty %}
-            <!-- Si l'utilisateur n'a fait aucun achat, afficher un message approprié -->
-            <p class="text-center">{{ 'no_purchases_yet'|trans({}, 'messages', app.request.locale) }}</p>
+        {% if achats is empty %}
+            <p class="text-center">{{ 'no_purchase_in_db'|trans({}, 'messages', app.request.locale) }}</p>
         {% else %}
-            <!-- Tableau qui affiche la liste des achats de l'utilisateur -->
+            <!-- Tableau qui affiche la liste des achats -->
             <table class="table table-hover" id="dataTable">
                 <thead>
                     <tr>
@@ -31,23 +30,23 @@
                 </thead>
                 <tbody>
                     <!-- Boucle pour afficher chaque achat de l'utilisateur -->
-                    {% for achat_utilisateur in achats_utilisateur %}
+                    {% for achat in achats %}
                         <tr>
                             <!-- Colonne affichant le pseudo de l'utilisateur -->
-                            <td scope="row">{{ achat_utilisateur.utilisateur.pseudo }}</td>
+                            <td scope="row">{{ achat.utilisateur.pseudo }}</td>
                             <!-- Colonne affichant la date d'achat formatée -->
-                            <td>{{ achat_utilisateur.dateAchat|date('d/m/Y H:i') }}</td>
+                            <td>{{ achat.dateAchat|date('d/m/Y H:i') }}</td>
                             <!-- Colonne affichant le montant total de l'achat -->
-                            <td>{{ achat_utilisateur.montantTotal + 2.99 }}&euro;</td>
+                            <td>{{ achat.montantTotal + 2.99 }}&euro;</td>
                             <!-- Colonne pour les actions : voir les détails de l'achat ou télécharger la facture -->
                             <td>
                                 <div class="btn-group">
                                     <!-- Lien pour visualiser les détails de l'achat -->
-                                    <a href="{{ path(redirectPath, { id: achat_utilisateur.id }) }}" class="btn text-primary">
+                                    <a href="{{ path(redirectPath, { id: achat.id }) }}" class="btn text-primary">
                                         <span class="bi bi-eye" aria-hidden="true"></span> {{ 'view_details'|trans({}, 'messages', app.request.locale) }}
                                     </a>
                                     <!-- Lien pour télécharger la facture de l'achat -->
-                                    <a href="{{ path('telecharger_facture', { id: achat_utilisateur.id }) }}" class="btn text-secondary">
+                                    <a href="{{ path('telecharger_facture', { id: achat.id }) }}" class="btn text-secondary">
                                         <span class="bi bi-download" aria-hidden="true"></span> {{ 'download_invoice'|trans({}, 'messages', app.request.locale) }}
                                     </a>
                                 </div>
@@ -58,12 +57,4 @@
             </table>
         {% endif %}
     </section>
-
-    {% if is_granted('ROLE_ADMIN')  %}
-        <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-            <div class="text-center">
-                <a class="btn btn-outline-dark mt-auto" href="{{ path('admin_utilisateurs') }}">{{ 'user_list'|trans({}, 'messages', app.request.locale) }}</a>
-            </div>
-        </div>
-    {% endif %}
 {% endblock %}

@@ -43,8 +43,12 @@ class Article
     #[ORM\OneToMany(targetEntity: LigneCommande::class, mappedBy: 'article')]
     private Collection $ligneCommandes;
 
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private ?\DateTimeInterface $date_creation = null;
+
     public function __construct()
     {
+        $this->date_creation = new \DateTimeImmutable();
         $this->commentaires = new ArrayCollection();
         $this->ligneCommandes = new ArrayCollection();
         $this->stock = 30;
@@ -196,6 +200,18 @@ class Article
                 $ligneCommande->setArticle(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getDateCreation(): ?\DateTimeInterface
+    {
+        return $this->date_creation;
+    }
+
+    public function setDateCreation(\DateTimeInterface $date_creation): static
+    {
+        $this->date_creation = $date_creation;
 
         return $this;
     }

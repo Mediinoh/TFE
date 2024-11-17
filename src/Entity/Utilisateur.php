@@ -83,6 +83,9 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: MessageReaction::class, mappedBy: 'utilisateur')]
     private Collection $messageReactions;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $api_token = null;
+
     public function __construct()
     {
         $this->historiqueConnexions = new ArrayCollection();
@@ -479,6 +482,18 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
                 $messageReaction->setUtilisateur(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getApiToken(): ?string
+    {
+        return $this->api_token;
+    }
+
+    public function setApiToken(?string $api_token): static
+    {
+        $this->api_token = $api_token;
 
         return $this;
     }

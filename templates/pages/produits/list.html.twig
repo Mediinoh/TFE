@@ -84,8 +84,8 @@
                                 </a>
 
                                 {% if app.user %}
-                                    <!-- Formulaire pour ajouter l'article au panier si l'utilisateur est connecté -->
                                     <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                                        <!-- Formulaire pour ajouter l'article au panier si l'utilisateur est connecté -->
                                         {{ form_start(formulaireAjoutPanier, {'attr': {'class': 'd-flex flex-column align-items-center'}}) }}
                                             <div class="form-group mb-3">
                                                 {{ form_label(formulaireAjoutPanier.quantite) }}

@@ -69,7 +69,8 @@ class InscriptionType extends AbstractType
                     'maxlength' => '255',
                     'autocomplete' => 'street-address',
                 ],
-                'label' => $this->translator->trans('address', [], 'messages', $locale),
+                'label' => '<span class="bi bi-geo-alt" aria-hidden="true"></span> ' . $this->translator->trans('address', [], 'messages', $locale),
+                'label_html' => true,
                 'label_attr' => [
                     'class' => 'form-label mt-4',
                 ],
@@ -85,7 +86,8 @@ class InscriptionType extends AbstractType
                     'maxlength' => '10',
                     'autocomplete' => 'postal-code',
                 ],
-                'label' => $this->translator->trans('postal_code', [], 'messages', $locale),
+                'label' => '<span class="bi bi-geo" aria-hidden="true"></span> ' . $this->translator->trans('postal_code', [], 'messages', $locale),
+                'label_html' => true,
                 'label_attr' => [
                     'class' => 'form-label mt-4',
                 ],
@@ -101,7 +103,8 @@ class InscriptionType extends AbstractType
                     'maxlength' => '180',
                     'autocomplete' => 'email',
                 ],
-                'label' => $this->translator->trans('email_address', [], 'messages', $locale),
+                'label' => '<span class="bi bi-at" aria-hidden="true"></span> ' . $this->translator->trans('email_address', [], 'messages', $locale),
+                'label_html' => true,
                 'label_attr' => [
                     'class' => 'form-label mt-4',
                 ],
@@ -116,7 +119,8 @@ class InscriptionType extends AbstractType
                     'class' => 'form-control',
                     'autocomplete' => 'bday',
                 ],
-                'label' => $this->translator->trans('birth_date', [], 'messages', $locale),
+                'label' => '<span class="bi bi-cake2" aria-hidden="true"></span> ' . $this->translator->trans('birth_date', [], 'messages', $locale),
+                'label_html' => true,
                 'label_attr' => [
                     'class' => 'form-label mt-4',
                 ],
@@ -130,7 +134,8 @@ class InscriptionType extends AbstractType
                     'minlength' => '2',
                     'maxlength' => '50',
                 ],
-                'label' => $this->translator->trans('username', [], 'messages', $locale),
+                'label' => '<span class="bi bi-person-circle" aria-hidden="true"></span> ' . $this->translator->trans('username', [], 'messages', $locale),
+                'label_html' => true,
                 'label_attr' => [
                     'class' => 'form-label mt-4',
                 ],
@@ -146,7 +151,8 @@ class InscriptionType extends AbstractType
                         'class' => 'form-control',
                         'autocomplete' => 'new-password',
                     ],
-                    'label' => $this->translator->trans('password', [], 'messages', $locale),
+                    'label' => '<span class="bi bi-lock" aria-hidden="true"></span> ' . $this->translator->trans('password', [], 'messages', $locale),
+                    'label_html' => true,
                     'label_attr' => [
                         'class' => 'form-label mt-4',
                         'autocomplete' => 'new-password',
@@ -156,7 +162,8 @@ class InscriptionType extends AbstractType
                     'attr' => [
                         'class' => 'form-control',
                     ],
-                    'label' => $this->translator->trans('password_confirmation', [], 'messages', $locale),
+                    'label' => '<span class="bi bi-lock" aria-hidden="true"></span> ' . $this->translator->trans('password_confirmation', [], 'messages', $locale),
+                    'label_html' => true,
                     'label_attr' => [
                         'class' => 'form-label mt-4',
                     ],

@@ -58,13 +58,25 @@ class StripeController extends AbstractController
                                 'name' => $article->getTitre(), // Titre de l'article
                                 'images' => [], // Images de l'article
                             ],
-                            'unit_amount' => $article->getPrixUnitaire() * 100, // Montant en centimes
+                            'unit_amount' => $article->getPrixUnitaire() * 100 , // Montant en centimes
                         ],
                         'quantity' => $quantite, // Quantité de l'article
                     ];
-                    $panierTotal += $article->getPrixUnitaire() * $quantite; // Ajoute au total
+                    $panierTotal += $article->getPrixUnitaire() * $quantite ; // Ajoute au total
                 }
             }
+
+            $lineItems[] = [
+                'price_data' => [
+                    'currency' => 'eur', // Devise en euros
+                    'product_data' => [
+                        'name' => 'Frais de port',
+                        'images' => [],
+                    ],
+                    'unit_amount' => PanierController::FRAIS_LIVRAISON * 100 , // Montant en centimes
+                ],
+                'quantity' => 1,
+            ];
         }
 
         // Configuration de l'API Stripe avec la clé secrète
@@ -136,6 +148,12 @@ class StripeController extends AbstractController
 
                     // Persiste la ligne de commande en base de données
                     $this->entityManager->persist($ligneCommande);
+
+                    // Modifier le stock de l'article
+                    $article->setStock($article->getStock() - $quantite);
+
+                    // Persiste l'article en base de données
+                    $this->entityManager->persist($article);
                 }
             }
 

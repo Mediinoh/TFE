@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'API_documentation'|trans({}, 'messages', app.request.locale) }}{% endblock %}
+
+{% block body %}
+    <section class="bg-dark py-5">
+        <div class="container px-4 px-lg-5 my-5">
+            <div class="text-center text-white">
+                <!-- Titre principal -->
+                <h1 class="display-4 fw-bolder">{{ 'API_documentation'|trans({}, 'messages', app.request.locale) }}</h1>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-5">
+        <table class="table table-hover">
+            <tbody>
+                <tr col="row">
+                    <td>GET</td>
+                    <td><a href={{ path('api_categories') }}>/admin/api/categories</a></td>
+                </tr>
+                <tr>
+                    <td>GET</td>
+                    <td><a href={{ path('api_articles') }}>/admin/api/articles</a></td>
+                </tr>
+                <tr>
+                    <td>GET</td>
+                    <td><a href={{ path('api_utilisateurs') }}>/admin/api/utilisateurs</a></td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+
+{% endblock %}

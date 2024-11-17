@@ -30,9 +30,16 @@
         {
             // Création d'un compte administrateur avec des rôles 'ROLE_USER' et 'ROLE_ADMIN'
             $admin = new Utilisateur();
-            $admin->setPrenom('Admin')->setNom('Admin')->setAdresse('Admin')->setCodePostal('Admin')
-                ->setEmail('admin@admin.admin')->setDateNaissance(new \DateTimeImmutable('2005-02-20'))
-                ->setPseudo('admin')->setPlainPassword('admin')->setRoles(['ROLE_USER', 'ROLE_ADMIN']);
+            $admin->setPrenom('Admin')
+                ->setNom('Admin')
+                ->setAdresse('Admin')
+                ->setCodePostal('Admin')
+                ->setEmail('admin@admin.admin')
+                ->setDateNaissance(new \DateTimeImmutable('2005-02-20'))
+                ->setPseudo('admin')
+                ->setPlainPassword('admin')
+                ->setRoles(['ROLE_USER', 'ROLE_ADMIN'])
+                ->setApiToken('admin');
             
             // Persistance de l'administrateur
             $manager->persist($admin);
@@ -103,6 +110,22 @@
                 ['titre' => 'Écran HP 32"', 'prix' => 285, 'description' => 'Écran curvé de 32 pouces HP', 'categorie_id' => 4, 'photo_article' => 'ecran_HP_32_pouces.jpg'],
                 ['titre' => 'Jeux PS4 "CyberPunk"', 'prix' => 26.98, 'description' => 'Jeux CyberPunk PS4', 'categorie_id' => 7, 'photo_article' => 'cyberpunk.jpg'],
             ];
+
+            // Détermine le nombre d'articles à créer, par défaut 0, modifiable par une variable d'environnement 'NB_ARTICLES'
+            $nbArticles = intval(getenv('NB_ARTICLES') ?: 0);
+
+            for ($i = 1; $i <= $nbArticles; $i++) {
+                // Sélectionne une catégorie aléatoire dans la liste
+                $categorieId = array_rand($categories); // Cela retourne l'index de la catégorie dans le tableau
+                
+                $articles_list[] = [
+                    'titre' => 'Produit Med-Shop',
+                    'prix' => $this->faker->randomFloat(2, 5, 500), // Génère un prix aléatoire entre 5 et 500
+                    'description' => 'À vendre sur Med-Shop',
+                    'categorie_id' => $categorieId + 1, // Ajoute 1 pour commencer les IDs à 1 au lieu de 0
+                    'photo_article' => 'jeux-pc.png',
+                ];
+            }
             
             // Boucle de création et persistance des articles
             foreach($articles_list as $article_item) {

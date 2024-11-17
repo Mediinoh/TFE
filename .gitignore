@@ -1,4 +1,3 @@
-
 ###> symfony/framework-bundle ###
 /.env
 /.env.local
@@ -7,7 +6,14 @@
 /config/secrets/prod/prod.decrypt.private.php
 /public/bundles/
 /var/
-/vendor/
+# Ignore the entire vendor directory
+/vendor/*
+# Except for the specific file
+!vendor/symfony/runtime/Internal/BasicErrorHandler.php
+# Ensure the parent directories are included
+# !vendor/symfony/
+# !vendor/symfony/runtime/
+# !vendor/symfony/runtime/Internal/
 ###< symfony/framework-bundle ###
 
 ###> phpunit/phpunit ###
