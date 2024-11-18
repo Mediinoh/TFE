@@ -6,6 +6,7 @@ use App\Entity\Article;
 use App\Entity\Categorie;
 use App\Entity\Utilisateur;
 use App\Form\AjoutCategorieType;
+use App\Form\AjoutStockType;
 use App\Form\InscriptionType;
 use App\Form\ProfilType;
 use App\Form\SupprimeArticleType;
@@ -35,6 +36,7 @@ class ApiController extends AbstractController {
             'categorie' => $this->getCategorieData($article->getCategorie()),
             'prix_unitaire' => $article->getPrixUnitaire(),
             'description' => $article->getDescription(),
+            'stock' => $article->getStock(),
             'supprime' => $article->isSupprime(),
         ];
     }
@@ -288,12 +290,10 @@ class ApiController extends AbstractController {
         $utilisateurs = $utilisateurRepository->findBy([], ['id' => 'ASC']);
         
         // Crée un tableau de données
-        $data = [];
-        
-        foreach ($utilisateurs as $utilisateur) {
-            // Crée un tableau de données pour chaque utilisateur
-            $data[] = $this->getUtilisateurData($utilisateur);
-        }
+        $data = array_map(function ($utilisateur) {
+            // Récupère le tableau de données de chaque utilisateur
+            return $this->getUtilisateurData($utilisateur);
+        }, $utilisateurs);
 
         // Renvoie la réponse JSON
         return $this->json($data, context: [
@@ -404,7 +404,7 @@ class ApiController extends AbstractController {
 
         // Collecte des erreurs
         $errors = [];
-        foreach ($validator->validate($$utilisateur) as $violation) {
+        foreach ($validator->validate($utilisateur) as $violation) {
             $errors[] = [
                 'field' => $violation->getPropertyPath(),
                 'message' => $violation->getMessage(),
@@ -434,7 +434,6 @@ class ApiController extends AbstractController {
         // Récupère l'article avec l'identifiant
         $article = $articleRepository->find($id);
 
-        // Création et gestion du formulaire de modification du profil
         $form = $this->createForm(SupprimeArticleType::class, null, [
             'csrf_protection' => $request->attributes->get('disable_csrf', false) ? false : true,
             'supprime' => !$article->isSupprime(),
@@ -456,7 +455,57 @@ class ApiController extends AbstractController {
 
         // Collecte des erreurs
         $errors = [];
-        foreach ($validator->validate($$utilisateur) as $violation) {
+        foreach ($validator->validate($article) as $violation) {
+            $errors[] = [
+                'field' => $violation->getPropertyPath(),
+                'message' => $violation->getMessage(),
+            ];
+        }
+
+        return $this->json(['errors' => $errors], Response::HTTP_BAD_REQUEST);
+    }
+
+    #[Route('/articles/{id}', 'api_put_article', methods: ['PUT'])]
+    public function apiPutArticle(int $id, Request $request, EntityManagerInterface $manager, ValidatorInterface $validator, ArticleRepository $articleRepository) {
+        
+        // Récupération de l'utilisateur actuellement connecté
+        /** @var Utilisateur $user */
+        $user = $this->getUser();
+
+        // Redirection vers la page de connexion si l'utilisateur n'est pas authentifié
+        if (!$user) {
+            return $this->redirectToRoute('security.login');
+        }
+
+        // Redirection vers la page d'accueil si l'utilisateur n'a pas le rôle ADMIN
+        if (!$this->isGranted('ROLE_ADMIN')) {
+            return $this->redirectToRoute('home.index');
+        }
+
+        // Récupère l'article avec l'identifiant
+        $article = $articleRepository->find($id);
+
+        $form = $this->createForm(AjoutStockType::class, null, [
+            'csrf_protection' => $request->attributes->get('disable_csrf', false) ? false : true,
+        ]);
+        // $form->handleRequest($request);
+        $form->submit($request->request->all());
+
+        // Vérifie si le formulaire est soumis et valide
+        if ($form->isSubmitted() && $form->isValid()) {
+            $quantite = $request->get('quantite');
+            $article->setStock($article->getStock() + $quantite);
+
+            // Enregistrement des modifications dans la base de données
+            $manager->persist($article);
+            $manager->flush();
+
+            return $this->json(['message' => "Stock de l'article incrémenté de $quantite exemplaires avec succès"], Response::HTTP_OK);
+        }
+
+        // Collecte des erreurs
+        $errors = [];
+        foreach ($validator->validate($article) as $violation) {
             $errors[] = [
                 'field' => $violation->getPropertyPath(),
                 'message' => $violation->getMessage(),
