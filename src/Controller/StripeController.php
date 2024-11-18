@@ -58,11 +58,11 @@ class StripeController extends AbstractController
                                 'name' => $article->getTitre(), // Titre de l'article
                                 'images' => [], // Images de l'article
                             ],
-                            'unit_amount' => $article->getPrixUnitaire() * 100 , // Montant en centimes
+                            'unit_amount' => $article->getPrixUnitaire() * 100, // Montant en centimes
                         ],
                         'quantity' => $quantite, // Quantité de l'article
                     ];
-                    $panierTotal += $article->getPrixUnitaire() * $quantite ; // Ajoute au total
+                    $panierTotal += $article->getPrixUnitaire() * $quantite; // Ajoute au total
                 }
             }
 

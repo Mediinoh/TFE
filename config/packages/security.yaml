@@ -19,9 +19,9 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         api:
-            pattern: ^/admin/api/
+            pattern: ^/api(?!/doc$)
             provider: api_user_provider
-            custom_authenticator: App\Security\ApiAutenticator
+            custom_authenticator: App\Security\ApiAuthenticator
             stateless: true
             lazy: true
         main:
@@ -43,6 +43,8 @@ security:
     access_control:
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
+        # Autoriser l'accès public à /api/doc
+        - { path: ^/api/doc, roles: IS_AUTHENTICATED_ANONYMOUSLY }
 
 when@test:
     security:

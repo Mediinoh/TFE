@@ -42,6 +42,12 @@ services:
     App\EventListener\UserLoggedOutListener:
         tags:
             - { name: 'kernel.event_listener', event: 'user.logged_out', method: 'onUserLoggedOut' }
+    
+    App\EventListener\FormCsrfListener:
+        arguments:
+            $csrfTokenManager: '@security.csrf.token_manager'
+        tags:
+            - { name: kernel.event_subscriber }
 
     App\Service\TmdbApiService:
         arguments:

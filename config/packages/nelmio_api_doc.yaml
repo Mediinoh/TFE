@@ -1,0 +1,10 @@
+nelmio_api_doc:
+    documentation:
+        info:
+            title: 'API Documentation'
+            description: 'Documentation des endpoints de l’API'
+            version: '1.0.0'
+    areas: # Ajoute les zones où la documentation est disponible
+        default:
+            path_patterns:
+                - ^/api(?!/doc$) # Inclut toutes les routes /api sauf /api/doc
